@@ -6,10 +6,13 @@ import { useLogin } from '@/features/auth/model/use-login';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 
+import { useSessionStore } from '@/entities/session/model/store';
+
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const setAccessToken = useSessionStore((state) => state.setAccessToken);
   
   const { mutate: login, isPending: isLoading, error: loginError } = useLogin();
 
@@ -19,7 +22,8 @@ export function LoginForm() {
     login(
       { email, password },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          setAccessToken(data.token);
           router.push('/');
         },
       }

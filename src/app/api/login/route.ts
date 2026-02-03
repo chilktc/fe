@@ -15,20 +15,25 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify(body),
     });
+    
+    const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        return NextResponse.json(
-            { message: errorData.message || 'Login failed' },
-            { status: response.status }
-        );
+      return NextResponse.json(
+        { message: data.message || 'Login failed' },
+        { status: response.status }
+      );
     }
 
-    const data = await response.json();
+    const nextResponse = NextResponse.json(data);
 
-    // TODO: 쿠키 처리 로직 추가
+    // 백엔드에서 받은 쿠키를 클라이언트로 전달
+    const setCookies = response.headers.getSetCookie();
+    setCookies.forEach(cookie => {
+      nextResponse.headers.append('Set-Cookie', cookie);
+    });
     
-    return NextResponse.json(data);
+    return nextResponse;
   } catch (error) {
     console.error('Login proxy error:', error);
     return NextResponse.json(
