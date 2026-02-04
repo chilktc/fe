@@ -1,8 +1,17 @@
 import axios from 'axios';
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { useSessionStore } from '@/entities/session/model/store';
 
 interface ApiErrorResponse {
   message?: string;
+}
+
+interface RefreshResponse {
+  token: string;
+}
+
+interface RetryConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
 }
 
 declare module 'axios' {
@@ -34,14 +43,81 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// 공통 응답 인터셉터
+// 토큰 재발급 로직
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (value: unknown) => void;
+  reject: (reason: unknown) => void;
+}> = [];
+
+const processQueue = (error: Error | null, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 api.interceptors.response.use(
-  // 정상 응답 시 실제 데이터만 반환
   (response) => response.data,
-  (error) => {
-    // 에러 응답에서 메시지를 우선적으로 추출
-    // 서버 응답 메시지가 없을 경우 Axios 기본 에러 메시지 사용
-    const message = error.response?.data?.message || error.message || 'API Error';
+  async (error: AxiosError<ApiErrorResponse>) => {
+    const originalRequest = error.config as RetryConfig;
+
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const response = await fetch('/api/refresh', { 
+          method: 'POST',
+          credentials: 'include',
+        });
+        
+        if (!response.ok) {
+          throw new Error('Refresh failed');
+        }
+        
+        const data: RefreshResponse = await response.json();
+        const { token } = data;
+
+        useSessionStore.getState().setAccessToken(token);
+        originalRequest.headers.Authorization = `Bearer ${token}`;
+        
+        processQueue(null, token);
+        
+        return api(originalRequest);
+      } catch (err) {
+        processQueue(err as Error, null);
+        useSessionStore.getState().clearSession();
+        
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+        
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    const message = 
+      error.response?.data?.message || 
+      error.message || 
+      'API Error';
     return Promise.reject(new Error(message));
   }
 );
