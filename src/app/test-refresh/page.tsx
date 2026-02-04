@@ -9,6 +9,7 @@ import { Button } from '@/shared/ui/button';
 export default function TestRefreshPage() {
   const [status, setStatus] = useState<string>('Ready');
   const { setAccessToken, accessToken } = useSessionStore();
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   const runTest = async () => {
     setStatus('Testing...');
@@ -38,7 +39,16 @@ export default function TestRefreshPage() {
 
   return (
     <div className="p-8 space-y-4">
-      <h1 className="text-2xl font-bold">Silent Refresh Test</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Silent Refresh Test</h1>
+        <Button 
+          variant="secondary" 
+          onClick={() => logout()}
+          disabled={isLoggingOut}
+        >
+          {isLoggingOut ? 'Logging out...' : 'Logout'}
+        </Button>
+      </div>
       
       <div className="p-4 bg-gray-100 rounded">
         <p className="font-mono text-sm break-all">
