@@ -3,7 +3,7 @@ import { api } from '@/shared/api/base';
 
 // 로그인 요청 시 사용하는 파라미터 타입
 export interface LoginRequest {
-  email: string;
+  loginId: string;
   password: string;
 }
 

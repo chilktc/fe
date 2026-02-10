@@ -5,7 +5,8 @@ export async function POST(request: Request) {
     const BACKEND_URL = process.env.BACKEND_API_URL || 'http://localhost:8080';
     const cookies = request.headers.get('cookie');
     
-    const response = await fetch(`${BACKEND_URL}/api/refresh`, {
+    // 백엔드 리프레시 API로 요청 전달
+    const response = await fetch(`${BACKEND_URL}/auth/refresh`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

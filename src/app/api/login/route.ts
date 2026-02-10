@@ -6,9 +6,8 @@ export async function POST(request: Request) {
     // 프론트에서 전달된 로그인 요청 바디 파싱
     const body = await request.json();
     const BACKEND_URL = process.env.BACKEND_API_URL || 'http://localhost:8080';
-    
     // 백엔드 로그인 API로 요청 전달
-    const response = await fetch(`${BACKEND_URL}/api/login`, {
+    const response = await fetch(`${BACKEND_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
