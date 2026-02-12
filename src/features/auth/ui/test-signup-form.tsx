@@ -6,7 +6,7 @@ import { useSignup } from '@/features/auth/model/use-signup';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 
-export function SignupForm() {
+export function TestSignupForm() {
   const router = useRouter();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -72,7 +72,7 @@ export function SignupForm() {
         <Button
           type="button"
           variant="ghost"
-          onClick={() => router.push('/login')}
+          onClick={() => router.push('/test-login')}
           className="text-sm text-gray-600 hover:text-gray-900"
         >
           Already have an account? Log in
