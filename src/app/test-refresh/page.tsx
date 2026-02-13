@@ -8,28 +8,27 @@ import { Button } from '@/shared/ui/button';
 
 export default function TestRefreshPage() {
   const [status, setStatus] = useState<string>('Ready');
-  const { setAccessToken, accessToken } = useSessionStore();
+  const { setIsLoggedIn, isLoggedIn } = useSessionStore();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   const runTest = async () => {
     setStatus('Testing...');
     
-    const oldToken = accessToken;
-    if (!oldToken) {
+    if (!isLoggedIn) {
         setStatus('Error: Please login first!');
         return;
     }
     
-    console.log('Original Token:', oldToken);
-    setAccessToken('INVALID_TOKEN');
-    console.log('Token corrupted to: INVALID_TOKEN');
+    console.log('Currently logged in:', isLoggedIn);
+    setIsLoggedIn(false);
+    console.log('Login status artificially set to false to test refresh');
 
     try {
       const response = await api.get('/api/test-protected');
       
       setStatus(`Success! Response: ${JSON.stringify(response)}`);
       console.log('Final Response:', response);
-      console.log('New Token in Store:', useSessionStore.getState().accessToken);
+      console.log('New Login Status in Store:', useSessionStore.getState().isLoggedIn);
       
     } catch (error: any) {
       console.error('Test Failed:', error);
@@ -52,7 +51,7 @@ export default function TestRefreshPage() {
       
       <div className="p-4 bg-gray-100 rounded">
         <p className="font-mono text-sm break-all">
-          Current Token: {accessToken || 'None'}
+          Login Status: {isLoggedIn ? 'Logged In' : 'Logged Out'}
         </p>
       </div>
 

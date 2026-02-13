@@ -26,9 +26,8 @@ export function useSessionRestore() {
         });
 
         if (response.ok) {
-          const { token } = await response.json();
-          // 발급받은 Access Token을 스토어에 저장
-          useSessionStore.getState().setAccessToken(token);
+          // 세션 복구 성공 = 로그인 상태로 전환 (쿠키 사용)
+          useSessionStore.getState().setIsLoggedIn(true);
         }
       } catch (error) {
         // 세션 복구 실패 = 비로그인 상태

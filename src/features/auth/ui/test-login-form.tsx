@@ -12,7 +12,7 @@ export function TestLoginForm() {
   const router = useRouter();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const setAccessToken = useSessionStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
   
   const { mutate: login, isPending: isLoading, error: loginError } = useLogin();
 
@@ -22,8 +22,8 @@ export function TestLoginForm() {
     login(
       { loginId: id, password },
       {
-        onSuccess: (data) => {
-          setAccessToken(data.token);
+        onSuccess: () => {
+          setIsLoggedIn(true);
           router.push('/');
         },
       }

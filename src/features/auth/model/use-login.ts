@@ -7,9 +7,9 @@ export interface LoginRequest {
   password: string;
 }
 
-// 로그인 성공 시 응답 데이터 타입
+// 로그인 성공 시 응답 데이터 타입 (토큰은 쿠키로 전달됨)
 export interface LoginResponse {
-  token: string;
+  // token: string;
 }
 
 // 로그인 요청을 위한 React Query mutation 훅

@@ -45,13 +45,9 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await response.json();
-    const { accessToken, firstLogin } = data.data;
+    const { firstLogin } = data.data;
 
-    // Access Token을 URL query param으로 넘겨서 프론트엔드에서 처리하도록 함
     const redirectUrl = new URL('/', request.url);
-    if (accessToken) {
-        redirectUrl.searchParams.set('accessToken', accessToken);
-    }
     if (firstLogin) {
         redirectUrl.searchParams.set('firstLogin', 'true');
     }
