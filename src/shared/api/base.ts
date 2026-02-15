@@ -34,15 +34,6 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Access Token 추가
-api.interceptors.request.use((config) => {
-  const token = useSessionStore.getState().accessToken;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 // 토큰 재발급 로직
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -91,13 +82,10 @@ api.interceptors.response.use(
           throw new Error('Refresh failed');
         }
         
-        const data: RefreshResponse = await response.json();
-        const { token } = data;
-
-        useSessionStore.getState().setAccessToken(token);
-        originalRequest.headers.Authorization = `Bearer ${token}`;
+        // 성공 시 isLoggedIn 상태 업데이트 (쿠키는 fetch가 자동으로 처리)
+        useSessionStore.getState().setIsLoggedIn(true);
         
-        processQueue(null, token);
+        processQueue(null);
         
         return api(originalRequest);
       } catch (err) {

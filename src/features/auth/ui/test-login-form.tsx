@@ -2,38 +2,41 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSignup } from '@/features/auth/model/use-signup';
+import { useLogin } from '@/features/auth/model/use-login';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 
-export function SignupForm() {
+import { useSessionStore } from '@/entities/session/model/store';
+
+export function TestLoginForm() {
   const router = useRouter();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
   
-  const { mutate: signup, isPending: isLoading, error: signupError } = useSignup();
+  const { mutate: login, isPending: isLoading, error: loginError } = useLogin();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    signup(
+    login(
       { loginId: id, password },
       {
         onSuccess: () => {
-          alert('Signup successful! Please log in.');
-          router.push('/login');
+          setIsLoggedIn(true);
+          router.push('/');
         },
       }
     );
   };
   
-  const errorMessage = signupError instanceof Error ? signupError.message : 'Failed to signup';
+  const errorMessage = loginError instanceof Error ? loginError.message : 'Failed to login';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md p-8 bg-white rounded-lg shadow-md border border-gray-100">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Sign Up</h2>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
       
-      {signupError && (
+      {loginError && (
         <div className="p-3 text-sm text-red-600 bg-red-50 rounded">
           {errorMessage}
         </div>
@@ -65,19 +68,27 @@ export function SignupForm() {
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? 'Signing up...' : 'Sign Up'}
+        {isLoading ? 'Signing in...' : 'Sign In'}
       </Button>
 
-      <div className="mt-4 text-center">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.push('/login')}
-          className="text-sm text-gray-600 hover:text-gray-900"
-        >
-          Already have an account? Log in
-        </Button>
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-gray-300" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-white px-2 text-gray-500">Or continue with</span>
+        </div>
       </div>
+
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full mb-2"
+        onClick={() => router.push('/test-signup')}
+        disabled={isLoading}
+      >
+        Sign Up
+      </Button>
     </form>
   );
 }
