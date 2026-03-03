@@ -18,7 +18,7 @@ export function GuestGuard({ children }: GuestGuardProps) {
   useEffect(() => {
     // 초기 세션 확인이 끝났고, 로그인된 상태라면 홈으로 이동
     if (isInitialized && isLoggedIn) {
-      router.replace('/');
+      router.replace('/app');
     }
   }, [isLoggedIn, isInitialized, router]);
 
