@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import Providers from "./providers";
 import "./globals.css";
+
+const suit = localFont({
+  src: "./fonts/SUIT-Variable.woff2",
+  variable: "--font-suit",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,12 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased max-w-[480px] mx-auto`}
-      >
-        <Providers>
-          {children}
-        </Providers>
+      <body className={`${suit.variable} antialiased max-w-[480px] mx-auto`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
