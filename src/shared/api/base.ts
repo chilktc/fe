@@ -82,7 +82,7 @@ api.interceptors.response.use(
           throw new Error('Refresh failed');
         }
         
-        // 성공 시 isLoggedIn 상태 업데이트 (쿠키는 fetch가 자동으로 처리)
+        // 성공 시 isLoggedIn 상태 업데이트
         useSessionStore.getState().setIsLoggedIn(true);
         
         processQueue(null);
@@ -91,10 +91,6 @@ api.interceptors.response.use(
       } catch (err) {
         processQueue(err as Error, null);
         useSessionStore.getState().clearSession();
-        
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
-        }
         
         return Promise.reject(err);
       } finally {

@@ -20,12 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${suit.variable} antialiased`}
-      >
-        <Providers>
-          {children}
-        </Providers>
+      <body className={`${suit.variable} antialiased max-w-[480px] mx-auto`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

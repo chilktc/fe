@@ -16,22 +16,25 @@ export function useSessionRestore() {
     
     const restoreSession = async () => {
       try {
-        // Access Token이 없는 상태에서 Refresh Token으로 세션 복구 시도
-        // /api/refresh 엔드포인트는 쿠키(Refresh Token)를 사용하여 Access Token을 재발급함
-        const response = await fetch('/api/refresh', { 
-          method: 'POST',
+        const response = await fetch('/api/auth/me', { 
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
 
         if (response.ok) {
-          // 세션 복구 성공 = 로그인 상태로 전환 (쿠키 사용)
-          useSessionStore.getState().setIsLoggedIn(true);
+          const user = await response.json();
+          useSessionStore.getState().setUser(user);
+        } else {
+          useSessionStore.getState().setIsLoggedIn(false);
         }
       } catch (error) {
-        // 세션 복구 실패 = 비로그인 상태
         console.log('Session restore failed or no session');
+        useSessionStore.getState().setIsLoggedIn(false);
+      } finally {
+        // 성공하든 실패하든 초기 세션 확인은 끝났음을 알림
+        useSessionStore.getState().setIsInitialized(true);
       }
     };
 

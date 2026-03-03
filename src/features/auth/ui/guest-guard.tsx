@@ -9,21 +9,27 @@ interface GuestGuardProps {
 }
 
 /**
- * 로그인이 된 사용자가 게스트 전용 페이지(로그인, 회원가입 등)에 접근하는 것을 방지하는 가드 컴포넌트입니다.
- * 2차 방어(클라이언트 사이드) 역할을 수행합니다.
+ * 로그인이 된 사용자가 게스트 전용 페이지(로그인, 회원가입 등)에 접근하는 것을 방지하는 가드 컴포넌트
  */
 export function GuestGuard({ children }: GuestGuardProps) {
   const router = useRouter();
-  const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
+  const { isLoggedIn, isInitialized } = useSessionStore();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      router.replace('/');
+    // 초기 세션 확인이 끝났고, 로그인된 상태라면 홈으로 이동
+    if (isInitialized && isLoggedIn) {
+      router.replace('/app');
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, isInitialized, router]);
 
-  // 로그인 상태라면 아무것도 렌더링하지 않음 (리다이렉트 중)
-  if (isLoggedIn) return null;
+  // 세션 확인 중이거나 로그인된 상태라면 로딩 표시
+  if (!isInitialized || isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }
