@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Button } from '@/shared/ui/button';
+import { Button } from "@/shared/ui";
 
 export function LoginForm() {
   return (
@@ -8,9 +8,9 @@ export function LoginForm() {
       <div className="w-full space-y-4">
         <Button
           type="button"
-          variant="outline"
+          variant="gray"
           className="w-full relative py-6 text-base font-medium transition-all hover:bg-gray-50 hover:shadow-sm border-gray-200"
-          onClick={() => window.location.href = '/api/oauth/google'}
+          onClick={() => (window.location.href = "/api/oauth/google")}
         >
           <div className="absolute left-6 flex items-center">
             <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
