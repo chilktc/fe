@@ -14,7 +14,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "flex items-center justify-center px-4 py-2 rounded-[10px] font-semibold transition-colors hover:cursor-pointer focus:outline-none text-button-1 disabled:cursor-not-allowed";
+    "flex items-center justify-center h-[52px] px-2.5 py-2.5 rounded-[10px] font-semibold transition-colors hover:cursor-pointer focus:outline-none text-button-1 disabled:cursor-not-allowed";
 
   const variants = {
     primary:
@@ -29,14 +29,7 @@ export function Button({
       disabled={isLoading || props.disabled}
       {...props}
     >
-      {isLoading ? (
-        <>
-          <Spinner className="mr-2" />
-          {children}
-        </>
-      ) : (
-        children
-      )}
+      {isLoading ? <Spinner /> : children}
     </button>
   );
 }

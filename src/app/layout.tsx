@@ -20,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${suit.variable} antialiased max-w-[480px] mx-auto`}>
+      <body
+        className={`${suit.variable} antialiased max-w-[480px] mx-auto h-dvh`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
