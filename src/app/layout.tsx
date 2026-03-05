@@ -21,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${suit.variable} antialiased max-w-[480px] mx-auto h-dvh`}
+        className={`${suit.variable} antialiased max-w-[480px] mx-auto h-dvh overflow-y-hidden`}
       >
-        <Providers>{children}</Providers>
+        <div className="w-full h-full bg-gray-100 overflow-y-auto">
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );
