@@ -1,16 +1,20 @@
 import { ButtonHTMLAttributes } from "react";
+import { Spinner } from "./Spinner";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "gray" | "red";
+  isLoading?: boolean;
 }
 
 export function Button({
   variant = "primary",
   className = "",
+  isLoading = false,
+  children,
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "px-4 py-2 rounded-[10px] font-semibold transition-colors hover:cursor-pointer focus:outline-none text-button-1 disabled:cursor-not-allowed";
+    "flex items-center justify-center h-[52px] px-2.5 py-2.5 rounded-[10px] font-semibold transition-colors hover:cursor-pointer focus:outline-none text-button-1 disabled:cursor-not-allowed";
 
   const variants = {
     primary:
@@ -22,7 +26,10 @@ export function Button({
   return (
     <button
       className={`${baseStyles} ${variants[variant]} ${className}`}
+      disabled={isLoading || props.disabled}
       {...props}
-    />
+    >
+      {isLoading ? <Spinner /> : children}
+    </button>
   );
 }

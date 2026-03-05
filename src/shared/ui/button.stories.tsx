@@ -1,16 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: 'Shared/Button',
+  title: "Shared/Button",
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['primary', 'gray', 'red'],
+      control: "select",
+      options: ["primary", "gray", "red"],
     },
-    onClick: { action: 'clicked' },
+    isLoading: {
+      control: "boolean",
+    },
+    onClick: { action: "clicked" },
   },
 };
 
@@ -19,21 +22,29 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    variant: 'primary',
-    children: 'Primary Button',
+    variant: "primary",
+    children: "Primary Button",
   },
 };
 
-export const Secondary: Story = {
+export const Gray: Story = {
   args: {
-    variant: 'gray',
-    children: 'Gray Button',
+    variant: "gray",
+    children: "Gray Button",
   },
 };
 
-export const Outline: Story = {
+export const Red: Story = {
   args: {
-    variant: 'red',
-    children: 'Red Button',
+    variant: "red",
+    children: "Red Button",
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    variant: "primary",
+    isLoading: true,
+    children: "Loading Button",
   },
 };

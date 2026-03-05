@@ -2,7 +2,7 @@
 
 :root {
   --background: #131415;
-  --foreground: #E9EAEE;
+  --foreground: #e9eaee;
 }
 
 @theme inline {
@@ -110,39 +110,47 @@
   /* Gray */
   /* ========================= */
 
-  --color-gray-50: #131415;   /* bg (web) */
-  --color-gray-100: #191A1B;  /* bg (app) */
+  --color-gray-50: #131415; /* bg (web) */
+  --color-gray-100: #191a1b; /* bg (app) */
   --color-gray-200: #232425;
-  --color-gray-300: #3D3F43;
-  --color-gray-400: #55585D;  /* disabled & line */
-  --color-gray-500: #6F737B;
-  --color-gray-600: #8B8F97;  /* pressed */
-  --color-gray-700: #ADB1B9;  /* hover */
-  --color-gray-800: #C7CAD1;  /* sub */
-  --color-gray-900: #E9EAEE;  /* default */
-  --color-gray-950: #FFFFFF;
+  --color-gray-300: #3d3f43;
+  --color-gray-400: #55585d; /* disabled & line */
+  --color-gray-500: #6f737b;
+  --color-gray-600: #8b8f97; /* pressed */
+  --color-gray-700: #adb1b9; /* hover */
+  --color-gray-800: #c7cad1; /* sub */
+  --color-gray-900: #e9eaee; /* default */
+  --color-gray-950: #ffffff;
 
   /* ========================= */
   /* Primary */
   /* ========================= */
 
-  --color-primary-100: #36041B;
-  --color-primary-200: #6A103B;  /* pressed & bg */
-  --color-primary-300: #A41F5E;  /* hover */
-  --color-primary-400: #E22F83;  /* default */
-  --color-primary-500: #F576A6;
-  --color-primary-600: #F8B4CA;
-  --color-primary-700: #FDEAF0;
+  --color-primary-100: #36041b;
+  --color-primary-200: #6a103b; /* pressed & bg */
+  --color-primary-300: #a41f5e; /* hover */
+  --color-primary-400: #e22f83; /* default */
+  --color-primary-500: #f576a6;
+  --color-primary-600: #f8b4ca;
+  --color-primary-700: #fdeaf0;
 
   /* ========================= */
   /* Accent */
   /* ========================= */
 
-  --color-accent-red: #E0282F;
+  --color-accent-red: #e0282f;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

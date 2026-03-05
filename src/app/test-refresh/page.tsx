@@ -1,37 +1,39 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { api } from '@/shared/api/base';
-import { useSessionStore } from '@/entities/session/model/store';
-import { useLogout } from '@/features/auth/model/use-logout';
-import { Button } from '@/shared/ui/button';
+import { useState } from "react";
+import { api } from "@/shared/api/base";
+import { useSessionStore } from "@/entities/session/model/store";
+import { useLogout } from "@/features/auth/model/use-logout";
+import { Button } from "@/shared/ui";
 
 export default function TestRefreshPage() {
-  const [status, setStatus] = useState<string>('Ready');
+  const [status, setStatus] = useState<string>("Ready");
   const { setIsLoggedIn, isLoggedIn } = useSessionStore();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   const runTest = async () => {
-    setStatus('Testing...');
-    
+    setStatus("Testing...");
+
     if (!isLoggedIn) {
-        setStatus('Error: Please login first!');
-        return;
+      setStatus("Error: Please login first!");
+      return;
     }
-    
-    console.log('Currently logged in:', isLoggedIn);
+
+    console.log("Currently logged in:", isLoggedIn);
     setIsLoggedIn(false);
-    console.log('Login status artificially set to false to test refresh');
+    console.log("Login status artificially set to false to test refresh");
 
     try {
-      const response = await api.get('/api/test-protected');
-      
+      const response = await api.get("/api/test-protected");
+
       setStatus(`Success! Response: ${JSON.stringify(response)}`);
-      console.log('Final Response:', response);
-      console.log('New Login Status in Store:', useSessionStore.getState().isLoggedIn);
-      
+      console.log("Final Response:", response);
+      console.log(
+        "New Login Status in Store:",
+        useSessionStore.getState().isLoggedIn,
+      );
     } catch (error: any) {
-      console.error('Test Failed:', error);
+      console.error("Test Failed:", error);
       setStatus(`Failed: ${error.message}`);
     }
   };
@@ -40,30 +42,26 @@ export default function TestRefreshPage() {
     <div className="p-8 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Silent Refresh Test</h1>
-        <Button 
-          variant="secondary" 
-          onClick={() => logout()}
-          disabled={isLoggingOut}
-        >
-          {isLoggingOut ? 'Logging out...' : 'Logout'}
+        <Button variant="gray" onClick={() => logout()} disabled={isLoggingOut}>
+          {isLoggingOut ? "Logging out..." : "Logout"}
         </Button>
       </div>
-      
+
       <div className="p-4 bg-gray-100 rounded">
         <p className="font-mono text-sm break-all">
-          Login Status: {isLoggedIn ? 'Logged In' : 'Logged Out'}
+          Login Status: {isLoggedIn ? "Logged In" : "Logged Out"}
         </p>
       </div>
 
-      <Button onClick={runTest}>
-        Trigger 401 & Refresh
-      </Button>
+      <Button onClick={runTest}>Trigger 401 & Refresh</Button>
 
-      <div className={`p-4 rounded border ${status.startsWith('Success') ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
+      <div
+        className={`p-4 rounded border ${status.startsWith("Success") ? "bg-green-50 border-green-200" : "bg-gray-50 border-gray-200"}`}
+      >
         <p className="font-bold">Result:</p>
         <p>{status}</p>
       </div>
-      
+
       <p className="text-sm text-gray-500 mt-4">
         * Open Browser Console for detailed logs.
       </p>

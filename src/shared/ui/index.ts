@@ -1,3 +1,4 @@
-export * from './button';
-export * from './menuIcon';
-export * from './devide';
+export * from "./Button";
+export * from "./MenuIcon";
+export * from "./Divide";
+export * from "./Spinner";
