@@ -1,14 +1,14 @@
 import { ButtonHTMLAttributes } from "react";
 
-interface CheckButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface CheckCircleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary";
 }
 
-export function CheckButton({
+export function CheckCircle({
   variant = "primary",
   className = "",
   ...props
-}: CheckButtonProps) {
+}: CheckCircleProps) {
   const baseStyles =
     "flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:cursor-pointer focus:outline-none disabled:cursor-not-allowed";
 
