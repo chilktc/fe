@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes } from "react";
-import { Spinner } from "./Spinner";
+import { SpinnerIcon } from "../icons";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "gray" | "red";
@@ -29,7 +29,7 @@ export function Button({
       disabled={isLoading || props.disabled}
       {...props}
     >
-      {isLoading ? <Spinner /> : children}
+      {isLoading ? <SpinnerIcon /> : children}
     </button>
   );
 }
