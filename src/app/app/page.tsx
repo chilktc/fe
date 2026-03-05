@@ -6,7 +6,8 @@ import { Sidebar } from "@/widgets/sidebar";
 import { TicketIssuance } from "@/widgets/ticket-issuance";
 import { useSessionStore } from "@/entities/session/model/store";
 import { AuthGuard } from "@/features/auth/ui/auth-guard";
-import { MenuIcon, Button } from "@/shared/ui";
+import { Button } from "@/shared/ui";
+import { MenuIcon } from "@/shared/icons";
 
 function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CheckButton } from "./CheckButton";
+import { CheckCircle } from "./CheckCircle";
 
-const meta: Meta<typeof CheckButton> = {
-  title: "Shared/CheckButton",
-  component: CheckButton,
+const meta: Meta<typeof CheckCircle> = {
+  title: "Shared/CheckCircle",
+  component: CheckCircle,
   tags: ["autodocs"],
   argTypes: {
     variant: {
@@ -14,7 +14,7 @@ const meta: Meta<typeof CheckButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof CheckButton>;
+type Story = StoryObj<typeof CheckCircle>;
 
 export const Primary: Story = {
   args: {

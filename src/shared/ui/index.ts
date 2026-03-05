@@ -1,4 +1,3 @@
 export * from "./Button";
-export * from "./MenuIcon";
+export * from "./CheckCircle";
 export * from "./Divide";
-export * from "./Spinner";

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { CheckButton } from "@/shared/ui/CheckButton";
+import { CheckCircle } from "@/shared/ui";
 
 interface TicketIssuanceInputProps {
   onSend: (content: string) => void;
@@ -64,7 +64,7 @@ export function TicketIssuanceInput({
         className="w-full bg-transparent px-5 py-4 text-white placeholder-gray-400 outline-none text-body-4 resize-none overflow-y-auto max-h-[120px] scrollbar-hide disabled:cursor-not-allowed"
       />
       {inputValue.trim() && (
-        <CheckButton
+        <CheckCircle
           onClick={handleSend}
           disabled={disabled || !inputValue.trim()}
           className="absolute right-4 bottom-4 shrink-0 transition-opacity"
