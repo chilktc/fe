@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Divide } from "@/shared/ui";
+import { Button, Divide, CheckSquare } from "@/shared/ui";
 import { useSessionStore } from "@/entities/session/model/store";
 import { TermsHeader } from "./TermsHeader";
 import { AgreementItem } from "./AgreementItem";
-import { CheckSquare } from "@/shared/ui";
-import { Logo } from "@/shared/assets/logo";
 import { TermsComplete } from "./TermsComplete";
 
 export function TermsCard() {
@@ -84,12 +82,12 @@ export function TermsCard() {
         {/* 개별 항목 */}
         <div className="space-y-4">
           <AgreementItem
-            label="[필수] 서비스 이용약관 동의"
+            label="[필수] 서비스 이용약관"
             checked={agreements.terms}
             onToggle={() => handleToggle("terms")}
           />
           <AgreementItem
-            label="[필수] 개인정보 수집 및 이용 동의"
+            label="[필수] 개인정보 처리방침"
             checked={agreements.privacy}
             onToggle={() => handleToggle("privacy")}
           />

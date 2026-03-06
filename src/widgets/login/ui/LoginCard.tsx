@@ -7,7 +7,7 @@ export function LoginCard() {
       <div className="w-full flex items-center justify-center py-6">
         <Logo className="w-auto! h-25!" />
       </div>
-      <div className="w-full text-center px-8 py-4">
+      <div className="w-full text-center px-8 py-4 space-y-3">
         <h1 className="text-heading-4 text-gray-900">
           Connect, Sustain, Blossom!
         </h1>
