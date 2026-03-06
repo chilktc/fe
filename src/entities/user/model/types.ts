@@ -3,6 +3,7 @@ export interface User {
   email: string;
   nickname: string;
   profileImage?: string;
-  role?: 'USER' | 'ADMIN';
+  role?: "USER" | "ADMIN";
+  firstLogin: boolean;
   createdAt?: string;
 }

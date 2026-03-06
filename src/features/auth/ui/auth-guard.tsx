@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useSessionStore } from '@/entities/session/model/store';
+import { useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useSessionStore } from "@/entities/session/model/store";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -15,20 +15,52 @@ interface AuthGuardProps {
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isLoggedIn, isInitialized } = useSessionStore();
+  const { isLoggedIn, isInitialized, user } = useSessionStore();
+
+  const isTermsPage = pathname === "/login/terms";
+  const isLoginPage = pathname === "/login";
 
   useEffect(() => {
-    // 세션 확인이 끝났는데 로그인이 안 되어 있다면 로그인 페이지로 이동
-    if (isInitialized && !isLoggedIn) {
-      router.replace(`/login?redirect=${pathname}`);
-    }
-  }, [isLoggedIn, isInitialized, router, pathname]);
+    if (!isInitialized) return;
 
-  // 세션 확인 중이거나 로그인이 안 된 상태라면 로딩 표시
-  if (!isInitialized || !isLoggedIn) {
+    // 1. 로그인이 안 되어 있다면 로그인 페이지로 이동
+    if (!isLoggedIn) {
+      if (!isLoginPage) {
+        router.replace(`/login?redirect=${pathname}`);
+      }
+      return;
+    }
+
+    if (user?.firstLogin) {
+      // 2. 최초 로그인 사용자: 약관 페이지로 무조건 이동
+      if (!isTermsPage) {
+        router.replace("/login/terms");
+      }
+    } else {
+      // 3. 기존 사용자 (firstLogin === false)
+      // 로그인 페이지 접근 시 메인(app)으로 리다이렉트
+      if (isLoginPage) {
+        router.replace("/app");
+      }
+    }
+  }, [isLoggedIn, isInitialized, user, router, pathname]);
+
+  // 리다이렉트가 필요한 상황이라면 로딩 표시 유지
+  let isRedirectNeeded = false;
+  if (!isLoggedIn && !isLoginPage) {
+    isRedirectNeeded = true;
+  } else if (isLoggedIn) {
+    if (user?.firstLogin && !isTermsPage) {
+      isRedirectNeeded = true;
+    } else if (!user?.firstLogin && isLoginPage) {
+      isRedirectNeeded = true;
+    }
+  }
+
+  if (!isInitialized || !isLoggedIn || isRedirectNeeded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
       </div>
     );
   }

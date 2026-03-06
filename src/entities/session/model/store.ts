@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { User } from '@/entities/user/model/types';
+import { create } from "zustand";
+import { User } from "@/entities/user/model/types";
 
 interface SessionState {
   isLoggedIn: boolean;
@@ -19,6 +19,11 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
   setIsInitialized: (isInitialized) => set({ isInitialized }),
   setUser: (user) => set({ user, isLoggedIn: !!user }),
-  clearSession: () => set({ isLoggedIn: false, isInitialized: true, user: null }),
+  clearSession: () =>
+    set({
+      isLoggedIn: false,
+      isInitialized: true,
+      user: null,
+    }),
   isAuthenticated: () => get().isLoggedIn,
 }));
