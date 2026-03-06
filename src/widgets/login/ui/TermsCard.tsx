@@ -1,19 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Divide, CheckSquare } from "@/shared/ui";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button, Divide } from "@/shared/ui";
+import { useSessionStore } from "@/entities/session/model/store";
 import { TermsHeader } from "./TermsHeader";
 import { AgreementItem } from "./AgreementItem";
+import { CheckSquare } from "@/shared/ui";
+import { Logo } from "@/shared/assets/logo";
+import { TermsComplete } from "./TermsComplete";
 
 export function TermsCard() {
+  const router = useRouter();
+  const { user, setUser } = useSessionStore();
+
   const [agreements, setAgreements] = useState({
     terms: false,
     privacy: false,
     marketing: false,
   });
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  // 이미 가입을 완료한 기존 사용자가 허가 없이 /login/terms 로 접근했을 때 차단
+  // (단, 지금 막 가입을 완료해서 isCompleted UI를 보고 있는 중이면 예외로 허용)
+  useEffect(() => {
+    if (user && !user.firstLogin && !isCompleted) {
+      router.replace("/app");
+    }
+  }, [user, isCompleted, router]);
 
   const allAgreed =
     agreements.terms && agreements.privacy && agreements.marketing;
+  const mandatoryAgreed = agreements.terms && agreements.privacy;
 
   const handleToggleAll = () => {
     const newValue = !allAgreed;
@@ -30,6 +48,20 @@ export function TermsCard() {
       [key]: !prev[key],
     }));
   };
+
+  const handleAgree = () => {
+    if (!mandatoryAgreed) return;
+
+    // TODO: 서버에 약관 동의 내역 전송 API 호출 (여기에 추가)
+    setIsCompleted(true);
+    if (user) {
+      setUser({ ...user, firstLogin: false });
+    }
+  };
+
+  if (isCompleted) {
+    return <TermsComplete />;
+  }
 
   return (
     <div className="w-full bg-gray-200 border border-gray-400 py-4 rounded-2xl">
@@ -70,7 +102,13 @@ export function TermsCard() {
       </div>
 
       <div className="py-4 px-6">
-        <Button className="w-full">동의하고 가입하기</Button>
+        <Button
+          className="w-full"
+          disabled={!mandatoryAgreed}
+          onClick={handleAgree}
+        >
+          동의하고 가입하기
+        </Button>
       </div>
     </div>
   );
