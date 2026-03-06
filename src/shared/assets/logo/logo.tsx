@@ -1,14 +1,10 @@
-import { SVGProps } from 'react';
-
-export function Logo(props: SVGProps<SVGSVGElement>) {
+export function Logo({ className = "" }: { className?: string }) {
   return (
     <svg
-      width="24"
-      height="41"
+      className={`w-[24px] h-[41px] ${className}`}
       viewBox="0 0 24 41"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
       <g
         clipPath="url(#paint0_angular_859_14259_clip_path)"
@@ -23,10 +19,11 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
           >
             <div
               style={{
-                background: 'conic-gradient(from 90deg, rgba(62, 8, 34, 1) 0deg, rgba(164, 31, 94, 1) 244.038deg, rgba(168, 25, 93, 1) 360deg)',
-                height: '100%',
-                width: '100%',
-                opacity: 1
+                background:
+                  "conic-gradient(from 90deg, rgba(62, 8, 34, 1) 0deg, rgba(164, 31, 94, 1) 244.038deg, rgba(168, 25, 93, 1) 360deg)",
+                height: "100%",
+                width: "100%",
+                opacity: 1,
               }}
             ></div>
           </foreignObject>
@@ -50,10 +47,11 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
           >
             <div
               style={{
-                background: 'conic-gradient(from 90deg, rgba(226, 47, 131, 1) 0deg, rgba(164, 31, 94, 1) 244.038deg, rgba(168, 25, 93, 1) 360deg)',
-                height: '100%',
-                width: '100%',
-                opacity: 1
+                background:
+                  "conic-gradient(from 90deg, rgba(226, 47, 131, 1) 0deg, rgba(164, 31, 94, 1) 244.038deg, rgba(168, 25, 93, 1) 360deg)",
+                height: "100%",
+                width: "100%",
+                opacity: 1,
               }}
             ></div>
           </foreignObject>
