@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSessionStore } from '@/entities/session/model/store';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSessionStore } from "@/entities/session/model/store";
 
 interface GuestGuardProps {
   children: React.ReactNode;
@@ -17,8 +17,9 @@ export function GuestGuard({ children }: GuestGuardProps) {
 
   useEffect(() => {
     // 초기 세션 확인이 끝났고, 로그인된 상태라면 홈으로 이동
+    // TODO: firstLogin 확인 로직 추가
     if (isInitialized && isLoggedIn) {
-      router.replace('/app');
+      router.replace("/app");
     }
   }, [isLoggedIn, isInitialized, router]);
 
