@@ -8,6 +8,7 @@ import { useSessionStore } from "@/entities/session/model/store";
 import { AuthGuard } from "@/features/auth/ui/auth-guard";
 import { Button } from "@/shared/ui";
 import { MenuIcon } from "@/shared/icons";
+import { LogoLetter } from "@/shared/assets/logo";
 
 function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,33 +37,36 @@ function AppContent() {
       />
 
       {/* 네비게이션/헤더 */}
-      <header className="sticky top-0 left-0 right-0 h-20 p-4 flex items-center justify-center z-30 pointer-events-none bg-[#1A1A1A] shrink-0">
+      <header className="sticky top-0 left-0 right-0 h-16 px-1 py-2 flex items-center justify-center z-30 bg-[#1A1A1A] shrink-0">
         <div
-          className="absolute left-4 hover:cursor-pointer pointer-events-auto"
+          className="absolute left-4 hover:cursor-pointer"
           onClick={() => setIsSidebarOpen(true)}
         >
           <MenuIcon />
         </div>
-        <h1 className="text-xl font-extralight text-primary-400 leading-[1.3] text-center">
-          Bloom
-        </h1>
+        <div
+          className="hover:cursor-pointer"
+          onClick={() => router.push("/app")}
+        >
+          <LogoLetter />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}
       <main className="flex-1 px-4 z-10 flex flex-col min-h-0">
         {!isIssuance ? (
-          <div className="flex-1 flex flex-col items-center justify-between pt-8 pb-5">
-            <div className="w-full">
-              <h1 className="text-xl font-extralight text-gray-900 leading-[1.3]">
-                안녕하세요
+          <div className="flex-1 flex flex-col items-center justify-between pb-5">
+            <div className="flex-1 w-full flex flex-col justify-center">
+              <h1 className="text-body-1 text-gray-800">
+                {user.nickname}님, 안녕하세요
                 <br />
-                {user.nickname}님
-                <br />
-                고민이 있으신가요?
+                <span className="text-heading-4 text-gray-900">
+                  어떤 고민을 하고 계신가요?
+                </span>
               </h1>
             </div>
             <Button className="w-full" onClick={handleEnter}>
-              입장하기
+              고민 나누기
             </Button>
           </div>
         ) : (
