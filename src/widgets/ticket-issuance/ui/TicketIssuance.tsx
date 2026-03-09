@@ -3,15 +3,11 @@ import { Button } from "@/shared/ui";
 import { TicketIssuanceChat } from "./TicketIssuanceChat";
 import { TicketIssuanceInput } from "./TicketIssuanceInput";
 
-/**
- * 그린룸 입장권 발급 위젯
- * - 4단계 질문을 통해 유저의 답변을 기록하고 입장권을 발급
- */
 export function TicketIssuance() {
   const {
     step,
     history,
-    handleSend,
+    handleSendMessage,
     isComplete,
     currentPlaceholder,
     submitTicket,
@@ -28,7 +24,7 @@ export function TicketIssuance() {
       <div className="relative flex flex-col gap-2 pt-2 pb-4 shrink-0">
         {!isComplete && step === 3 && !isWaiting && (
           <Button
-            onClick={() => handleSend("건너뛰기")}
+            onClick={() => handleSendMessage("건너뛰기")}
             disabled={isWaiting}
             className="absolute -top-10 right-0 text-label-1 transition-colors py-2 px-3.5 h-auto! rounded-3xl!"
           >
@@ -37,7 +33,7 @@ export function TicketIssuance() {
         )}
         {!isComplete ? (
           <TicketIssuanceInput
-            onSend={handleSend}
+            onSendMessage={handleSendMessage}
             placeholder={currentPlaceholder}
             disabled={isWaiting}
           />

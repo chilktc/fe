@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useCreateTicket } from "./use-create-ticket";
-import { ChatMessage, MessageType } from "@/entities/ticket/model/types";
+import { ChatMessage } from "@/entities/ticket/model/types";
 import { QUESTIONS, GUIDES } from "@/entities/ticket/model/constants";
 
 export function useTicketIssuance() {
@@ -28,7 +28,7 @@ export function useTicketIssuance() {
 
   const isComplete = step >= QUESTIONS.length;
 
-  const handleSend = useCallback(
+  const handleSendMessage = useCallback(
     (content: string) => {
       if (!content.trim() || isComplete || isWaiting) return;
 
@@ -73,20 +73,20 @@ export function useTicketIssuance() {
 
     try {
       const response = await mutateAsync(answers);
-      // 성공 처리 (예: 알림 또는 페이지 이동)
-      if (response && response.data) {
+
+      // 성공 시 /app/greenroom/{id}로 이동
+      if (response?.data?.id) {
         router.push(`/app/greenroom/${response.data.id}`);
       }
     } catch (error) {
       console.error("Failed to submit ticket", error);
-      // 에러 처리 (예: 토스트 메시지)
     }
   }, [answers, isComplete, mutateAsync, router]);
 
   return {
     step,
     history,
-    handleSend,
+    handleSendMessage,
     submitTicket,
     isComplete,
     currentPlaceholder,
