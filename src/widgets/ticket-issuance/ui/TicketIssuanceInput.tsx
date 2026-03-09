@@ -2,22 +2,22 @@ import { useState, useRef, useEffect } from "react";
 import { CheckCircle } from "@/shared/ui";
 
 interface TicketIssuanceInputProps {
-  onSend: (content: string) => void;
+  onSendMessage: (content: string) => void;
   placeholder: string;
   disabled?: boolean;
 }
 
 export function TicketIssuanceInput({
-  onSend,
+  onSendMessage,
   placeholder,
   disabled,
 }: TicketIssuanceInputProps) {
   const [inputValue, setInputValue] = useState("");
   const textarea = useRef<HTMLTextAreaElement>(null);
 
-  const handleSend = () => {
+  const handleSendMessage = () => {
     if (!inputValue.trim()) return;
-    onSend(inputValue);
+    onSendMessage(inputValue);
     setInputValue("");
     if (textarea.current) {
       textarea.current.style.height = "auto";
@@ -28,7 +28,7 @@ export function TicketIssuanceInput({
     if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      handleSendMessage();
     }
   };
 
@@ -65,7 +65,7 @@ export function TicketIssuanceInput({
       />
       {inputValue.trim() && (
         <CheckCircle
-          onClick={handleSend}
+          onClick={handleSendMessage}
           disabled={disabled || !inputValue.trim()}
           className="absolute right-4 bottom-4 shrink-0 transition-opacity"
         />

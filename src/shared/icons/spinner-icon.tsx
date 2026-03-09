@@ -7,7 +7,7 @@ export function SpinnerIcon({ className = "" }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g
-        clip-path="url(#paint0_angular_1156_10056_clip_path)"
+        clipPath="url(#paint0_angular_1156_10056_clip_path)"
         data-figma-skip-parse="true"
       >
         <g transform="matrix(0 0.009 -0.009 0 9 9)">

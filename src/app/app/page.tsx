@@ -39,7 +39,7 @@ function AppContent() {
       {/* 네비게이션/헤더 */}
       <header className="sticky top-0 left-0 right-0 h-16 px-1 py-2 flex items-center justify-center z-30 bg-[#1A1A1A] shrink-0">
         <div
-          className="absolute left-4 hover:cursor-pointer"
+          className="absolute left-1 w-12 h-12 flex items-center justify-center hover:cursor-pointer"
           onClick={() => setIsSidebarOpen(true)}
         >
           <MenuIcon />
