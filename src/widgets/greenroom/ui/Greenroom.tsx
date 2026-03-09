@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { GreenroomDetail } from "@/entities/greenroom/model/types";
 import { Button } from "@/shared/ui";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface GreenroomProps {
   data: GreenroomDetail;
@@ -11,6 +11,11 @@ interface GreenroomProps {
 
 export function Greenroom({ data }: GreenroomProps) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const handleNext = () => {
+    router.push(`${pathname}/podcast-choice`);
+  };
 
   return (
     // TODO 높이가 높을 때 빈 화면 어떻게 처리할지
@@ -56,10 +61,7 @@ export function Greenroom({ data }: GreenroomProps) {
         </div>
       </div>
 
-      <Button
-        className="w-full h-14 text-button-1"
-        onClick={() => router.push("/app")}
-      >
+      <Button className="w-full h-14 text-button-1" onClick={handleNext}>
         다음
       </Button>
     </div>

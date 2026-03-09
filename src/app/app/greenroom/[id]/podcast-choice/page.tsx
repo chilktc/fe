@@ -1,8 +1,7 @@
 "use client";
 
 import { use } from "react";
-import { useGreenroom } from "@/entities/greenroom/api/use-greenroom";
-import { GreenroomLoading, Greenroom } from "@/widgets/greenroom";
+import { PodcastChoice } from "@/widgets/greenroom";
 import { useSessionStore } from "@/entities/session/model/store";
 import { AuthGuard } from "@/features/auth/ui/auth-guard";
 
@@ -10,10 +9,8 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function GreenroomPage({ params }: PageProps) {
+export default function GreenroomPodcastChoicePage({ params }: PageProps) {
   const { id } = use(params);
-  const { data, isLoading } = useGreenroom(id);
-
   const user = useSessionStore((state) => state.user);
 
   if (!user) return null;
@@ -23,11 +20,7 @@ export default function GreenroomPage({ params }: PageProps) {
       <div className="relative bg-gray-100 overflow-x-hidden flex flex-col h-full overflow-y-auto scrollbar-hide">
         {/* 메인 컨텐츠 */}
         <main className="flex-1 flex flex-col">
-          {isLoading ? (
-            <GreenroomLoading />
-          ) : (
-            data?.data && <Greenroom data={data.data} />
-          )}
+          <PodcastChoice id={id} />
         </main>
       </div>
     </AuthGuard>

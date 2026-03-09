@@ -11,3 +11,17 @@ export interface GreenroomResponse {
   message: string;
   data: GreenroomDetail;
 }
+
+export interface PodcastChoiceDetail {
+  id: string;
+  imageUrl: string;
+  type: string[];
+  title: string;
+  description: string;
+}
+
+export interface PodcastChoiceResponse {
+  code: string;
+  message: string;
+  data: PodcastChoiceDetail[];
+}
