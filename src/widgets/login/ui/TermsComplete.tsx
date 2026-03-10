@@ -2,11 +2,15 @@ import { Logo } from "@/shared/assets/logo";
 import { Button } from "@/shared/ui";
 import { useRouter } from "next/navigation";
 
-export function TermsComplete() {
+interface TermsCompleteProps {
+  redirectUrl: string;
+}
+
+export function TermsComplete({ redirectUrl }: TermsCompleteProps) {
   const router = useRouter();
 
   const handleStart = () => {
-    router.replace("/");
+    router.replace(redirectUrl);
   };
 
   return (

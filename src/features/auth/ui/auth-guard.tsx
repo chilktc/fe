@@ -28,7 +28,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     // 1. 로그인이 안 되어 있다면 로그인 페이지로 이동
     if (!isAuthenticated) {
       if (!isLoginPage) {
-        router.replace(`/login?redirect=${pathname}`);
+        router.replace(`/login?redirect_url=${encodeURIComponent(pathname)}`);
       }
       return;
     }
