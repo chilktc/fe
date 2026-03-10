@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Divide, CheckSquare } from "@/shared/ui";
 import { useSessionStore } from "@/entities/session/model/store";
 import { TermsHeader } from "./TermsHeader";
@@ -10,7 +10,14 @@ import { TermsComplete } from "./TermsComplete";
 
 export function TermsCard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, setUser } = useSessionStore();
+
+  const redirectQuery = searchParams.get("redirect_url");
+  const redirectUrl =
+    redirectQuery && redirectQuery.startsWith("/") && !redirectQuery.startsWith("//")
+      ? redirectQuery
+      : "/";
 
   const [agreements, setAgreements] = useState({
     terms: false,
@@ -23,9 +30,9 @@ export function TermsCard() {
   // (단, 지금 막 가입을 완료해서 isCompleted UI를 보고 있는 중이면 예외로 허용)
   useEffect(() => {
     if (user && !user.firstLogin && !isCompleted) {
-      router.replace("/");
+      router.replace(redirectUrl);
     }
-  }, [user, isCompleted, router]);
+  }, [user, isCompleted, router, redirectUrl]);
 
   const allAgreed =
     agreements.terms && agreements.privacy && agreements.marketing;
@@ -58,7 +65,7 @@ export function TermsCard() {
   };
 
   if (isCompleted) {
-    return <TermsComplete />;
+    return <TermsComplete redirectUrl={redirectUrl} />;
   }
 
   return (

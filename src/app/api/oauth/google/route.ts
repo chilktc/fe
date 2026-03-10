@@ -1,6 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+const sanitizeRedirectUrl = (value: string | null) => {
+  if (!value) return "/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  return value;
+};
+
+export async function GET(request: NextRequest) {
   const { GOOGLE_CLIENT_ID, NEXT_PUBLIC_GOOGLE_REDIRECT_URI } = process.env;
 
   if (!GOOGLE_CLIENT_ID || !NEXT_PUBLIC_GOOGLE_REDIRECT_URI) {
@@ -11,10 +17,15 @@ export async function GET() {
   }
 
   const baseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const redirectUrl = sanitizeRedirectUrl(
+    request.nextUrl.searchParams.get("redirect_url"),
+  );
+
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
     redirect_uri: NEXT_PUBLIC_GOOGLE_REDIRECT_URI,
     response_type: "code",
+    state: redirectUrl,
     scope: "email profile openid",
     access_type: "offline", // Refresh Token을 받기 위해 필요할 수 있음
     prompt: "consent", // 항상 동의 화면 노출 (선택사항)

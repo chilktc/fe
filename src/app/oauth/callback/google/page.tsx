@@ -5,6 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useMe } from "@/entities/user/api/use-me";
 
+const sanitizeRedirectUrl = (value: string | null) => {
+  if (!value) return "/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  return value;
+};
+
 export default function OAuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,6 +26,7 @@ export default function OAuthCallbackPage() {
 
     const code = searchParams.get("code");
     const error = searchParams.get("error");
+    const redirectUrl = sanitizeRedirectUrl(searchParams.get("state"));
 
     const failAuth = (errorCode: string) => {
       clearSession();
@@ -72,9 +79,11 @@ export default function OAuthCallbackPage() {
         setUser(user);
 
         if (user.firstLogin) {
-          router.replace("/login/terms");
+          router.replace(
+            `/login/terms?redirect_url=${encodeURIComponent(redirectUrl)}`,
+          );
         } else {
-          router.replace("/");
+          router.replace(redirectUrl);
         }
       } catch (err) {
         console.error("Token exchange error:", err);
