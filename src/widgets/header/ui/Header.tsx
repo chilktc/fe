@@ -19,7 +19,7 @@ export function Header({ onMenuClick }: HeaderProps) {
       >
         <MenuIcon />
       </div>
-      <div className="hover:cursor-pointer" onClick={() => router.push("/app")}>
+      <div className="cursor-pointer" onClick={() => router.push("/")}>
         <LogoLetter />
       </div>
     </header>

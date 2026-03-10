@@ -13,18 +13,23 @@ interface GuestGuardProps {
  */
 export function GuestGuard({ children }: GuestGuardProps) {
   const router = useRouter();
-  const { isLoggedIn, isInitialized } = useSessionStore();
+  const { authStatus, user } = useSessionStore();
+  const isAuthenticated = authStatus === "authenticated";
+  const isBooting = authStatus === "booting";
 
   useEffect(() => {
-    // 초기 세션 확인이 끝났고, 로그인된 상태라면 홈으로 이동
-    // TODO: firstLogin 확인 로직 추가
-    if (isInitialized && isLoggedIn) {
-      router.replace("/app");
+    // 초기 세션 확인이 끝났고, 로그인된 상태라면 firstLogin 여부에 따라 이동
+    if (isAuthenticated) {
+      if (user?.firstLogin) {
+        router.replace("/login/terms");
+      } else {
+        router.replace("/");
+      }
     }
-  }, [isLoggedIn, isInitialized, router]);
+  }, [isAuthenticated, user, router]);
 
   // 세션 확인 중이거나 로그인된 상태라면 로딩 표시
-  if (!isInitialized || isLoggedIn) {
+  if (isBooting || isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>

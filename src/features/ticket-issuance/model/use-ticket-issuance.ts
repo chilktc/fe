@@ -74,9 +74,9 @@ export function useTicketIssuance() {
     try {
       const response = await mutateAsync(answers);
 
-      // 성공 시 /app/greenroom/{id}로 이동
+      // 성공 시 /greenroom/{id}로 이동
       if (response?.data?.id) {
-        router.push(`/app/greenroom/${response.data.id}`);
+        router.push(`/greenroom/${response.data.id}`);
       }
     } catch (error) {
       console.error("Failed to submit ticket", error);

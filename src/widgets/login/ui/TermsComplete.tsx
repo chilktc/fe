@@ -6,7 +6,7 @@ export function TermsComplete() {
   const router = useRouter();
 
   const handleStart = () => {
-    router.replace("/app");
+    router.replace("/");
   };
 
   return (

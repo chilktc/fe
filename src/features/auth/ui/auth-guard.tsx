@@ -15,16 +15,18 @@ interface AuthGuardProps {
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isLoggedIn, isInitialized, user } = useSessionStore();
+  const { authStatus, user } = useSessionStore();
 
   const isTermsPage = pathname === "/login/terms";
   const isLoginPage = pathname === "/login";
+  const isAuthenticated = authStatus === "authenticated";
+  const isBooting = authStatus === "booting";
 
   useEffect(() => {
-    if (!isInitialized) return;
+    if (isBooting) return;
 
     // 1. 로그인이 안 되어 있다면 로그인 페이지로 이동
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       if (!isLoginPage) {
         router.replace(`/login?redirect=${pathname}`);
       }
@@ -38,26 +40,26 @@ export function AuthGuard({ children }: AuthGuardProps) {
       }
     } else {
       // 3. 기존 사용자 (firstLogin === false)
-      // 로그인 페이지 접근 시 메인(app)으로 리다이렉트
-      if (isLoginPage) {
-        router.replace("/app");
+      // 로그인/약관 페이지 접근 시 홈(/)으로 리다이렉트
+      if (isLoginPage || isTermsPage) {
+        router.replace("/");
       }
     }
-  }, [isLoggedIn, isInitialized, user, router, pathname]);
+  }, [isAuthenticated, isBooting, user, router, pathname, isLoginPage, isTermsPage]);
 
   // 리다이렉트가 필요한 상황이라면 로딩 표시 유지
   let isRedirectNeeded = false;
-  if (!isLoggedIn && !isLoginPage) {
+  if (!isAuthenticated && !isLoginPage) {
     isRedirectNeeded = true;
-  } else if (isLoggedIn) {
+  } else if (isAuthenticated) {
     if (user?.firstLogin && !isTermsPage) {
       isRedirectNeeded = true;
-    } else if (!user?.firstLogin && isLoginPage) {
+    } else if (!user?.firstLogin && (isLoginPage || isTermsPage)) {
       isRedirectNeeded = true;
     }
   }
 
-  if (!isInitialized || !isLoggedIn || isRedirectNeeded) {
+  if (isBooting || !isAuthenticated || isRedirectNeeded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
