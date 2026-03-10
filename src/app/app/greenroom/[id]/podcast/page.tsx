@@ -3,7 +3,6 @@
 import { use } from "react";
 import { GreenroomLoading, Podcast } from "@/widgets/greenroom";
 import { useSessionStore } from "@/entities/session/model/store";
-import { AuthGuard } from "@/features/auth/ui/auth-guard";
 import { usePodcast } from "@/entities/greenroom/api/use-podcast";
 
 interface PageProps {
@@ -19,17 +18,15 @@ export default function PodcastPage({ params }: PageProps) {
   if (!user) return null;
 
   return (
-    <AuthGuard>
-      <div className="relative bg-gray-100 overflow-x-hidden h-full overflow-y-auto scrollbar-hide">
-        {/* 메인 컨텐츠 */}
-        <main className="flex flex-col min-h-full">
-          {isLoading ? (
-            <GreenroomLoading />
-          ) : (
-            data?.data && <Podcast data={data.data} />
-          )}
-        </main>
-      </div>
-    </AuthGuard>
+    <div className="relative bg-gray-100 overflow-x-hidden h-full overflow-y-auto scrollbar-hide">
+      {/* 메인 컨텐츠 */}
+      <main className="flex flex-col min-h-full">
+        {isLoading ? (
+          <GreenroomLoading />
+        ) : (
+          data?.data && <Podcast data={data.data} />
+        )}
+      </main>
+    </div>
   );
 }
