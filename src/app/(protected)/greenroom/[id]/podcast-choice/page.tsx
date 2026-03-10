@@ -15,7 +15,7 @@ export default function GreenroomPodcastChoicePage({ params }: PageProps) {
   if (!user) return null;
 
   return (
-    <div className="relative bg-gray-100 overflow-x-hidden flex flex-col h-full overflow-y-auto scrollbar-hide">
+    <div className="relative bg-gray-100 flex-1 min-h-dvh w-full overflow-hidden flex flex-col">
       {/* 메인 컨텐츠 */}
       <main className="flex-1 flex flex-col">
         <PodcastChoice id={id} />

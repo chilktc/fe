@@ -16,7 +16,7 @@ export function TicketIssuance() {
   } = useTicketIssuance();
 
   return (
-    <section className="w-full flex-1 flex flex-col min-h-0">
+    <section className="w-full flex-1 flex flex-col min-h-0 justify-between">
       {/* 채팅 영역 */}
       <TicketIssuanceChat history={history} />
 

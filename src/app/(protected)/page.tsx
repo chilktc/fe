@@ -21,7 +21,7 @@ export default function AppPage() {
   }
 
   return (
-    <div className="relative bg-[#1A1A1A] overflow-x-hidden flex flex-col h-full">
+    <div className="relative bg-[#1A1A1A] flex-1 flex flex-col min-h-dvh w-full overflow-hidden">
       {/* 사이드바 */}
       <Sidebar
         isOpen={isSidebarOpen}

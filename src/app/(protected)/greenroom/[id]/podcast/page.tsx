@@ -18,9 +18,9 @@ export default function PodcastPage({ params }: PageProps) {
   if (!user) return null;
 
   return (
-    <div className="relative bg-gray-100 overflow-x-hidden h-full overflow-y-auto scrollbar-hide">
+    <div className="relative bg-gray-100 flex-1 flex flex-col min-h-dvh w-full overflow-hidden">
       {/* 메인 컨텐츠 */}
-      <main className="flex flex-col min-h-full">
+      <main className="flex-1 flex flex-col min-h-0 w-full">
         {isLoading ? (
           <GreenroomLoading />
         ) : (
