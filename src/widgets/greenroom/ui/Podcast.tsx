@@ -28,7 +28,7 @@ export function Podcast({ data }: PodcastProps) {
   }, [currentIndex, fragments.length]);
 
   const handleNext = () => {
-    router.push(`/app`);
+    router.push(`/`);
   };
 
   const displayedFragments = fragments.slice(0, currentIndex + 1);

@@ -20,7 +20,7 @@ export function PodcastChoice({ id }: PodcastChoiceProps) {
 
   const handleNext = () => {
     if (!selectedId) return;
-    router.push(`/app/greenroom/${id}/podcast`);
+    router.push(`/greenroom/${id}/podcast`);
   };
 
   return (

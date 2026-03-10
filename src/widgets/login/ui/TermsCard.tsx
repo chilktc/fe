@@ -23,7 +23,7 @@ export function TermsCard() {
   // (단, 지금 막 가입을 완료해서 isCompleted UI를 보고 있는 중이면 예외로 허용)
   useEffect(() => {
     if (user && !user.firstLogin && !isCompleted) {
-      router.replace("/app");
+      router.replace("/");
     }
   }, [user, isCompleted, router]);
 

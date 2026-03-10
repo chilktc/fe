@@ -64,10 +64,6 @@ export default function OAuthCallbackPage() {
         const meResult = await refetchMe();
 
         if (!meResult.data) {
-          console.error(
-            "Failed to fetch profile during callback:",
-            meResult.error,
-          );
           failAuth("profile_failed");
           return;
         }
@@ -78,7 +74,7 @@ export default function OAuthCallbackPage() {
         if (user.firstLogin) {
           router.replace("/login/terms");
         } else {
-          router.replace("/app");
+          router.replace("/");
         }
       } catch (err) {
         console.error("Token exchange error:", err);

@@ -40,9 +40,9 @@ export function AuthGuard({ children }: AuthGuardProps) {
       }
     } else {
       // 3. 기존 사용자 (firstLogin === false)
-      // 로그인/약관 페이지 접근 시 메인(app)으로 리다이렉트
+      // 로그인/약관 페이지 접근 시 홈(/)으로 리다이렉트
       if (isLoginPage || isTermsPage) {
-        router.replace("/app");
+        router.replace("/");
       }
     }
   }, [isAuthenticated, isBooting, user, router, pathname, isLoginPage, isTermsPage]);

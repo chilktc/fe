@@ -23,7 +23,7 @@ export function GuestGuard({ children }: GuestGuardProps) {
       if (user?.firstLogin) {
         router.replace("/login/terms");
       } else {
-        router.replace("/app");
+        router.replace("/");
       }
     }
   }, [isAuthenticated, user, router]);

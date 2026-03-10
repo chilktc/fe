@@ -13,7 +13,7 @@ export default function AppPage() {
   const router = useRouter();
 
   const handleEnter = useCallback(() => {
-    router.push("/app/issuance");
+    router.push("/issuance");
   }, [router]);
 
   if (!user) {

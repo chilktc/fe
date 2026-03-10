@@ -3,15 +3,15 @@ import { SidebarMenuItem } from './types';
 export const SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   {
     label: '개인 정보 수정',
-    href: '/app/account',
+    href: '/account',
   },
   {
     label: '팟캐스트 기록',
-    href: '/app/history',
+    href: '/history',
   },
   {
     label: '알림',
-    href: '/app/notifications',
+    href: '/notifications',
   },
   {
     label: '개인정보 보호정책',
