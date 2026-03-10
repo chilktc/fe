@@ -37,7 +37,7 @@ export function TicketIssuanceChat({ history }: TicketIssuanceChatProps) {
   return (
     <div
       ref={scrollRef}
-      className="flex-1 space-y-1.5 scroll-smooth overflow-y-auto scrollbar-hide pb-5"
+      className="flex-1 space-y-1.5 scroll-smooth overflow-y-auto scrollbar-hide min-h-[110px] basis-0"
     >
       {history.map((msg) => {
         // history의 가장 마지막이 system이고, 그 system이 현재 보고 있는 msg일 때
