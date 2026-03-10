@@ -1,29 +1,35 @@
 import { create } from "zustand";
 import { User } from "@/entities/user/model/types";
 
+export type AuthStatus = "booting" | "authenticated" | "unauthenticated";
+
 interface SessionState {
-  isLoggedIn: boolean;
-  isInitialized: boolean;
+  authStatus: AuthStatus;
   user: User | null;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
-  setIsInitialized: (isInitialized: boolean) => void;
+  accessToken: string | null;
+  setAuthStatus: (status: AuthStatus) => void;
   setUser: (user: User | null) => void;
+  setAccessToken: (token: string | null) => void;
   clearSession: () => void;
   isAuthenticated: () => boolean;
 }
 
 export const useSessionStore = create<SessionState>((set, get) => ({
-  isLoggedIn: false,
-  isInitialized: false,
+  authStatus: "booting",
   user: null,
-  setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
-  setIsInitialized: (isInitialized) => set({ isInitialized }),
-  setUser: (user) => set({ user, isLoggedIn: !!user }),
+  accessToken: null,
+  setAuthStatus: (authStatus) => set({ authStatus }),
+  setUser: (user) =>
+    set({
+      user,
+      authStatus: user ? "authenticated" : "unauthenticated",
+    }),
+  setAccessToken: (accessToken) => set({ accessToken }),
   clearSession: () =>
     set({
-      isLoggedIn: false,
-      isInitialized: true,
+      authStatus: "unauthenticated",
       user: null,
+      accessToken: null,
     }),
-  isAuthenticated: () => get().isLoggedIn,
+  isAuthenticated: () => get().authStatus === "authenticated",
 }));

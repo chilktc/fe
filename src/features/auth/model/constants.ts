@@ -35,4 +35,8 @@ export const AUTH_ERROR_MESSAGES: Record<
     title: "서버 오류",
     description: "서버 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.",
   },
+  profile_failed: {
+    title: "인증 실패",
+    description: "로그인 하려면 다시 시도해주세요.",
+  },
 };

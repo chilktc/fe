@@ -5,13 +5,10 @@ import { useRouter } from "next/navigation";
 import { useLogin } from "@/features/auth/model/use-login";
 import { Button } from "@/shared/ui";
 
-import { useSessionStore } from "@/entities/session/model/store";
-
 export function TestLoginForm() {
   const router = useRouter();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
 
   const { mutate: login, isPending: isLoading, error: loginError } = useLogin();
 
@@ -22,7 +19,6 @@ export function TestLoginForm() {
       { loginId: id, password },
       {
         onSuccess: () => {
-          setIsLoggedIn(true);
           router.push("/");
         },
       },
