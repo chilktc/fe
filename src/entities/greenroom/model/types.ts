@@ -25,3 +25,18 @@ export interface PodcastChoiceResponse {
   message: string;
   data: PodcastChoiceDetail[];
 }
+
+export interface PodcastDetail {
+  id: string;
+  imageUrl: string;
+  type: string[];
+  title: string;
+  description: string;
+  story: string;
+}
+
+export interface PodcastResponse {
+  code: string;
+  message: string;
+  data: PodcastDetail;
+}
