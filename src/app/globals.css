@@ -154,3 +154,23 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.skeletonUI {
+  @apply relative overflow-hidden bg-gray-200;
+}
+
+.skeletonUI::after {
+  content: "";
+  @apply absolute inset-0 bg-linear-to-r from-gray-300 via-gray-200 to-gray-300;
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
