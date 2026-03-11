@@ -23,7 +23,7 @@ export function TicketIssuanceMessage({
 
   return (
     <>
-      <div className="flex justify-start py-4">
+      <div className="flex justify-start min-h-[50px] items-center">
         <div className="flex items-start gap-1.5">
           {isLatestSystem ? (
             <div className="w-2 h-2 rounded-full border border-primary-400 bg-transparent" />
@@ -36,8 +36,10 @@ export function TicketIssuanceMessage({
         </div>
       </div>
       {isLatestSystem && message.guide && (
-        <div className="flex justify-start">
-          <p className="text-body-5 text-gray-600">{message.guide}</p>
+        <div className="flex justify-start w-[90%] px-4">
+          <p className="text-body-7 text-gray-600 whitespace-pre-wrap wrap-break-word">
+            {message.guide}
+          </p>
         </div>
       )}
     </>
