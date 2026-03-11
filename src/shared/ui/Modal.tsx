@@ -1,0 +1,91 @@
+"use client";
+
+import { ReactNode, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { Button } from "./Button";
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+  cancelLabel?: string;
+  submitLabel?: string;
+  onCancel?: () => void;
+  onSubmit: () => void;
+  isSubmitLoading?: boolean;
+  isSubmitDisabled?: boolean;
+  overlayClassName?: string;
+  containerClassName?: string;
+  contentClassName?: string;
+  footerClassName?: string;
+  closeOnOverlayClick?: boolean;
+}
+
+export function Modal({
+  isOpen,
+  onClose,
+  children,
+  cancelLabel = "취소",
+  submitLabel = "확인",
+  onCancel,
+  onSubmit,
+  isSubmitLoading = false,
+  isSubmitDisabled = false,
+  overlayClassName = "",
+  containerClassName = "",
+  contentClassName = "",
+  footerClassName = "",
+  closeOnOverlayClick = true,
+}: ModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  if (!mounted || !isOpen) return null;
+
+  const handleCancel = onCancel || onClose;
+
+  return createPortal(
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+      {/* Overlay */}
+      <div
+        className={`absolute inset-0 bg-gray-100/40 transition-opacity duration-300 ${overlayClassName}`}
+        onClick={() => closeOnOverlayClick && onClose()}
+      />
+
+      {/* Modal Content */}
+      <div
+        className={`relative w-full max-w-sm transform overflow-hidden rounded-[10px] bg-gray-200 p-4 transition-all duration-300 scale-100 opacity-100 border border-gray-400 ${containerClassName}`}
+      >
+        <div className="flex flex-col gap-5">
+          {/* Main Content Area */}
+          <div className={`w-full ${contentClassName}`}>{children}</div>
+
+          {/* Fixed Footer with Two Buttons */}
+          <div className={`flex w-full gap-1 ${footerClassName}`}>
+            <Button onClick={handleCancel} className="flex-1 bg-gray-400!">
+              {cancelLabel}
+            </Button>
+            <Button
+              onClick={onSubmit}
+              isLoading={isSubmitLoading}
+              disabled={isSubmitDisabled}
+              className="flex-1"
+            >
+              {submitLabel}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
