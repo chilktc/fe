@@ -78,7 +78,10 @@ export default function OAuthCallbackPage() {
         const user = meResult.data;
         setUser(user);
 
-        if (user.firstLogin) {
+        const isAdminRedirect = redirectUrl.startsWith("/admin");
+
+        // 관리자 페이지로 이동 중이거나 이미 관리자인 경우 약관 동의 절차를 건너뜀
+        if (user.firstLogin && !isAdminRedirect) {
           router.replace(
             `/login/terms?redirect_url=${encodeURIComponent(redirectUrl)}`,
           );
@@ -92,14 +95,7 @@ export default function OAuthCallbackPage() {
     };
 
     fetchToken();
-  }, [
-    searchParams,
-    router,
-    setAccessToken,
-    setUser,
-    clearSession,
-    refetchMe,
-  ]);
+  }, [searchParams, router, setAccessToken, setUser, clearSession, refetchMe]);
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-100">

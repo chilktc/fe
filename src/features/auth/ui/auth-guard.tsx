@@ -33,8 +33,10 @@ export function AuthGuard({ children }: AuthGuardProps) {
       return;
     }
 
-    if (user?.firstLogin) {
-      // 2. 최초 로그인 사용자: 약관 페이지로 무조건 이동
+    const isSubAdminPage = pathname.startsWith("/admin");
+
+    if (user?.firstLogin && !isSubAdminPage) {
+      // 2. 최초 로그인 사용자: 약관 페이지로 무조건 이동 (관리자 페이지 접근 시 제외)
       if (!isTermsPage) {
         router.replace("/login/terms");
       }
@@ -45,7 +47,15 @@ export function AuthGuard({ children }: AuthGuardProps) {
         router.replace("/");
       }
     }
-  }, [isAuthenticated, isBooting, user, router, pathname, isLoginPage, isTermsPage]);
+  }, [
+    isAuthenticated,
+    isBooting,
+    user,
+    router,
+    pathname,
+    isLoginPage,
+    isTermsPage,
+  ]);
 
   // 리다이렉트가 필요한 상황이라면 로딩 표시 유지
   let isRedirectNeeded = false;
