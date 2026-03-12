@@ -1,10 +1,11 @@
 "use client";
 
 import { ParkIcon } from "@/shared/icons";
+import { GraphView } from "./GraphView";
 
 export function KeywordClusterMap() {
   return (
-    <div className="bg-gray-100 border border-gray-400 rounded-[10px] min-h-[500px] flex flex-col gap-7">
+    <div className="bg-gray-100 border border-gray-400 rounded-[10px] flex flex-col gap-7">
       <div className="flex items-center justify-between py-4 px-6">
         <h2 className="text-heading-5 text-gray-900 flex items-center gap-2">
           <ParkIcon />
@@ -31,8 +32,8 @@ export function KeywordClusterMap() {
         </div>
       </div>
 
-      <div className="w-full flex-1 border border-dashed border-gray-400/30 rounded-xl flex items-center justify-center">
-        <p className="text-body-7 text-gray-500">키워드 클러스터 맵 준비 중</p>
+      <div className="w-full flex-1 border-gray-400/30 rounded-xl flex items-center justify-center overflow-hidden">
+        <GraphView />
       </div>
     </div>
   );

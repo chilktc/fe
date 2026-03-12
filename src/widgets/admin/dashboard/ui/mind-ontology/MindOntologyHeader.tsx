@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon, NetworkIcon } from "@/shared/icons";
+import { NetworkIcon } from "@/shared/icons";
 
 export function MindOntologyHeader() {
   return (
@@ -17,11 +17,6 @@ export function MindOntologyHeader() {
           네트워크입니다
         </p>
       </div>
-
-      <button className="flex items-center gap-2 bg-primary-400 rounded-sm p-2 text-label-2 text-gray-900">
-        2026.02
-        <ChevronDownIcon className="w-4 h-4" />
-      </button>
     </div>
   );
 }

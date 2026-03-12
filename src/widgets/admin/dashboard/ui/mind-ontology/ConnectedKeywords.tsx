@@ -1,6 +1,7 @@
 "use client";
 
 import { Chip } from "@/shared/ui";
+import { Fragment } from "react/jsx-runtime";
 
 const COMBINATIONS = [
   {
@@ -42,9 +43,8 @@ export function ConnectedKeywords() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {combo.tags.map((tag, tIdx) => (
-                  <>
+                  <Fragment key={tIdx}>
                     <span
-                      key={tIdx}
                       className={`px-2.5 h-8 flex items-center rounded-md text-label-1 text-gray-100 ${combo.color[tIdx]}`}
                     >
                       {tag}
@@ -52,7 +52,7 @@ export function ConnectedKeywords() {
                     {combo.tags.length - 1 !== tIdx && (
                       <span className="text-label-1 text-gray-600">+</span>
                     )}
-                  </>
+                  </Fragment>
                 ))}
               </div>
               <Chip className="text-caption-1!">{combo.count}회</Chip>
