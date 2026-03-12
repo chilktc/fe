@@ -2,3 +2,6 @@ export * from "./menu-icon";
 export * from "./spinner-icon";
 export * from "./chevron";
 export * from "./warning";
+export * from "./see-more-icon";
+export * from "./delete-icon";
+export * from "./download-icon";
