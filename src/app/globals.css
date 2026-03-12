@@ -111,6 +111,10 @@
   --text-button-1: 18px;
   --text-button-1--line-height: 1.7;
   --text-button-1--font-weight: 600;
+
+  --text-button-2: 15px;
+  --text-button-2--line-height: 1;
+  --text-button-2--font-weight: 700;
 }
 
 @theme {

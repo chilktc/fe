@@ -12,7 +12,7 @@ export default function AdminLayout({
   const isLoginPage = pathname === "/admin/login";
 
   return (
-    <div className="min-h-dvh flex flex-col bg-gray-50">
+    <div className="flex flex-col">
       <main className="flex-1 flex flex-col min-h-0 relative">
         {isLoginPage ? children : <AdminGuard>{children}</AdminGuard>}
       </main>

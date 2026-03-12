@@ -5,3 +5,5 @@ export * from "./warning";
 export * from "./see-more-icon";
 export * from "./delete-icon";
 export * from "./download-icon";
+export * from "./mail-icon";
+export * from "./close-icon";
