@@ -20,7 +20,7 @@ export function AdminSidebar() {
   const initial = user?.nickname?.[0] ?? "?";
 
   return (
-    <aside className="w-[300px] min-w-[300px] bg-gray-100 flex flex-col sticky top-0">
+    <aside className="w-[300px] min-w-[300px] min-h-dvh bg-gray-100 flex flex-col sticky top-0">
       {/* Logo */}
       <div className="px-7.5 py-2.5 h-20 flex justify-start items-center border-b border-gray-400">
         {/* temp-logo-horizontal.png */}

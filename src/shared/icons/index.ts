@@ -7,3 +7,5 @@ export * from "./delete-icon";
 export * from "./download-icon";
 export * from "./mail-icon";
 export * from "./close-icon";
+export * from "./network-icon";
+export * from "./park-icon";
