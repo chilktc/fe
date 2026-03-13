@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTrackingData } from "@/entities/tracking/api/use-tracking-data";
+import { useSubmitTracking } from "@/entities/tracking/api/use-submit-tracking";
 import { TRACKING_STEPS } from "@/entities/tracking/model/constants";
 import { Button } from "@/shared/ui";
 import { TrackingStepper } from "./TrackingStepper";
@@ -16,6 +17,8 @@ interface TrackingProps {
 export function Tracking({ id }: TrackingProps) {
   const router = useRouter();
   const { data: response, isLoading } = useTrackingData(id);
+  const { mutateAsync: submitTracking, isPending: isSubmitting } =
+    useSubmitTracking();
 
   const [step, setStep] = useState(1);
   const [selections, setSelections] = useState<{
@@ -38,12 +41,28 @@ export function Tracking({ id }: TrackingProps) {
 
   if (!response?.data) return null;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      console.log("Tracking Complete:", selections);
-      router.push("/");
+      if (!selections.step1 || !selections.step2 || !selections.step3) return;
+
+      try {
+        await submitTracking({
+          id,
+          step1: selections.step1,
+          step2: selections.step2,
+          step3: selections.step3,
+        });
+
+        if (selections.step1 === "solved") {
+          router.push(`/tracking/complete/${id}`);
+        } else {
+          router.push(`/tracking/fail/${id}`);
+        }
+      } catch (error) {
+        console.error("Failed to submit tracking:", error);
+      }
     }
   };
 
@@ -100,9 +119,9 @@ export function Tracking({ id }: TrackingProps) {
               : "bg-primary-400 text-gray-900"
           }`}
           onClick={handleNext}
-          disabled={isButtonDisabled()}
+          disabled={isButtonDisabled() || isSubmitting}
         >
-          계속하기
+          {isSubmitting ? "제출 중..." : "계속하기"}
         </Button>
       </div>
     </div>
