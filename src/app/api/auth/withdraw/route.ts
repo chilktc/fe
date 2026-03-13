@@ -40,9 +40,9 @@ export async function POST(request: Request) {
       : "Session cleared, but backend sync failed.",
   });
 
-  // refreshToken 쿠키 삭제
+  // refreshToken 쿠키 삭제 (Path를 /api/refresh로 명시)
   response.cookies.set("refreshToken", "", {
-    path: "/",
+    path: "/api/refresh",
     expires: new Date(0),
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

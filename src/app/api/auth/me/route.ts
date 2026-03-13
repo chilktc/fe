@@ -22,20 +22,13 @@ export async function GET(request: Request) {
         { message: "Failed to fetch user profile" },
         { status: response.status },
       );
-      // 임시로 성공시키기
-      // return NextResponse.json({
-      //   id: 1,
-      //   email: "somedding6363@gmail.com",
-      //   nickname: "강두연",
-      //   firstLogin: false,
-      // });
     }
 
     const data = await response.json();
     const userData = data.data || data;
     const mockedUser = {
       ...userData,
-      role: userData.email === "somedding6363@gmail.com" ? "ADMIN" : "USER",
+      role: userData.email === "chilktc.admin@gmail.com" ? "ADMIN" : "USER",
     };
     return NextResponse.json(mockedUser);
   } catch (error) {

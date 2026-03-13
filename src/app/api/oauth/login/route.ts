@@ -33,7 +33,25 @@ export async function POST(request: NextRequest) {
 
     const setCookies = response.headers.getSetCookie();
     setCookies.forEach((cookie) => {
-      nextResponse.headers.append("Set-Cookie", cookie);
+      // refreshToken만 path 수정
+      if (cookie.startsWith("refreshToken")) {
+        const parts = cookie.split(";").map((p) => p.trim());
+        const [nameValue] = parts;
+
+        const [name, value] = nameValue.split("=");
+
+        nextResponse.cookies.set({
+          name,
+          value,
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          path: "/api/refresh",
+        });
+      } else {
+        // 다른 쿠키는 그대로 전달
+        nextResponse.headers.append("Set-Cookie", cookie);
+      }
     });
 
     return nextResponse;
