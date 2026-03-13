@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   title: "Bloom",
 };
 
+import { ResponsiveLayout } from "./responsive-layout";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,9 +24,9 @@ export default function RootLayout({
       <body
         className={`${suit.variable} antialiased bg-gray-200 overflow-y-auto`}
       >
-        <div className="w-full max-w-[480px] mx-auto min-h-dvh bg-gray-100 flex flex-col shadow-2xl relative">
-          <Providers>{children}</Providers>
-        </div>
+        <Providers>
+          <ResponsiveLayout>{children}</ResponsiveLayout>
+        </Providers>
       </body>
     </html>
   );

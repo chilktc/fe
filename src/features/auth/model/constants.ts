@@ -39,4 +39,8 @@ export const AUTH_ERROR_MESSAGES: Record<
     title: "인증 실패",
     description: "로그인 하려면 다시 시도해주세요.",
   },
+  is_not_admin: {
+    title: "잘못된 로그인 시도",
+    description: "관리자 계정으로 로그인해주세요.",
+  },
 };
