@@ -1,6 +1,6 @@
 export function GreenroomLoading() {
   return (
-    <div className="h-full flex flex-col items-center justify-center gap-8 animate-in fade-in duration-500">
+    <div className="h-dvh flex flex-col items-center justify-center gap-8 animate-in fade-in duration-500">
       {/* 로티 이미지가 들어갈 임시 플레이스홀더 */}
       <div className="relative w-40 h-40 flex items-center justify-center">
         <div className="absolute inset-0 bg-primary-100 rounded-full animate-ping opacity-60"></div>
