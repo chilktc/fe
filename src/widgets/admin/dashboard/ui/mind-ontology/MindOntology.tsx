@@ -4,7 +4,6 @@ import { MindOntologyHeader } from "./MindOntologyHeader";
 import { KeywordClusterMap } from "./KeywordClusterMap";
 import { CategoryDistribution } from "./CategoryDistribution";
 import { ConnectedKeywords } from "./ConnectedKeywords";
-import { KeyInsights } from "./KeyInsights";
 
 export function MindOntology() {
   return (
@@ -18,8 +17,6 @@ export function MindOntology() {
           <CategoryDistribution />
           <ConnectedKeywords />
         </div>
-
-        <KeyInsights />
       </div>
     </div>
   );
