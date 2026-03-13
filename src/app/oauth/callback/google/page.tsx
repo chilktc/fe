@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useMe } from "@/entities/user/api/use-me";
@@ -11,7 +11,7 @@ const sanitizeRedirectUrl = (value: string | null) => {
   return value;
 };
 
-export default function OAuthCallbackPage() {
+function GoogleCallbackInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setAccessToken = useSessionStore((state) => state.setAccessToken);
@@ -101,5 +101,19 @@ export default function OAuthCallbackPage() {
     <div className="flex h-screen w-full items-center justify-center bg-gray-100">
       <div className="text-gray-500">로그인 중...</div>
     </div>
+  );
+}
+
+export default function OAuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen w-full items-center justify-center bg-gray-100">
+          <div className="text-gray-500">로그인 중...</div>
+        </div>
+      }
+    >
+      <GoogleCallbackInner />
+    </Suspense>
   );
 }
