@@ -14,7 +14,7 @@ export function MindOntology() {
       <div className="flex flex-col gap-7.5">
         <KeywordClusterMap />
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-7.5">
+        <div className="grid grid-cols-2 gap-7.5">
           <CategoryDistribution />
           <ConnectedKeywords />
         </div>

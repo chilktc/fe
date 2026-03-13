@@ -15,19 +15,22 @@ export function KeywordClusterMap() {
         {/* Legend Placeholder */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5 text-caption-1 text-gray-800">
-            <div className="w-2 h-2 rounded-full bg-blue-400" /> 업무구조
+            <div className="w-2 h-2 rounded-full bg-[#3B82F6]" /> 업무구조
           </div>
           <div className="flex items-center gap-1.5 text-caption-1 text-gray-800">
-            <div className="w-2 h-2 rounded-full bg-purple-400" /> 리더십
+            <div className="w-2 h-2 rounded-full bg-[#8B5CF6]" /> 리더십
           </div>
           <div className="flex items-center gap-1.5 text-caption-1 text-gray-800">
-            <div className="w-2 h-2 rounded-full bg-yellow-400" /> 동료관계
+            <div className="w-2 h-2 rounded-full bg-[#F59E0B]" /> 동료관계
           </div>
           <div className="flex items-center gap-1.5 text-caption-1 text-gray-800">
-            <div className="w-2 h-2 rounded-full bg-green-400" /> 커리어상담
+            <div className="w-2 h-2 rounded-full bg-[#10B981]" /> 커리어성장
           </div>
           <div className="flex items-center gap-1.5 text-caption-1 text-gray-800">
-            <div className="w-2 h-2 rounded-full bg-red-400" /> 조직문화재도
+            <div className="w-2 h-2 rounded-full bg-[#EC4899]" /> 조직문화재도
+          </div>
+          <div className="flex items-center gap-1.5 text-caption-1 text-gray-800">
+            <div className="w-2 h-2 rounded-full bg-[#92400E]" /> 정서적소진
           </div>
         </div>
       </div>
