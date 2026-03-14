@@ -4,7 +4,6 @@ import { useState } from "react";
 import { User } from "@/entities/user/model/types";
 import { Button, Modal } from "@/shared/ui";
 import { ChevronLeftIcon, WarningIcon } from "@/shared/icons";
-import { useRouter } from "next/navigation";
 import { useWithdraw } from "@/entities/user/api/use-withdraw";
 
 interface AccountDeletionProps {
@@ -13,7 +12,6 @@ interface AccountDeletionProps {
 }
 
 export function AccountDeletion({ user, onBack }: AccountDeletionProps) {
-  const router = useRouter();
   const [emailInput, setEmailInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mutate, isPending } = useWithdraw();

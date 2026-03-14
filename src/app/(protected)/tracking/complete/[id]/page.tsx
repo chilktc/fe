@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTrackingData } from "@/entities/tracking/api/use-tracking-data";

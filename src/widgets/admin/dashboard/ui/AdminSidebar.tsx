@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSessionStore } from "@/entities/session/model/store";
 import { ChevronRightIcon } from "@/shared/icons";
 
 const ADMIN_MENU = [
@@ -15,9 +14,6 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "org-account";
-  const user = useSessionStore((s) => s.user);
-
-  const initial = user?.nickname?.[0] ?? "?";
 
   return (
     <aside className="w-[300px] min-w-[300px] min-h-dvh bg-gray-100 flex flex-col sticky top-0">

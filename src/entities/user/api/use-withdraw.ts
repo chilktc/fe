@@ -1,12 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSessionStore } from "@/entities/session/model/store";
-import { useRouter } from "next/navigation";
 import { api } from "@/shared/api/base";
 
 export function useWithdraw() {
   const queryClient = useQueryClient();
   const clearSession = useSessionStore((state) => state.clearSession);
-  const router = useRouter();
 
   return useMutation({
     mutationFn: async () => {

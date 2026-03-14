@@ -1,7 +1,6 @@
 "use client";
 
 import { AdminUser } from "@/entities/admin/model/types";
-import { Chip } from "@/shared/ui";
 
 interface UserTableProps {
   users: AdminUser[];

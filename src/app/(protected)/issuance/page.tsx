@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Sidebar } from "@/widgets/sidebar";
 import { Header } from "@/widgets/header";
 import { TicketIssuance } from "@/widgets/ticket-issuance";
@@ -10,7 +9,6 @@ import { useSessionStore } from "@/entities/session/model/store";
 export default function IssuancePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useSessionStore((state) => state.user);
-  const router = useRouter();
 
   if (!user) {
     return null;

@@ -10,13 +10,13 @@ const Typography = () => (
         <div>
           <p className="text-display-1">Display 1</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-display-1"
+            className=text-display-1
           </code>
         </div>
         <div>
           <p className="text-display-2">Display 2</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-display-2"
+            className=text-display-2
           </code>
         </div>
       </div>
@@ -30,37 +30,37 @@ const Typography = () => (
         <div>
           <h1 className="text-heading-1">Heading 1</h1>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-heading-1"
+            className=text-heading-1
           </code>
         </div>
         <div>
           <h2 className="text-heading-2">Heading 2</h2>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-heading-2"
+            className=text-heading-2
           </code>
         </div>
         <div>
           <h3 className="text-heading-3">Heading 3</h3>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-heading-3"
+            className=text-heading-3
           </code>
         </div>
         <div>
           <h4 className="text-heading-4">Heading 4</h4>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-heading-4"
+            className=text-heading-4
           </code>
         </div>
         <div>
           <h5 className="text-heading-5">Heading 5</h5>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-heading-5"
+            className=text-heading-5
           </code>
         </div>
         <div>
           <h6 className="text-heading-6">Heading 6</h6>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-heading-6"
+            className=text-heading-6
           </code>
         </div>
       </div>
@@ -74,31 +74,31 @@ const Typography = () => (
         <div>
           <p className="text-body-1">Body 1</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-body-1"
+            className=text-body-1
           </code>
         </div>
         <div>
           <p className="text-body-2">Body 2</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-body-2"
+            className=text-body-2
           </code>
         </div>
         <div>
           <p className="text-body-3">Body 3</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-body-3"
+            className=text-body-3
           </code>
         </div>
         <div>
           <p className="text-body-4">Body 4</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-body-4"
+            className=text-body-4
           </code>
         </div>
         <div>
           <p className="text-body-5">Body 5</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-body-5"
+            className=text-body-5
           </code>
         </div>
       </div>
@@ -112,19 +112,19 @@ const Typography = () => (
         <div>
           <p className="text-label-1">Label 1</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-label-1"
+            className=text-label-1
           </code>
         </div>
         <div>
           <p className="text-label-2">Label 2</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-label-2"
+            className=text-label-2
           </code>
         </div>
         <div>
           <p className="text-label-3">Label 3</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-label-3"
+            className=text-label-3
           </code>
         </div>
       </div>
@@ -138,13 +138,13 @@ const Typography = () => (
         <div>
           <p className="text-caption-1">Caption 1</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-caption-1"
+            className=text-caption-1
           </code>
         </div>
         <div>
           <p className="text-caption-2">Caption 2</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-caption-2"
+            className=text-caption-2
           </code>
         </div>
       </div>
@@ -158,7 +158,7 @@ const Typography = () => (
         <div>
           <p className="text-button-1">Button 1</p>
           <code className="text-[10px] text-gray-500 mt-1 block">
-            className="text-button-1"
+            className=text-button-1
           </code>
         </div>
       </div>
