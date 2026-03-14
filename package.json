@@ -29,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "eslint-plugin-storybook": "^10.2.19",
     "storybook": "^10.2.8",
     "tailwindcss": "^4",
     "typescript": "^5",
