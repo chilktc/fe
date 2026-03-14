@@ -12,32 +12,29 @@ interface RetryConfig extends InternalAxiosRequestConfig {
 
 declare module "axios" {
   export interface AxiosInstance {
-    get<T = any>(url: string, config?: InternalAxiosRequestConfig): Promise<T>;
-    post<T = any>(
+    get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T>;
+    post<T = unknown, D = unknown>(
       url: string,
-      data?: any,
-      config?: InternalAxiosRequestConfig,
+      data?: D,
+      config?: AxiosRequestConfig<D>,
     ): Promise<T>;
-    put<T = any>(
+    put<T = unknown, D = unknown>(
       url: string,
-      data?: any,
-      config?: InternalAxiosRequestConfig,
+      data?: D,
+      config?: AxiosRequestConfig<D>,
     ): Promise<T>;
-    patch<T = any>(
+    patch<T = unknown, D = unknown>(
       url: string,
-      data?: any,
-      config?: InternalAxiosRequestConfig,
+      data?: D,
+      config?: AxiosRequestConfig<D>,
     ): Promise<T>;
-    delete<T = any>(
-      url: string,
-      config?: InternalAxiosRequestConfig,
-    ): Promise<T>;
+    delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T>;
   }
 }
 
 // BFF(Backend for Frontend)를 통해 호출하기 위한 Axios 인스턴스
 export const api = axios.create({
-  baseURL: "", // BFF 기준 상대 경로 사용
+  baseURL: "",
   headers: {
     "Content-Type": "application/json",
   },
@@ -46,27 +43,29 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = useSessionStore.getState().accessToken;
+
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
-// 토큰 재발급 로직
 let isRefreshing = false;
 let failedQueue: Array<{
-  resolve: (value: unknown) => void;
-  reject: (reason: unknown) => void;
+  resolve: (value: string | null) => void;
+  reject: (reason: Error) => void;
 }> = [];
 
 const processQueue = (error: Error | null, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach((promise) => {
     if (error) {
-      prom.reject(error);
+      promise.reject(error);
     } else {
-      prom.resolve(token);
+      promise.resolve(token);
     }
   });
+
   failedQueue = [];
 };
 
@@ -82,7 +81,7 @@ const isRefreshExcludedRequest = (url?: string) =>
 api.interceptors.response.use(
   (response) => response.data,
   async (error: AxiosError<ApiErrorResponse>) => {
-    const originalRequest = error.config as RetryConfig;
+    const originalRequest = error.config as RetryConfig | undefined;
 
     if (
       error.response?.status === 401 &&
@@ -91,16 +90,16 @@ api.interceptors.response.use(
       !isRefreshExcludedRequest(originalRequest.url)
     ) {
       if (isRefreshing) {
-        return new Promise((resolve, reject) => {
+        return new Promise<string | null>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            if (originalRequest.headers) {
+            if (token && originalRequest.headers) {
               originalRequest.headers.Authorization = `Bearer ${token}`;
             }
             return api(originalRequest);
           })
-          .catch((err) => Promise.reject(err));
+          .catch((err: Error) => Promise.reject(err));
       }
 
       originalRequest._retry = true;
@@ -116,24 +115,32 @@ api.interceptors.response.use(
           throw new Error("Refresh failed");
         }
 
-        const data = await response.json();
-        const newAccessToken = data.data?.accessToken || data.accessToken;
+        const data: { data?: { accessToken?: string }; accessToken?: string } =
+          await response.json();
 
-        if (newAccessToken) {
-          useSessionStore.getState().setAccessToken(newAccessToken);
+        const newAccessToken =
+          data.data?.accessToken || data.accessToken || null;
+
+        if (!newAccessToken) {
+          throw new Error("Access token not found");
         }
 
+        useSessionStore.getState().setAccessToken(newAccessToken);
         processQueue(null, newAccessToken);
 
-        if (newAccessToken && originalRequest.headers) {
+        if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         }
+
         return api(originalRequest);
       } catch (err) {
-        processQueue(err as Error, null);
+        const refreshError =
+          err instanceof Error ? err : new Error("Refresh failed");
+
+        processQueue(refreshError, null);
         useSessionStore.getState().clearSession();
 
-        return Promise.reject(err);
+        return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
@@ -141,6 +148,7 @@ api.interceptors.response.use(
 
     const message =
       error.response?.data?.message || error.message || "API Error";
+
     return Promise.reject(new Error(message));
   },
 );
