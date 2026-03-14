@@ -1,45 +1,34 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AdminUser } from "@/entities/admin/model/types";
 import { BaseModal } from "@/shared/ui";
 import { useUpdateAdminUser } from "@/entities/admin/api/use-admin-users";
 import { useSessionStore } from "@/entities/session/model/store";
 
 interface EditUserModalProps {
-  isOpen: boolean;
   onClose: () => void;
-  user: AdminUser | null;
+  user: AdminUser;
 }
 
-export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
+export function EditUserModal({ onClose, user }: EditUserModalProps) {
   const { mutate: updateUser, isPending } = useUpdateAdminUser();
   const { user: currentUser } = useSessionStore();
-  const [formData, setFormData] = useState<AdminUser | null>(null);
+  const [formData, setFormData] = useState<AdminUser>(user);
 
   const isSelf = currentUser?.email === user?.email;
 
-  useEffect(() => {
-    if (user) {
-      setFormData({ ...user });
-    }
-  }, [user]);
-
-  if (!user || !formData) return null;
-
   const handleRoleChange = (role: "Admin" | "Member") => {
     if (isSelf) return;
-    setFormData((prev) => (prev ? { ...prev, role } : null));
+    setFormData((prev) => ({ ...prev, role }));
   };
 
   const handleSubmit = () => {
-    if (formData) {
-      updateUser(formData, {
-        onSuccess: () => {
-          onClose();
-        },
-      });
-    }
+    updateUser(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   const isChanged =
@@ -54,7 +43,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
 
   return (
     <BaseModal
-      isOpen={isOpen}
+      isOpen={true}
       onClose={onClose}
       title="조직원 정보 수정"
       submitLabel="수정하기"
@@ -71,9 +60,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
             type="text"
             value={formData.name}
             onChange={(e) =>
-              setFormData((prev) =>
-                prev ? { ...prev, name: e.target.value } : null,
-              )
+              setFormData((prev) => ({ ...prev, name: e.target.value }))
             }
             className={inputStyles}
           />
@@ -86,9 +73,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
             type="email"
             value={formData.email}
             onChange={(e) =>
-              setFormData((prev) =>
-                prev ? { ...prev, email: e.target.value } : null,
-              )
+              setFormData((prev) => ({ ...prev, email: e.target.value }))
             }
             className={inputStyles}
             disabled
@@ -102,9 +87,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
             type="text"
             value={formData.department}
             onChange={(e) =>
-              setFormData((prev) =>
-                prev ? { ...prev, department: e.target.value } : null,
-              )
+              setFormData((prev) => ({ ...prev, department: e.target.value }))
             }
             className={inputStyles}
           />
@@ -117,9 +100,7 @@ export function EditUserModal({ isOpen, onClose, user }: EditUserModalProps) {
             type="text"
             value={formData.position}
             onChange={(e) =>
-              setFormData((prev) =>
-                prev ? { ...prev, position: e.target.value } : null,
-              )
+              setFormData((prev) => ({ ...prev, position: e.target.value }))
             }
             className={inputStyles}
           />

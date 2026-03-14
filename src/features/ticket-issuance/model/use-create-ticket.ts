@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/shared/api/base";
 import {
   CreateTicketRequest,
   CreateTicketResponse,

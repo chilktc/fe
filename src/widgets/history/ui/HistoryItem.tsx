@@ -25,8 +25,7 @@ export function HistoryItem({ history }: HistoryItemProps) {
     },
   );
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleDelete = () => {
     deleteHistory(history.id, {
       onSuccess: () => {
         setIsModalOpen(false);
@@ -74,7 +73,7 @@ export function HistoryItem({ history }: HistoryItemProps) {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleDelete as any}
+        onSubmit={handleDelete}
         isSubmitLoading={isPending}
         submitLabel="삭제"
         cancelLabel="취소"

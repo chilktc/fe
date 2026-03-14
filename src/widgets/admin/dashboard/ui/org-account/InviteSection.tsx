@@ -36,7 +36,7 @@ export function InviteSection() {
         <p className="text-label-3 text-gray-800">
           초대된 사용자는 시스템 가입 메일을 받게 됩니다.
           <br />
-          가입 전까지 상태는 '대기중'으로 표시됩니다.
+          가입 전까지 상태는 &apos;대기중&apos;으로 표시됩니다.
         </p>
       </div>
 

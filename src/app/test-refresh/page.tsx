@@ -33,9 +33,13 @@ export default function TestRefreshPage() {
         "Auth status in store:",
         useSessionStore.getState().authStatus,
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Test Failed:", error);
-      setStatus(`Failed: ${error.message}`);
+
+      const message =
+        error instanceof Error ? error.message : "Unknown error occurred";
+
+      setStatus(`Failed: ${message}`);
     }
   };
 

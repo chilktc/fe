@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/shared/api/base";
 import { User } from "../model/types";
 import { useSessionStore } from "@/entities/session/model/store";
 

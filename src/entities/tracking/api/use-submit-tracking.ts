@@ -1,9 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/shared/api/base";
-import {
-  SubmitTrackingRequest,
-  SubmitTrackingResponse,
-} from "../model/types";
+import { SubmitTrackingRequest, SubmitTrackingResponse } from "../model/types";
 
 export const useSubmitTracking = () => {
   return useMutation({

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { HistoryDetailResponse, HistoryDetail } from "../model/types";
 
 // 개발용 임시 상세 데이터 저장소
-let mockHistoryDetailData: HistoryDetail[] = [
+const mockHistoryDetailData: HistoryDetail[] = [
   {
     id: "1",
     title: "복잡한 생각을 명쾌하게 정리해 줄 이야기",

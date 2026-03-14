@@ -1,5 +1,6 @@
 import { Chip } from "@/shared/ui";
 import { DownloadIcon } from "@/shared/icons";
+import Image from "next/image";
 
 interface PodcastTabProps {
   history: {
@@ -15,12 +16,14 @@ interface PodcastTabProps {
 export function PodcastTab({ history }: PodcastTabProps) {
   return (
     <div className="flex flex-col gap-5 pt-4 pb-8">
-      <div className="w-full aspect-video rounded-3xl overflow-hidden bg-gray-200 shadow-lg border border-gray-300">
+      <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-gray-200 shadow-lg border border-gray-300">
         {history.imageUrl && (
-          <img
+          <Image
             src={history.imageUrl}
             alt={history.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="100vw"
           />
         )}
       </div>
