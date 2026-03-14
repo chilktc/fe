@@ -10,23 +10,14 @@ import {
   useDeleteAdminUser,
 } from "@/entities/admin/api/use-admin-users";
 
+const PAGE_SIZE = 8;
+
 export function UserListSection() {
   const [page, setPage] = useState(1);
-  const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
 
-  const pageSize = 8;
-  const { data, isLoading } = useAdminUsers(page, pageSize);
+  const { data, isLoading } = useAdminUsers(page, PAGE_SIZE);
   const { mutate: deleteUser } = useDeleteAdminUser();
-
-  const handleDelete = (id: string) => {
-    deleteUser(id);
-  };
-
-  const handleEdit = (user: AdminUser) => {
-    setSelectedUser(user);
-    setIsEditModalOpen(true);
-  };
 
   return (
     <div className="py-5 space-y-7.5">
@@ -46,8 +37,8 @@ export function UserListSection() {
           <>
             <UserTable
               users={data?.users ?? []}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
+              onDelete={(id) => deleteUser(id)}
+              onEdit={(user) => setEditingUser(user)}
             />
             {data && data.totalPages > 1 && (
               <Pagination
@@ -60,12 +51,11 @@ export function UserListSection() {
         )}
       </div>
 
-      {isEditModalOpen && selectedUser && (
+      {editingUser && (
         <EditUserModal
-          key={selectedUser.id}
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          user={selectedUser}
+          key={editingUser.id}
+          onClose={() => setEditingUser(null)}
+          user={editingUser}
         />
       )}
     </div>

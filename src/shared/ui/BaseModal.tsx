@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "./Button";
 import { CloseIcon } from "../icons";
@@ -30,34 +30,30 @@ export function BaseModal({
   containerClassName = "",
   contentClassName = "",
 }: BaseModalProps) {
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    }
+    if (!isOpen) return;
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = prevOverflow;
     };
   }, [isOpen]);
 
-  if (!mounted || !isOpen) return null;
+  if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-5 overflow-y-auto scrollbar-hide">
-      {/* Overlay */}
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-y-auto p-5 scrollbar-hide">
       <div
         className="fixed inset-0 bg-gray-100/40 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       />
 
-      {/* Modal Content */}
       <div
-        className={`relative w-full max-w-[440px] my-auto transform overflow-hidden rounded-[20px] bg-gray-100 p-7.5 transition-all duration-300 scale-100 opacity-100 border border-gray-400/50 shadow-2xl ${containerClassName}`}
+        className={`relative my-auto w-full max-w-[440px] overflow-hidden rounded-[20px] border border-gray-400/50 bg-gray-100 p-7.5 shadow-2xl ${containerClassName}`}
       >
         <div className="flex flex-col gap-7.5">
-          {/* Header */}
           <div className="flex items-center justify-between">
             <h2 className="text-heading-2 text-gray-900">{title}</h2>
             <button onClick={onClose} className="cursor-pointer">
@@ -65,10 +61,8 @@ export function BaseModal({
             </button>
           </div>
 
-          {/* Main Content Area */}
           <div className={`w-full ${contentClassName}`}>{children}</div>
 
-          {/* Footer - Single Button */}
           <div className="w-full">
             <Button
               onClick={onSubmit}

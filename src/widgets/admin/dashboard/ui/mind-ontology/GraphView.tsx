@@ -4,7 +4,6 @@ import { GraphData } from "@/entities/graph/model/types";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 
-// Dynamically import ForceGraph2D to avoid SSR issues with window object
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
   loading: () => (
@@ -109,28 +108,29 @@ type GraphNodeCanvas = {
 
 export const GraphView = () => {
   const graphRef = useRef<HTMLDivElement>(null);
-  const [graphData, setGraphData] = useState<GraphData>({
-    nodes: [],
-    links: [],
-  });
+  const graphData: GraphData = DUMMY_DATA;
   const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
 
   useEffect(() => {
-    setGraphData(DUMMY_DATA);
-    setDimensions({
-      width: graphRef.current?.clientWidth || 800,
-      height: graphRef.current?.clientHeight || 500,
+    const element = graphRef.current;
+    if (!element) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+
+      const { width, height } = entry.contentRect;
+      setDimensions({
+        width: width || 800,
+        height: height || 500,
+      });
     });
 
-    const handleResize = () => {
-      setDimensions({
-        width: graphRef.current?.clientWidth || 800,
-        height: graphRef.current?.clientHeight || 500,
-      });
-    };
+    resizeObserver.observe(element);
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
   return (
