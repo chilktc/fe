@@ -7,9 +7,9 @@ const sanitizeRedirectUrl = (value: string | null) => {
 };
 
 export async function GET(request: NextRequest) {
-  const { GOOGLE_CLIENT_ID, NEXT_PUBLIC_GOOGLE_REDIRECT_URI } = process.env;
+  const { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } = process.env;
 
-  if (!GOOGLE_CLIENT_ID || !NEXT_PUBLIC_GOOGLE_REDIRECT_URI) {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_REDIRECT_URI) {
     return NextResponse.json(
       { message: "Google OAuth Environment variables are missing" },
       { status: 500 },
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: NEXT_PUBLIC_GOOGLE_REDIRECT_URI,
+    redirect_uri: GOOGLE_REDIRECT_URI,
     response_type: "code",
     state: redirectUrl,
     scope: "email profile openid",
