@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const BACKEND_URL = process.env.BACKEND_API_URL || "http://localhost:8081";
+  const BACKEND_URL = process.env.BACKEND_API_URL || "http://localhost:8080";
   const authHeader = request.headers.get("authorization");
 
   try {
