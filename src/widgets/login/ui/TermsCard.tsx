@@ -7,6 +7,7 @@ import { useSessionStore } from "@/entities/session/model/store";
 import { TermsHeader } from "./TermsHeader";
 import { AgreementItem } from "./AgreementItem";
 import { TermsComplete } from "./TermsComplete";
+import { useAgreeTerms } from "@/features/auth/model/use-agree-terms";
 
 export function TermsCard() {
   const router = useRouter();
@@ -15,7 +16,9 @@ export function TermsCard() {
 
   const redirectQuery = searchParams.get("redirect_url");
   const redirectUrl =
-    redirectQuery && redirectQuery.startsWith("/") && !redirectQuery.startsWith("//")
+    redirectQuery &&
+    redirectQuery.startsWith("/") &&
+    !redirectQuery.startsWith("//")
       ? redirectQuery
       : "/";
 
@@ -25,6 +28,7 @@ export function TermsCard() {
     marketing: false,
   });
   const [isCompleted, setIsCompleted] = useState(false);
+  const { mutate: agreeTerms, isPending } = useAgreeTerms();
 
   // 이미 가입을 완료한 기존 사용자가 허가 없이 /login/terms 로 접근했을 때 차단
   // (단, 지금 막 가입을 완료해서 isCompleted UI를 보고 있는 중이면 예외로 허용)
@@ -55,13 +59,21 @@ export function TermsCard() {
   };
 
   const handleAgree = () => {
-    if (!mandatoryAgreed) return;
+    if (!mandatoryAgreed || isPending) return;
 
-    // TODO: 서버에 약관 동의 내역 전송 API 호출 (여기에 추가)
-    setIsCompleted(true);
-    if (user) {
-      setUser({ ...user, firstLogin: false });
-    }
+    // 서버에 약관 동의 내역 전송 API 호출
+    agreeTerms(agreements, {
+      onSuccess: () => {
+        setIsCompleted(true);
+        if (user) {
+          setUser({ ...user, firstLogin: false });
+        }
+      },
+      onError: (error) => {
+        console.error("Failed to agree terms:", error);
+        // 에러 처리 추가 가능
+      },
+    });
   };
 
   if (isCompleted) {
@@ -109,10 +121,10 @@ export function TermsCard() {
       <div className="py-4 px-6">
         <Button
           className="w-full"
-          disabled={!mandatoryAgreed}
+          disabled={!mandatoryAgreed || isPending}
           onClick={handleAgree}
         >
-          동의하고 가입하기
+          {isPending ? "처리중..." : "동의하고 가입하기"}
         </Button>
       </div>
     </div>
