@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/shared/lib/router";
 import { useSignup } from "@/features/auth/model/use-signup";
 import { Button } from "@/shared/ui";
 
 export function TestSignupForm() {
-  const router = useRouter();
+  const router = useAppRouter();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 

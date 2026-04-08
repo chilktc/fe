@@ -8,12 +8,12 @@ interface UserTableProps {
   onEdit: (user: AdminUser) => void;
 }
 
-function StatusBadge({ status }: { status: "active" | "pending" }) {
+function StatusBadge({ status }: { status: boolean }) {
   return (
     <div
-      className={`flex items-center justify-center px-1.5 py-1 rounded-[6px] transition-colors text-caption-2 ${status === "active" ? "bg-[#DCFCE7] text-[#016630]" : "bg-[#FEF9C2] text-[#894B00]"}`}
+      className={`flex items-center justify-center px-1.5 py-1 rounded-[6px] transition-colors text-caption-2 ${status ? "bg-[#DCFCE7] text-[#016630]" : "bg-[#FEF9C2] text-[#894B00]"}`}
     >
-      {status === "active" ? "활성" : "대기중"}
+      {status ? "활성" : "대기중"}
     </div>
   );
 }
@@ -66,11 +66,11 @@ export function UserTable({ users, onDelete, onEdit }: UserTableProps) {
 
           {/* Status */}
           <div className="flex items-center justify-center">
-            <StatusBadge status={user.status} />
+            <StatusBadge status={user.isActive} />
           </div>
 
           {/* Joined At */}
-          <span className="text-caption-1 text-gray-900">{user.joinedAt}</span>
+          <span className="text-caption-1 text-gray-900">{user.createdAt}</span>
 
           {/* Delete */}
           <button

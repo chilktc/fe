@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MailIcon } from "@/shared/icons";
 import { Button } from "@/shared/ui";
-import { useAdminUserInvite } from "@/entities/admin/api/use-admin-users";
+import { useAdminUserInvite } from "@/features/admin/user-management";
 
 export function InviteSection() {
   const [email, setEmail] = useState("");

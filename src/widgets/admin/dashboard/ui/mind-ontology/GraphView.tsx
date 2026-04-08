@@ -1,15 +1,9 @@
 "use client";
 
 import { GraphData } from "@/entities/graph/model/types";
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 
-const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center p-4">Loading Graph...</div>
-  ),
-});
+const ForceGraph2D = lazy(() => import("react-force-graph-2d"));
 
 const DUMMY_DATA: GraphData = {
   nodes: [
@@ -135,47 +129,55 @@ export const GraphView = () => {
 
   return (
     <div className="w-full h-[500px] overflow-hidden" ref={graphRef}>
-      <ForceGraph2D
-        graphData={graphData}
-        width={dimensions.width}
-        height={dimensions.height}
-        backgroundColor="#191a1b"
-        nodeCanvasObject={(node: GraphNodeCanvas, ctx, globalScale) => {
-          const label = node.name ?? "";
-          const fontSize = 12 / globalScale;
-          ctx.font = `${fontSize}px Sans-Serif`;
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center p-4">
+            Loading Graph...
+          </div>
+        }
+      >
+        <ForceGraph2D
+          graphData={graphData}
+          width={dimensions.width}
+          height={dimensions.height}
+          backgroundColor="#191a1b"
+          nodeCanvasObject={(node: GraphNodeCanvas, ctx, globalScale) => {
+            const label = node.name ?? "";
+            const fontSize = 12 / globalScale;
+            ctx.font = `${fontSize}px Sans-Serif`;
 
-          const x = node.x ?? 0;
-          const y = node.y ?? 0;
-          const r = Math.sqrt(node.val ?? 10) * 1.5;
+            const x = node.x ?? 0;
+            const y = node.y ?? 0;
+            const r = Math.sqrt(node.val ?? 10) * 1.5;
 
-          ctx.beginPath();
-          ctx.arc(x, y, r, 0, 2 * Math.PI, false);
-          ctx.fillStyle = COLORS[node.group ?? ""] || "#9ca3af";
-          ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+            ctx.fillStyle = COLORS[node.group ?? ""] || "#9ca3af";
+            ctx.fill();
 
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = "#e5e7eb";
-          ctx.fillText(label, x, y + r + fontSize + 2);
-        }}
-        nodePointerAreaPaint={(node: GraphNodeCanvas, color, ctx) => {
-          const x = node.x ?? 0;
-          const y = node.y ?? 0;
-          const r = Math.sqrt(node.val ?? 10) * 1.5;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#e5e7eb";
+            ctx.fillText(label, x, y + r + fontSize + 2);
+          }}
+          nodePointerAreaPaint={(node: GraphNodeCanvas, color, ctx) => {
+            const x = node.x ?? 0;
+            const y = node.y ?? 0;
+            const r = Math.sqrt(node.val ?? 10) * 1.5;
 
-          ctx.fillStyle = color;
-          ctx.beginPath();
-          ctx.arc(x, y, r, 0, 2 * Math.PI, false);
-          ctx.fill();
-        }}
-        linkColor={() => "#374151"}
-        linkWidth={1}
-        d3VelocityDecay={0.3}
-        cooldownTicks={100}
-        enableZoomInteraction={false}
-        enablePanInteraction={false}
-      />
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+            ctx.fill();
+          }}
+          linkColor={() => "#374151"}
+          linkWidth={1}
+          d3VelocityDecay={0.3}
+          cooldownTicks={100}
+          enableZoomInteraction={false}
+          enablePanInteraction={false}
+        />
+      </Suspense>
     </div>
   );
 };

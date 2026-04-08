@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { Navigate } from "react-router-dom";
+import { usePathname } from "@/shared/lib/router";
 import { useSessionStore } from "@/entities/session/model/store";
 
 interface AuthGuardProps {
@@ -13,68 +13,40 @@ interface AuthGuardProps {
  * 로그인이 되어 있지 않다면 /login 페이지로 리다이렉트
  */
 export function AuthGuard({ children }: AuthGuardProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const { authStatus, user } = useSessionStore();
 
   const isTermsPage = pathname === "/login/terms";
   const isLoginPage = pathname === "/login";
-  const isAuthenticated = authStatus === "authenticated";
+  const hasValidUser = !!user?.id && !!user?.email;
+  const isAuthenticated = authStatus === "authenticated" && hasValidUser;
   const isBooting = authStatus === "booting";
 
-  useEffect(() => {
-    if (isBooting) return;
-
-    // 1. 로그인이 안 되어 있다면 로그인 페이지로 이동
-    if (!isAuthenticated) {
-      if (!isLoginPage) {
-        router.replace(`/login?redirect_url=${encodeURIComponent(pathname)}`);
-      }
-      return;
-    }
-
-    const isSubAdminPage = pathname.startsWith("/admin");
-
-    if (user?.firstLogin && !isSubAdminPage) {
-      // 2. 최초 로그인 사용자: 약관 페이지로 무조건 이동 (관리자 페이지 접근 시 제외)
-      if (!isTermsPage) {
-        router.replace("/login/terms");
-      }
-    } else {
-      // 3. 기존 사용자 (firstLogin === false)
-      // 로그인/약관 페이지 접근 시 홈(/)으로 리다이렉트
-      if (isLoginPage || isTermsPage) {
-        router.replace("/");
-      }
-    }
-  }, [
-    isAuthenticated,
-    isBooting,
-    user,
-    router,
-    pathname,
-    isLoginPage,
-    isTermsPage,
-  ]);
-
-  // 리다이렉트가 필요한 상황이라면 로딩 표시 유지
-  let isRedirectNeeded = false;
-  if (!isAuthenticated && !isLoginPage) {
-    isRedirectNeeded = true;
-  } else if (isAuthenticated) {
-    if (user?.firstLogin && !isTermsPage) {
-      isRedirectNeeded = true;
-    } else if (!user?.firstLogin && (isLoginPage || isTermsPage)) {
-      isRedirectNeeded = true;
-    }
-  }
-
-  if (isBooting || !isAuthenticated || isRedirectNeeded) {
+  if (isBooting) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
       </div>
     );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to={`/login?redirect_url=${encodeURIComponent(pathname)}`}
+        replace
+      />
+    );
+  }
+
+  const isSubAdminPage = pathname.startsWith("/admin");
+
+  if (hasValidUser && user.firstLogin && !isSubAdminPage && !isTermsPage) {
+    return <Navigate to="/login/terms" replace />;
+  }
+
+  if (hasValidUser && !user.firstLogin && (isLoginPage || isTermsPage)) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

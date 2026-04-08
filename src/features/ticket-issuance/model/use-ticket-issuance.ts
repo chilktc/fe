@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useAppRouter } from "@/shared/lib/router";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useCreateTicket } from "./use-create-ticket";
 import { ChatMessage } from "@/entities/ticket/model/types";
 import { QUESTIONS, GUIDES } from "@/entities/ticket/model/constants";
 
 export function useTicketIssuance() {
-  const router = useRouter();
+  const router = useAppRouter();
   const user = useSessionStore((state) => state.user);
   const nickname = user?.nickname || "ㅇㅇㅇ";
 

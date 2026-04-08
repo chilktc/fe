@@ -1,5 +1,9 @@
 import axios from "axios";
-import type { AxiosError, InternalAxiosRequestConfig } from "axios";
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { useSessionStore } from "@/entities/session/model/store";
 
 interface ApiErrorResponse {
@@ -32,9 +36,10 @@ declare module "axios" {
   }
 }
 
-// BFF(Backend for Frontend)를 통해 호출하기 위한 Axios 인스턴스
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
 export const api = axios.create({
-  baseURL: "",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -69,11 +74,7 @@ const processQueue = (error: Error | null, token: string | null = null) => {
   failedQueue = [];
 };
 
-const REFRESH_EXCLUDED_PATHS = [
-  "/api/refresh",
-  "/api/logout",
-  "/api/oauth/login",
-];
+const REFRESH_EXCLUDED_PATHS = ["/auth/refresh", "/auth/logout", "/auth/oauth/login"];
 
 const isRefreshExcludedRequest = (url?: string) =>
   !!url && REFRESH_EXCLUDED_PATHS.some((path) => url.includes(path));
@@ -106,7 +107,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await fetch("/api/refresh", {
+        const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
           method: "POST",
           credentials: "include",
         });
@@ -118,8 +119,7 @@ api.interceptors.response.use(
         const data: { data?: { accessToken?: string }; accessToken?: string } =
           await response.json();
 
-        const newAccessToken =
-          data.data?.accessToken || data.accessToken || null;
+        const newAccessToken = data.data?.accessToken || data.accessToken || null;
 
         if (!newAccessToken) {
           throw new Error("Access token not found");

@@ -10,7 +10,10 @@ export interface AgreeTermsRequest {
 export const useAgreeTerms = () => {
   return useMutation({
     mutationFn: async (agreements: AgreeTermsRequest) => {
-      return await api.post("/api/auth/consent", agreements);
+      return await api.post("/auth/consent", {
+        ...agreements,
+        agreedPrivacy: true,
+      });
     },
   });
 };

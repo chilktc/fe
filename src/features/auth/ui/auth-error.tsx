@@ -1,11 +1,11 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useQueryParams } from "@/shared/lib/router";
 import { AUTH_ERROR_MESSAGES } from "../model/constants";
 import { ErrorIcon } from "@/shared/icons/error-icon";
 
 export function AuthError() {
-  const searchParams = useSearchParams();
+  const searchParams = useQueryParams();
   const errorCode = searchParams.get("error");
 
   if (!errorCode || !AUTH_ERROR_MESSAGES[errorCode]) {

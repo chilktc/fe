@@ -7,3 +7,4 @@ export * from "./Divide";
 export * from "./Modal";
 export * from "./BaseModal";
 export * from "./Switch";
+export * from "./Page";

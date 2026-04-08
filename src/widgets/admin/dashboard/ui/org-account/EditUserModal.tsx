@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { AdminUser } from "@/entities/admin/model/types";
+import { useUpdateAdminUser } from "@/features/admin/user-management";
 import { BaseModal } from "@/shared/ui";
-import { useUpdateAdminUser } from "@/entities/admin/api/use-admin-users";
 import { useSessionStore } from "@/entities/session/model/store";
+import { OrgUserFormFields } from "./OrgUserFormFields";
 
 interface EditUserModalProps {
   onClose: () => void;
@@ -18,7 +19,7 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
 
   const isSelf = currentUser?.email === user?.email;
 
-  const handleRoleChange = (role: "Admin" | "Member") => {
+  const handleRoleChange = (role: "ADMIN" | "USER") => {
     if (isSelf) return;
     setFormData((prev) => ({ ...prev, role }));
   };
@@ -37,10 +38,6 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
     formData.position !== user.position ||
     formData.role !== user.role;
 
-  const inputStyles =
-    "w-full border border-gray-400 rounded-[10px] h-[52px] px-4 text-body-4 text-gray-900 focus:outline-none focus:border-primary-400 disabled:opacity-50";
-  const labelStyles = "text-label-1 text-gray-900 min-w-[60px]";
-
   return (
     <BaseModal
       isOpen={true}
@@ -53,109 +50,41 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
       containerClassName="max-w-[480px] p-10"
     >
       <div className="flex flex-col gap-5">
-        {/* 이름 */}
+        <OrgUserFormFields
+          formData={formData}
+          onChange={(field, value) => {
+            if (field === "role") {
+              handleRoleChange(value as AdminUser["role"]);
+              return;
+            }
+
+            setFormData((prev) => ({ ...prev, [field]: value }));
+          }}
+          emailDisabled
+          roleDisabled={isSelf}
+        />
+
         <div className="flex items-center gap-3">
-          <label className={labelStyles}>이름</label>
+          <label className="text-label-1 text-gray-900 min-w-[60px]">
+            상태
+          </label>
           <input
             type="text"
-            value={formData.name}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, name: e.target.value }))
-            }
-            className={inputStyles}
-          />
-        </div>
-
-        {/* 이메일 */}
-        <div className="flex items-center gap-3">
-          <label className={labelStyles}>이메일</label>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, email: e.target.value }))
-            }
-            className={inputStyles}
+            value={formData.isActive ? "활성" : "대기중"}
             disabled
+            className="w-full border border-gray-400 rounded-[10px] h-[52px] px-4 text-body-4 text-gray-900 focus:outline-none focus:border-primary-400 disabled:opacity-50"
           />
         </div>
 
-        {/* 부서 */}
         <div className="flex items-center gap-3">
-          <label className={labelStyles}>부서</label>
+          <label className="text-label-1 text-gray-900 min-w-[60px]">
+            가입일
+          </label>
           <input
             type="text"
-            value={formData.department}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, department: e.target.value }))
-            }
-            className={inputStyles}
-          />
-        </div>
-
-        {/* 직급 */}
-        <div className="flex items-center gap-3">
-          <label className={labelStyles}>직급</label>
-          <input
-            type="text"
-            value={formData.position}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, position: e.target.value }))
-            }
-            className={inputStyles}
-          />
-        </div>
-
-        {/* 권한 */}
-        <div className="flex items-center gap-3">
-          <label className={labelStyles}>권한</label>
-          <div className="flex flex-1 gap-2.5">
-            <button
-              type="button"
-              disabled={isSelf}
-              onClick={() => handleRoleChange("Member")}
-              className={`flex-1 h-[52px] rounded-[10px] border transition-all text-button-1 disabled:opacity-50 disabled:cursor-not-allowed ${
-                formData.role === "Member"
-                  ? "bg-primary-200 border-primary-400 text-gray-900 border-2"
-                  : "bg-gray-200 border-gray-400 text-gray-800"
-              }`}
-            >
-              Member
-            </button>
-            <button
-              type="button"
-              disabled={isSelf}
-              onClick={() => handleRoleChange("Admin")}
-              className={`flex-1 h-[52px] rounded-[10px] border transition-all text-button-1 disabled:opacity-50 disabled:cursor-not-allowed ${
-                formData.role === "Admin"
-                  ? "bg-primary-200 border-primary-400 text-gray-900 border-2"
-                  : "bg-gray-200 border-gray-400 text-gray-800"
-              }`}
-            >
-              Admin
-            </button>
-          </div>
-        </div>
-
-        {/* 상태 */}
-        <div className="flex items-center gap-3">
-          <label className={labelStyles}>상태</label>
-          <input
-            type="text"
-            value={formData.status === "active" ? "활성" : "대기"}
+            value={formData.createdAt}
             disabled
-            className={inputStyles}
-          />
-        </div>
-
-        {/* 가입일 */}
-        <div className="flex items-center gap-3">
-          <label className={labelStyles}>가입일</label>
-          <input
-            type="text"
-            value={formData.joinedAt}
-            disabled
-            className={inputStyles}
+            className="w-full border border-gray-400 rounded-[10px] h-[52px] px-4 text-body-4 text-gray-900 focus:outline-none focus:border-primary-400 disabled:opacity-50"
           />
         </div>
       </div>
