@@ -14,12 +14,28 @@ export const useUpdateProfile = () => {
 
   return useMutation({
     mutationFn: async (payload: UpdateProfilePayload): Promise<User> => {
-      const response = await api.patch<User | { data?: User }>("/auth/profile", payload);
+      const response = await api.patch<User | { data?: User }>(
+        "/users/me",
+        payload,
+      );
       return unwrapData<User>(response);
     },
-    onSuccess: (updatedUser) => {
-      setUser(updatedUser);
-      queryClient.setQueryData(["auth", "me"], updatedUser);
+    onSuccess: (updatedUser, variables) => {
+      const currentUser = useSessionStore.getState().user;
+      const nextUser = currentUser
+        ? {
+            ...currentUser,
+            ...updatedUser,
+            nickname: updatedUser.nickname ?? variables.nickname,
+          }
+        : {
+            ...updatedUser,
+            nickname: updatedUser.nickname ?? variables.nickname,
+          };
+
+      setUser(nextUser);
+      queryClient.setQueryData(["auth", "me"], nextUser);
+      void queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
     },
   });
 };
