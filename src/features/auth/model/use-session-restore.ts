@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useMe } from "@/features/auth";
+import { usePathname } from "@/shared/lib/router";
 import { useSessionStore } from "@/entities/session/model/store";
-import { useMe } from "@/entities/user/api/use-me";
 
 export function useSessionRestore() {
   const pathname = usePathname();
@@ -15,10 +15,9 @@ export function useSessionRestore() {
     if (authStatus !== "booting" || isOAuthCallback) return;
     if (!isFetched) return;
 
-    if (isSuccess && user) {
+    if (isSuccess && user?.id && user?.email) {
       useSessionStore.getState().setUser(user);
     } else {
-      console.log("Session restore failed or no session");
       useSessionStore.getState().clearSession();
     }
   }, [authStatus, isOAuthCallback, isFetched, isSuccess, user]);

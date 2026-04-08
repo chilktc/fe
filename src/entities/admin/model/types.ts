@@ -4,9 +4,9 @@ export interface AdminUser {
   email: string;
   department: string;
   position: string;
-  role: "Admin" | "Member";
-  status: "active" | "pending";
-  joinedAt: string;
+  role: "ADMIN" | "USER";
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface AdminUsersResponse {

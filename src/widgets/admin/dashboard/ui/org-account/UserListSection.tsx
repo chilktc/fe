@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { AdminUser } from "@/entities/admin/model/types";
-import { UserTable } from "./UserTable";
-import { Pagination } from "./Pagination";
-import { EditUserModal } from "./EditUserModal";
 import {
   useAdminUsers,
   useDeleteAdminUser,
-} from "@/entities/admin/api/use-admin-users";
+} from "@/features/admin/user-management";
+import { UserTable } from "./UserTable";
+import { Pagination } from "./Pagination";
+import { EditUserModal } from "./EditUserModal";
 
 const PAGE_SIZE = 8;
 
@@ -21,13 +21,6 @@ export function UserListSection() {
 
   return (
     <div className="py-5 space-y-7.5">
-      <div>
-        <h2 className="text-heading-5 text-gray-900">사용자 목록</h2>
-        <p className="text-body-7 text-gray-800">
-          각 조직원의 정보를 확인하고 상세 권한을 관리할 수 있어요
-        </p>
-      </div>
-
       <div className=" w-full">
         {isLoading ? (
           <div className="flex items-center justify-center py-16">

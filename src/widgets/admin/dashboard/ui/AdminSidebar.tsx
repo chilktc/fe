@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import Image from "@/shared/ui/Image";
+import { Link } from "react-router-dom";
+import { usePathname, useQueryParams } from "@/shared/lib/router";
 import { ChevronRightIcon } from "@/shared/icons";
 
 const ADMIN_MENU = [
@@ -12,7 +12,7 @@ const ADMIN_MENU = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useQueryParams();
   const activeTab = searchParams.get("tab") || "org-account";
 
   return (
@@ -35,7 +35,7 @@ export function AdminSidebar() {
           return (
             <Link
               key={item.tab}
-              href={href}
+              to={href}
               className={`flex items-center justify-between px-6 py-3.5 text-label-1 transition-colors border-b border-gray-400 ${
                 isActive
                   ? "text-heading-6 text-primary-400"

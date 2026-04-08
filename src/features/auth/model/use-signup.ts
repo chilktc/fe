@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-import { api } from '@/shared/api/base';
-import { LoginRequest } from './use-login';
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/shared/api/base";
+import { LoginRequest } from "./use-login";
 
 export type SignupRequest = LoginRequest;
 
@@ -11,7 +11,7 @@ export interface SignupResponse {
 export const useSignup = () => {
   return useMutation({
     mutationFn: async (credentials: SignupRequest) => {
-      return await api.post<SignupResponse>('/api/signup', credentials);
+      return await api.post<SignupResponse>("/auth/sign-up", credentials);
     },
   });
 };

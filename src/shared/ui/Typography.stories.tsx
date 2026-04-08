@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const Typography = () => (
   <div className="flex flex-col gap-10 p-8 min-h-screen">

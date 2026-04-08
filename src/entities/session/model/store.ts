@@ -14,6 +14,10 @@ interface SessionState {
   isAuthenticated: () => boolean;
 }
 
+function isValidUser(user: User | null): user is User {
+  return !!user && typeof user.id === "string" && typeof user.email === "string";
+}
+
 export const useSessionStore = create<SessionState>((set, get) => ({
   authStatus: "booting",
   user: null,
@@ -21,15 +25,17 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   setAuthStatus: (authStatus) => set({ authStatus }),
   setUser: (user) =>
     set({
-      user,
-      authStatus: user ? "authenticated" : "unauthenticated",
+      user: isValidUser(user) ? user : null,
+      authStatus: isValidUser(user) ? "authenticated" : "unauthenticated",
     }),
   setAccessToken: (accessToken) => set({ accessToken }),
-  clearSession: () =>
+  clearSession: () => {
     set({
       authStatus: "unauthenticated",
       user: null,
       accessToken: null,
-    }),
-  isAuthenticated: () => get().authStatus === "authenticated",
+    });
+  },
+  isAuthenticated: () =>
+    get().authStatus === "authenticated" && isValidUser(get().user),
 }));

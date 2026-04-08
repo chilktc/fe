@@ -3,7 +3,7 @@ import { PieChart } from "react-minimal-pie-chart";
 
 // bg-[#rrggbb] 에서 hex 추출
 function toHex(color: string): string {
-  const match = color.match(/^bg-\[(\#[0-9a-fA-F]{3,8})\]$/);
+  const match = color.match(/^bg-\[(#[0-9a-fA-F]{3,8})\]$/);
   return match ? match[1] : "#9ca3af";
 }
 
