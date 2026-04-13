@@ -40,6 +40,24 @@ function NotificationListItem({ item, onClick }: NotificationListItemProps) {
   );
 }
 
+function NotificationsListSkeleton() {
+  return (
+    <div className="flex flex-col">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <div
+          key={index}
+          className="py-3 px-4 border-b border-gray-400 flex items-center justify-between gap-3"
+        >
+          <div className="flex-1 min-w-0 flex flex-col gap-2">
+            <div className="w-1/2 h-6 rounded-md skeletonUI" />
+            <div className="w-full h-5 rounded-md skeletonUI" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function NotificationsList() {
   const router = useAppRouter();
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -90,9 +108,7 @@ export function NotificationsList() {
           title="알림센터"
           rightAction={settingsButton}
         />
-        <div className="flex justify-center py-10">
-          <p className="text-gray-500">불러오는 중...</p>
-        </div>
+        <NotificationsListSkeleton />
       </div>
     );
   }
