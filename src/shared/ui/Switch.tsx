@@ -7,8 +7,9 @@ interface SwitchProps {
 export function Switch({ checked, onChange, className = "" }: SwitchProps) {
   return (
     <button
+      type="button"
       onClick={() => onChange(!checked)}
-      className={`relative w-12 h-6.5 rounded-full transition-colors duration-200 focus:outline-none cursor-pointer ${
+      className={`relative shrink-0 w-12 h-6.5 rounded-full transition-colors duration-200 focus:outline-none cursor-pointer ${
         checked ? "bg-primary-400" : "bg-gray-400"
       } ${className}`}
     >

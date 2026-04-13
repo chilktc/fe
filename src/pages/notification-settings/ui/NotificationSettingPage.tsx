@@ -38,12 +38,12 @@ export function NotificationSettingPage() {
 
         {NOTIFICATION_ITEMS.map((item) => (
           <div key={item.key}>
-            <div className="flex items-center justify-between py-2.5 px-4">
-              <div className="flex flex-col gap-1">
+            <div className="flex items-center justify-between gap-3 py-2.5 px-4">
+              <div className="flex-1 min-w-0 flex flex-col gap-1">
                 <span className="text-heading-6 text-gray-900 font-bold">
                   {item.title}
                 </span>
-                <span className="text-label-2 text-gray-800">
+                <span className="text-label-2 text-gray-800 break-words">
                   {item.description}
                 </span>
               </div>
