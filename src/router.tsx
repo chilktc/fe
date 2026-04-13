@@ -11,7 +11,8 @@ import { HomePage } from "@/pages/home/ui/HomePage";
 import { AccountPage } from "@/pages/my-page/account/ui/AccountPage";
 import { HistoryDetailPage } from "@/pages/my-page/history-detail/ui/HistoryDetailPage";
 import { HistoryPage } from "@/pages/my-page/history/ui/HistoryPage";
-import { NotificationsPage } from "@/pages/my-page/notifications/ui/NotificationsPage";
+import { NotificationSettingPage } from "@/pages/notification-settings/ui/NotificationSettingPage";
+import { NotificationsPage } from "@/pages/notifications/ui/NotificationsPage";
 import { PrivacyPolicyPage } from "@/pages/my-page/privacy-policy/ui/PrivacyPolicyPage";
 import { TermsPage as MyPageTermsPage } from "@/pages/my-page/terms/ui/TermsPage";
 import { PodcastChoicePage } from "@/pages/greenroom/podcast-choice/ui/PodcastChoicePage";
@@ -75,6 +76,10 @@ export function AppRoutes() {
         <Route path="tracking/fail/:id" element={<TrackingFailPage />} />
         <Route path="account" element={<AccountPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
+        <Route
+          path="notification-settings"
+          element={<NotificationSettingPage />}
+        />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="terms-of-service" element={<MyPageTermsPage />} />
       </Route>

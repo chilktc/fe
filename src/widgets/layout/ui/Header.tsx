@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppRouter } from "@/shared/lib/router";
-import { MenuIcon } from "@/shared/icons";
+import { MenuIcon, NotificationIcon } from "@/shared/icons";
 import { LogoLetter } from "@/shared/assets/logo";
 
 interface HeaderProps {
@@ -20,6 +20,13 @@ export function Header({ onMenuClick }: HeaderProps) {
       >
         <MenuIcon />
       </div>
+      <button
+        type="button"
+        className="absolute right-1 w-12 h-12 flex items-center justify-center cursor-pointer"
+        onClick={() => router.push("/notifications")}
+      >
+        <NotificationIcon />
+      </button>
       <div className="cursor-pointer" onClick={() => router.push("/")}>
         <LogoLetter />
       </div>
