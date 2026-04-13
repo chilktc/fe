@@ -10,11 +10,11 @@ const NOTIFICATION_PAGE_SIZE = 20;
 
 export function useNotifications() {
   return useInfiniteQuery({
-    queryKey: ["notifications"],
+    queryKey: ["notification"],
     initialPageParam: null as string | null,
     queryFn: async ({ pageParam }): Promise<NotificationListResponse> => {
       const response = await api.get<NotificationListResponse>(
-        "/notifications",
+        "/notification",
         {
           params: {
             cursor: pageParam ?? undefined,
