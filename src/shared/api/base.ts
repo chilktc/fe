@@ -1,9 +1,5 @@
 import axios from "axios";
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  InternalAxiosRequestConfig,
-} from "axios";
+import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { useSessionStore } from "@/entities/session/model/store";
 
 interface ApiErrorResponse {
@@ -74,7 +70,11 @@ const processQueue = (error: Error | null, token: string | null = null) => {
   failedQueue = [];
 };
 
-const REFRESH_EXCLUDED_PATHS = ["/auth/refresh", "/auth/logout", "/auth/oauth/login"];
+const REFRESH_EXCLUDED_PATHS = [
+  "/auth/refresh",
+  "/auth/logout",
+  "/auth/oauth/login",
+];
 
 const isRefreshExcludedRequest = (url?: string) =>
   !!url && REFRESH_EXCLUDED_PATHS.some((path) => url.includes(path));
@@ -119,7 +119,8 @@ api.interceptors.response.use(
         const data: { data?: { accessToken?: string }; accessToken?: string } =
           await response.json();
 
-        const newAccessToken = data.data?.accessToken || data.accessToken || null;
+        const newAccessToken =
+          data.data?.accessToken || data.accessToken || null;
 
         if (!newAccessToken) {
           throw new Error("Access token not found");

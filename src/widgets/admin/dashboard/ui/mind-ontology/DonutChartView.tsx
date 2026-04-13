@@ -26,7 +26,7 @@ export default function DonutChart({ categories }: DonutChartProps) {
   const data = categories.map((d, i) => ({
     title: d.name,
     value: d.count,
-    color: toHex(d.color),
+    color: d.color.startsWith("#") ? d.color : toHex(d.color),
     opacity: hovered === null || hovered === i ? 1 : 0.1,
     isActive: hovered === i,
   }));

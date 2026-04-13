@@ -14,7 +14,9 @@ function normalizeUser(user: MeResponse | null | undefined): User {
 
   return {
     ...user,
-    role: user.role ?? (user.email === "chilktc.admin@gmail.com" ? "ADMIN" : "USER"),
+    role:
+      user.role ??
+      (user.email === "chilktc.admin@gmail.com" ? "ADMIN" : "USER"),
   };
 }
 
@@ -22,7 +24,9 @@ export function useMe(enabled = true) {
   return useQuery({
     queryKey: ["auth", "me"],
     queryFn: async (): Promise<User> => {
-      const response = await api.get<MeResponse | { data?: MeResponse }>("/auth/me");
+      const response = await api.get<MeResponse | { data?: MeResponse }>(
+        "/auth/me",
+      );
       return normalizeUser(unwrapData<MeResponse>(response));
     },
     enabled,

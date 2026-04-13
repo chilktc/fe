@@ -4,7 +4,7 @@ import { AdminUser } from "@/entities/admin/model/types";
 
 interface UserTableProps {
   users: AdminUser[];
-  onDelete: (id: string) => void;
+  onDelete: (user: AdminUser) => void;
   onEdit: (user: AdminUser) => void;
 }
 
@@ -74,7 +74,7 @@ export function UserTable({ users, onDelete, onEdit }: UserTableProps) {
 
           {/* Delete */}
           <button
-            onClick={() => onDelete(user.id)}
+            onClick={() => onDelete(user)}
             className="mx-auto flex items-center justify-center fill-gray-200 hover:fill-accent-red transition-colors cursor-pointer"
           >
             <svg

@@ -43,8 +43,11 @@ export function InviteUserModal({ onClose }: InviteUserModalProps) {
 
     inviteUser(
       {
+        name: formData.name.trim(),
         email: formData.email.trim(),
-        role: "USER",
+        department: formData.department.trim(),
+        position: formData.position.trim(),
+        role: formData.role,
       },
       {
         onSuccess: () => {

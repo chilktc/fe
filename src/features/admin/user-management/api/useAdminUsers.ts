@@ -6,6 +6,7 @@ import { AdminUser, AdminUsersResponse } from "@/entities/admin/model/types";
 const ADMIN_USERS_KEY = ["admin", "users"] as const;
 
 type RawAdminUser = Partial<AdminUser> & {
+  userId?: string;
   role?: string;
   status?: string;
   joinedAt?: string;
@@ -15,11 +16,12 @@ type RawAdminUser = Partial<AdminUser> & {
 type RawAdminUsersResponse =
   | AdminUsersResponse
   | {
-      content?: RawAdminUser[];
+      items?: RawAdminUser[];
       totalElements?: number;
       totalPages?: number;
-      number?: number;
+      page?: number;
       size?: number;
+      hasNext?: boolean;
     }
   | { data?: AdminUsersResponse | RawAdminUser[] }
   | RawAdminUser[];
@@ -41,21 +43,19 @@ function normalizeDate(value?: string): string {
 
 function normalizeUser(user: RawAdminUser): AdminUser {
   return {
-    id: String(user.id ?? ""),
+    id: String(user.userId ?? user.id ?? ""),
     name: user.name ?? user.email?.split("@")[0] ?? "-",
     email: user.email ?? "",
     department: user.department ?? "-",
     position: user.position ?? "-",
     role: normalizeRole(user.role),
-    isActive: normalizeStatus(user.status),
+    isActive: user.isActive ?? normalizeStatus(user.status),
     createdAt: normalizeDate(user.joinedAt ?? user.createdAt),
   };
 }
 
 function normalizeUsersResponse(
   raw: RawAdminUsersResponse,
-  page: number,
-  pageSize: number,
 ): AdminUsersResponse {
   const unwrapped = unwrapData<AdminUsersResponse | RawAdminUser[]>(
     raw as
@@ -69,70 +69,61 @@ function normalizeUsersResponse(
     return {
       users,
       total: users.length,
-      page,
-      pageSize,
-      totalPages: Math.max(1, Math.ceil(users.length / pageSize)),
+      page: 1,
+      size: users.length,
+      totalPages: Math.max(1, users.length > 0 ? 1 : 0),
+      hasNext: false,
     };
   }
 
-  if ("content" in unwrapped && Array.isArray(unwrapped.content)) {
+  if ("items" in unwrapped && Array.isArray(unwrapped.items)) {
     const pageResponse = unwrapped as {
-      content: RawAdminUser[];
+      items: RawAdminUser[];
       totalElements?: number;
       totalPages?: number;
-      number?: number;
+      page?: number;
       size?: number;
+      hasNext?: boolean;
     };
-    const users = pageResponse.content.map(normalizeUser);
+    const users = pageResponse.items.map(normalizeUser);
     return {
       users,
       total: pageResponse.totalElements ?? users.length,
-      page: (pageResponse.number ?? page - 1) + 1,
-      pageSize: pageResponse.size ?? pageSize,
-      totalPages:
-        pageResponse.totalPages ??
-        Math.max(
-          1,
-          Math.ceil(
-            (pageResponse.totalElements ?? users.length) /
-              (pageResponse.size ?? pageSize),
-          ),
-        ),
+      page: (pageResponse.page ?? 0) + 1,
+      size: pageResponse.size ?? users.length,
+      totalPages: pageResponse.totalPages ?? (users.length > 0 ? 1 : 0),
+      hasNext: pageResponse.hasNext ?? false,
     };
   }
 
   return {
     users: (unwrapped.users ?? []).map(normalizeUser),
     total: unwrapped.total ?? unwrapped.users?.length ?? 0,
-    page: unwrapped.page ?? page,
-    pageSize: unwrapped.pageSize ?? pageSize,
-    totalPages:
-      unwrapped.totalPages ??
-      Math.max(
-        1,
-        Math.ceil(
-          (unwrapped.total ?? unwrapped.users?.length ?? 0) /
-            (unwrapped.pageSize ?? pageSize),
-        ),
-      ),
+    page: unwrapped.page ?? 1,
+    size: unwrapped.size ?? unwrapped.users?.length ?? 0,
+    totalPages: unwrapped.totalPages ?? 0,
+    hasNext: unwrapped.hasNext ?? false,
   };
 }
 
-export function useAdminUsers(page: number = 1, pageSize: number = 8) {
+export function useAdminUsers(page: number = 1) {
   return useQuery<AdminUsersResponse>({
-    queryKey: [...ADMIN_USERS_KEY, page, pageSize],
+    queryKey: [...ADMIN_USERS_KEY, page],
     queryFn: async (): Promise<AdminUsersResponse> => {
       const response = await api.get<RawAdminUsersResponse>(
-        `/admin/users?page=${page}&pageSize=${pageSize}`,
+        `/admin/users?page=${page - 1}`,
       );
-      return normalizeUsersResponse(response, page, pageSize);
+      return normalizeUsersResponse(response);
     },
   });
 }
 
 export interface AdminUserInviteRequest {
+  name: string;
   email: string;
-  role: "USER";
+  department: string;
+  position: string;
+  role: "USER" | "ADMIN";
 }
 
 export function useAdminUserInvite() {
@@ -153,7 +144,7 @@ export function useDeleteAdminUser() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      return await api.delete(`/admin/users/${id}`);
+      return await api.put(`/admin/users/${id}/delete`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ADMIN_USERS_KEY });
@@ -166,8 +157,9 @@ export function useUpdateAdminUser() {
 
   return useMutation({
     mutationFn: async (updatedUser: AdminUser) => {
-      return await api.patch(`/admin/users/${updatedUser.id}`, {
+      return await api.put(`/admin/users/${updatedUser.id}`, {
         name: updatedUser.name,
+        email: updatedUser.email,
         department: updatedUser.department,
         position: updatedUser.position,
         role: updatedUser.role,

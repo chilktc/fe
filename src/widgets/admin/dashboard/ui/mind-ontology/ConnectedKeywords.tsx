@@ -1,32 +1,28 @@
 "use client";
 
+import { ConnectedKeywordItem } from "@/features/admin/organization-graph";
+import { GRAPH_GROUP_META } from "@/entities/graph/model/constants";
 import { Chip } from "@/shared/ui";
 import { Fragment } from "react/jsx-runtime";
+import { PanelState } from "./PanelState";
 
-const COMBINATIONS = [
-  {
-    tags: ["번아웃", "업무과중", "인원부족"],
-    count: 5,
-    color: ["bg-[#8A4C00]", "bg-[#2D8FFF]", "bg-[#A855F7]"],
-  },
-  {
-    tags: ["갈등", "책임전가", "연차눈치"],
-    count: 4,
-    color: ["bg-[#FFCC01]", "bg-[#FFCC01]", "bg-[#EF476F]"],
-  },
-  {
-    tags: ["이직", "성장정체", "방향성"],
-    count: 6,
-    color: ["bg-[#22C55E]", "bg-[#22C55E]", "bg-[#22C55E]"],
-  },
-  {
-    tags: ["야근", "마감압박", "스트레스"],
-    count: 7,
-    color: ["bg-[#2D8FFF]", "bg-[#2D8FFF]", "bg-[#8A4C00]"],
-  },
-];
+interface ConnectedKeywordsProps {
+  items?: ConnectedKeywordItem[];
+  isLoading?: boolean;
+  errorMessage?: string | null;
+}
 
-export function ConnectedKeywords() {
+export function ConnectedKeywords({
+  items,
+  isLoading = false,
+  errorMessage,
+}: ConnectedKeywordsProps) {
+  const getTagStyle = (group: string) => ({
+    backgroundColor:
+      GRAPH_GROUP_META[group as keyof typeof GRAPH_GROUP_META]?.color ||
+      "#9ca3af",
+  });
+
   return (
     <div className="bg-gray-100 border border-gray-400 rounded-[10px] p-6 space-y-10">
       <div>
@@ -34,35 +30,49 @@ export function ConnectedKeywords() {
         <p className="text-body-6 text-gray-600">함께 언급되는 우려사항 조합</p>
       </div>
 
-      <div className="space-y-4">
-        {COMBINATIONS.map((combo, idx) => (
-          <div
-            key={idx}
-            className="bg-gray-200 border border-gray-400 rounded-[10px] p-4 space-y-3"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {combo.tags.map((tag, tIdx) => (
-                  <Fragment key={tIdx}>
-                    <span
-                      className={`px-2.5 h-8 flex items-center rounded-md text-label-1 text-gray-100 ${combo.color[tIdx]}`}
-                    >
-                      {tag}
-                    </span>
-                    {combo.tags.length - 1 !== tIdx && (
-                      <span className="text-label-1 text-gray-600">+</span>
-                    )}
-                  </Fragment>
-                ))}
+      {isLoading ? (
+        <PanelState message="자주 연결된 키워드를 불러오는 중입니다." />
+      ) : errorMessage ? (
+        <PanelState
+          message={`자주 연결된 키워드를 불러오지 못했습니다. (${errorMessage})`}
+        />
+      ) : !items || items.length === 0 ? (
+        <PanelState message="표시할 연결 키워드 데이터가 없습니다." />
+      ) : (
+        <div className="space-y-4">
+          {items.map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-gray-200 border border-gray-400 rounded-[10px] p-4 space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {[
+                    { label: item.source, group: item.sourceGroup },
+                    { label: item.target, group: item.targetGroup },
+                  ].map((tag, tagIndex) => (
+                    <Fragment key={`${tag.label}-${tagIndex}`}>
+                      <span className="inline-flex h-8 items-center justify-center gap-2 rounded-lg bg-gray-300 px-2.5 align-middle text-label-1 text-gray-900">
+                        <span
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={getTagStyle(tag.group)}
+                        />
+                        {tag.label}
+                      </span>
+                      {tagIndex === 0 && (
+                        <span className="text-label-1 text-gray-600">+</span>
+                      )}
+                    </Fragment>
+                  ))}
+                </div>
+                <Chip className="text-caption-1! bg-transparent!">
+                  {item.count}회
+                </Chip>
               </div>
-              <Chip className="text-caption-1!">{combo.count}회</Chip>
             </div>
-            <p className="text-label-3 text-gray-600">
-              이 키워드 조합이 {combo.count}회 함께 언급되었습니다
-            </p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

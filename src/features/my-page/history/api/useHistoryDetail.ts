@@ -10,9 +10,14 @@ export function useHistoryDetail(id: string) {
   return useQuery({
     queryKey: ["history", id],
     queryFn: async (): Promise<HistoryDetailResponse> => {
-      const response = await api.get<HistoryDetailResponse | { data?: HistoryDetail }>(`/history/${id}`);
+      const response = await api.get<
+        HistoryDetailResponse | { data?: HistoryDetail }
+      >(`/greenroom/tickets/${id}`);
       return ensureApiEnvelope<HistoryDetail>(
-        response as HistoryDetailResponse | HistoryDetail | { data?: HistoryDetail },
+        response as
+          | HistoryDetailResponse
+          | HistoryDetail
+          | { data?: HistoryDetail },
       );
     },
     enabled: !!id,

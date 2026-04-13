@@ -12,7 +12,9 @@ export const useAgreeTerms = () => {
     mutationFn: async (agreements: AgreeTermsRequest) => {
       return await api.post("/auth/consent", {
         ...agreements,
-        agreedPrivacy: true,
+        agreedTermsOfService: agreements.terms,
+        agreedPrivacyPolicy: agreements.privacy,
+        agreedMarketing: agreements.marketing,
       });
     },
   });
