@@ -5,16 +5,36 @@ import { NotificationItem } from "@/entities/notification/model/types";
 import { PageHeader } from "@/widgets/my-page";
 import { DotMenuIcon } from "@/shared/icons";
 
-function formatDayOffset(dayOffset: number) {
-  if (dayOffset === 0) {
-    return "오늘";
-  }
+const NOTIFICATION_CONTENT_BY_DAY_OFFSET: Record<
+  number,
+  { title: string; description: string; label: string }
+> = {
+  3: {
+    label: "3일 후",
+    title: "상담 후 3일, 마음은 좀 어떠신가요?",
+    description:
+      "팟캐스트에서 나눈 대화가 일상에 작은 힘이 되고 있는지 궁금해요",
+  },
+  7: {
+    label: "7일 후",
+    title: "나를 돌본 일주일, 참 잘하셨어요",
+    description: "일주일간의 변화를 기록해볼까요?",
+  },
+  14: {
+    label: "14일 후",
+    title: "2주 전의 고민을 기억하시나요?",
+    description: "상담 후 피어난 변화의 씨앗을 확인해보세요",
+  },
+};
 
-  if (dayOffset === 1) {
-    return "1일 전";
-  }
-
-  return `${dayOffset}일 전`;
+function getNotificationContent(dayOffset: number) {
+  return (
+    NOTIFICATION_CONTENT_BY_DAY_OFFSET[dayOffset] ?? {
+      label: `${dayOffset}일 후`,
+      title: "트래킹 알림",
+      description: "상담 이후의 변화를 확인해보세요",
+    }
+  );
 }
 
 interface NotificationListItemProps {
@@ -23,6 +43,8 @@ interface NotificationListItemProps {
 }
 
 function NotificationListItem({ item, onClick }: NotificationListItemProps) {
+  const content = getNotificationContent(item.dayOffset);
+
   return (
     <button
       type="button"
@@ -30,12 +52,11 @@ function NotificationListItem({ item, onClick }: NotificationListItemProps) {
       className="py-3 px-4 border-b border-gray-400 flex items-center justify-between gap-3 text-left cursor-pointer"
     >
       <div className="flex flex-col gap-1 min-w-0">
-        <p className="text-heading-6 text-gray-900">트래킹 알림</p>
-        <p className="text-body-6 text-gray-700 break-all">{item.ticketId}</p>
+        <p className="text-heading-6 text-gray-900">{content.title}</p>
+        <p className="text-label-3 text-gray-700 wrap-break-words">
+          {content.description}
+        </p>
       </div>
-      <span className="shrink-0 text-caption-1 text-gray-700">
-        {formatDayOffset(item.dayOffset)}
-      </span>
     </button>
   );
 }
@@ -50,7 +71,7 @@ function NotificationsListSkeleton() {
         >
           <div className="flex-1 min-w-0 flex flex-col gap-2">
             <div className="w-1/2 h-6 rounded-md skeletonUI" />
-            <div className="w-full h-5 rounded-md skeletonUI" />
+            <div className="w-full h-4 rounded-md skeletonUI" />
           </div>
         </div>
       ))}
