@@ -1,17 +1,20 @@
 "use client";
 
+import { OrganizationGraphCategory } from "@/features/admin/organization-graph";
 import DonutChart from "./DonutChartView";
+import { PanelState } from "./PanelState";
 
-const CATEGORIES = [
-  { name: "업무구조", count: 38, color: "bg-[#3B82F6]" },
-  { name: "리더십", count: 32, color: "bg-[#8B5CF6]" },
-  { name: "동료관계", count: 21, color: "bg-[#F59E0B]" },
-  { name: "커리어성장", count: 26, color: "bg-[#10B981]" },
-  { name: "조직문화제도", count: 24, color: "bg-[#EC4899]" },
-  { name: "정서적소진", count: 45, color: "bg-[#92400E]" },
-];
+interface CategoryDistributionProps {
+  categories?: OrganizationGraphCategory[];
+  isLoading?: boolean;
+  errorMessage?: string | null;
+}
 
-export function CategoryDistribution() {
+export function CategoryDistribution({
+  categories,
+  isLoading = false,
+  errorMessage,
+}: CategoryDistributionProps) {
   return (
     <div className="bg-gray-100 border border-gray-400 rounded-[10px] p-6 space-y-10">
       <div>
@@ -19,7 +22,17 @@ export function CategoryDistribution() {
         <p className="text-body-6 text-gray-600">우려사항 유형별 비율</p>
       </div>
 
-      <DonutChart categories={CATEGORIES} />
+      {isLoading ? (
+        <PanelState message="카테고리 분포를 불러오는 중입니다." />
+      ) : errorMessage ? (
+        <PanelState
+          message={`키워드 클러스터를 불러오지 못했습니다.\n잠시 후 다시 시도해주세요.`}
+        />
+      ) : !categories || categories.length === 0 ? (
+        <PanelState message="표시할 카테고리 분포 데이터가 없습니다." />
+      ) : (
+        <DonutChart categories={categories} />
+      )}
     </div>
   );
 }

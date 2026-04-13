@@ -3,6 +3,7 @@ export interface GraphNode {
   name: string;
   group?: string;
   val?: number; // Size
+  weight?: number;
 }
 
 export interface GraphLink {
