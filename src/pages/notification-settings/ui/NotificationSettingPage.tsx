@@ -17,7 +17,7 @@ const NOTIFICATION_ITEMS = [
   },
 ] as const;
 
-export function NotificationsPage() {
+export function NotificationSettingPage() {
   const router = useAppRouter();
   const user = useSessionStore((state) => state.user);
   const [notificationState, setNotificationState] = useState({
@@ -31,7 +31,7 @@ export function NotificationsPage() {
 
   return (
     <PagePanel panelClassName="gap-4">
-      <PageHeader onBack={router.back} title="알림" />
+      <PageHeader onBack={router.back} title="알림 설정" />
 
       <div className="w-full flex flex-col pt-4">
         <Divide className="bg-gray-400" />

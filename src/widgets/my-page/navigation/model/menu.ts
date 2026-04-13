@@ -10,10 +10,6 @@ export const SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
     href: '/history',
   },
   {
-    label: '알림',
-    href: '/notifications',
-  },
-  {
     label: '개인정보 보호정책',
     href: '/privacy-policy',
   },
