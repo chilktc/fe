@@ -14,3 +14,13 @@ export interface NotificationListResponse {
   message: string;
   data: NotificationListData;
 }
+
+export interface NotificationPreference {
+  enabled: boolean;
+}
+
+export interface NotificationPreferenceResponse {
+  code: string;
+  message: string;
+  data: NotificationPreference;
+}
