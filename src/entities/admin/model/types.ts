@@ -13,6 +13,7 @@ export interface AdminUsersResponse {
   users: AdminUser[];
   total: number;
   page: number;
-  pageSize: number;
+  size: number;
   totalPages: number;
+  hasNext: boolean;
 }
