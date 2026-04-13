@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { useQueryParams } from "@/shared/lib/router";
 import {
-  AdminSidebar,
+  AdminHeader,
   MindOntology,
   OrgAccountManagement,
 } from "@/widgets/admin/dashboard";
@@ -11,9 +11,9 @@ function AdminDashboardContent() {
   const activeTab = searchParams.get("tab") || "org-account";
 
   return (
-    <div className="flex h-full overflow-hidden bg-gray-50 min-w-[1300px]">
-      <AdminSidebar />
-      <main className="flex-1 overflow-y-auto p-10">
+    <div className="min-h-dvh min-w-[1300px] bg-gray-50">
+      <AdminHeader />
+      <main className="min-h-dvh px-10 py-10 pt-[104px]">
         {activeTab === "org-account" && <OrgAccountManagement />}
         {activeTab === "mind-ontology" && <MindOntology />}
       </main>
