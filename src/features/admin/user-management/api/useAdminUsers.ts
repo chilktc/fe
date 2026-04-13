@@ -157,8 +157,9 @@ export function useUpdateAdminUser() {
 
   return useMutation({
     mutationFn: async (updatedUser: AdminUser) => {
-      return await api.patch(`/admin/users/${updatedUser.id}`, {
+      return await api.put(`/admin/users/${updatedUser.id}`, {
         name: updatedUser.name,
+        email: updatedUser.email,
         department: updatedUser.department,
         position: updatedUser.position,
         role: updatedUser.role,

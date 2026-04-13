@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AdminUser } from "@/entities/admin/model/types";
 import { useUpdateAdminUser } from "@/features/admin/user-management";
-import { BaseModal } from "@/shared/ui";
+import { BaseModal, Modal } from "@/shared/ui";
 import { useSessionStore } from "@/entities/session/model/store";
 import { OrgUserFormFields } from "./OrgUserFormFields";
 
@@ -14,6 +14,8 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
   const { mutate: updateUser, isPending } = useUpdateAdminUser();
   const { user: currentUser } = useSessionStore();
   const [formData, setFormData] = useState<AdminUser>(user);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isCloseConfirmModalOpen, setIsCloseConfirmModalOpen] = useState(false);
 
   const isSelf = currentUser?.email === user?.email;
 
@@ -23,14 +25,29 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
   };
 
   const handleSubmit = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmSubmit = () => {
     updateUser(formData, {
       onSuccess: () => {
+        setIsConfirmModalOpen(false);
         onClose();
+        alert("조직원 정보가 수정되었습니다.");
       },
       onError: (err) => {
         alert(err instanceof Error ? err.message : "수정에 실패했습니다.");
       },
     });
+  };
+
+  const handleCloseRequest = () => {
+    if (isChanged) {
+      setIsCloseConfirmModalOpen(true);
+      return;
+    }
+
+    onClose();
   };
 
   const isChanged =
@@ -42,7 +59,7 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
   return (
     <BaseModal
       isOpen={true}
-      onClose={onClose}
+      onClose={handleCloseRequest}
       title="조직원 정보 수정"
       submitLabel="수정하기"
       onSubmit={handleSubmit}
@@ -89,6 +106,39 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
           />
         </div>
       </div>
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onSubmit={handleConfirmSubmit}
+        isSubmitLoading={isPending}
+        submitLabel="수정"
+        cancelLabel="취소"
+      >
+        <div className="py-4 text-center">
+          <p className="mb-2 text-heading-6 font-bold text-gray-900">
+            조직원 정보 수정
+          </p>
+          <p className="text-label-2 text-gray-700">
+            {formData.name}의 정보를 수정하시겠습니까?
+          </p>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isCloseConfirmModalOpen}
+        onClose={() => setIsCloseConfirmModalOpen(false)}
+        onSubmit={onClose}
+        submitLabel="닫기"
+        cancelLabel="계속 수정"
+      >
+        <div className="py-4 text-center">
+          <p className="mb-2 text-heading-6 font-bold text-gray-900">
+            변경사항이 있습니다
+          </p>
+          <p className="text-label-2 text-gray-700">
+            수정한 내용을 저장하지 않고 닫으시겠습니까?
+          </p>
+        </div>
+      </Modal>
     </BaseModal>
   );
 }
