@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { AdminUser } from "@/entities/admin/model/types";
 import { useUpdateAdminUser } from "@/features/admin/user-management";
@@ -28,6 +26,9 @@ export function EditUserModal({ onClose, user }: EditUserModalProps) {
     updateUser(formData, {
       onSuccess: () => {
         onClose();
+      },
+      onError: (err) => {
+        alert(err instanceof Error ? err.message : "수정에 실패했습니다.");
       },
     });
   };
