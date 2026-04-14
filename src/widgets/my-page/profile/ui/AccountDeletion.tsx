@@ -13,14 +13,30 @@ interface AccountDeletionProps {
 
 export function AccountDeletion({ user, onBack }: AccountDeletionProps) {
   const [emailInput, setEmailInput] = useState("");
+  const [hasTriedDelete, setHasTriedDelete] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mutate, isPending } = useWithdraw();
 
-  const isEmailMatched = emailInput === user.email;
-  const isDeleteDisabled = !isEmailMatched;
+  const trimmedEmailInput = emailInput.trim();
+  const isEmailEmpty = trimmedEmailInput.length === 0;
+  const isEmailMatched = trimmedEmailInput === user.email;
+  const emailValidationMessage =
+    hasTriedDelete && !isEmailEmpty && !isEmailMatched
+      ? "이메일이 일치하지 않습니다. 다시 입력해주세요."
+      : null;
+  const isDeleteDisabled = isPending || isEmailEmpty;
 
   const handleActualDelete = () => {
     mutate();
+  };
+
+  const handleDeleteClick = () => {
+    setHasTriedDelete(true);
+
+    if (isEmailEmpty) return;
+    if (!isEmailMatched) return;
+
+    setIsModalOpen(true);
   };
 
   return (
@@ -59,17 +75,27 @@ export function AccountDeletion({ user, onBack }: AccountDeletionProps) {
         <input
           type="email"
           value={emailInput}
-          onChange={(e) => setEmailInput(e.target.value)}
+          onChange={(e) => {
+            if (hasTriedDelete) {
+              setHasTriedDelete(false);
+            }
+            setEmailInput(e.target.value);
+          }}
           className="w-full text-heading-6 text-gray-900 border border-gray-400 rounded-[10px] p-4 focus:outline-none focus:border-primary-400 transition-colors"
           placeholder="이메일을 입력하세요"
         />
+        {emailValidationMessage ? (
+          <p className="text-body-6 text-accent-red px-0.5">
+            {emailValidationMessage}
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-auto w-full pt-6">
         <Button
           disabled={isDeleteDisabled}
           className="w-full"
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleDeleteClick}
         >
           계정 삭제
         </Button>
