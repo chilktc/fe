@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useAppRouter } from "@/shared/lib/router";
 import { SeeMoreIcon, DeleteIcon } from "@/shared/icons";
-import { HistoryListItem } from "@/entities/history/model/types";
+import { HistoryTicketListItem } from "@/entities/history/model/types";
 import { Modal } from "@/shared/ui";
 import { useDeleteHistory } from "@/features/my-page/history";
 
 interface HistoryItemProps {
-  history: HistoryListItem;
+  history: HistoryTicketListItem;
 }
 
 export function HistoryItem({ history }: HistoryItemProps) {
@@ -26,7 +26,7 @@ export function HistoryItem({ history }: HistoryItemProps) {
   );
 
   const handleDelete = () => {
-    deleteHistory(history.id, {
+    deleteHistory(history.ticketId, {
       onSuccess: () => {
         setIsModalOpen(false);
       },
@@ -34,7 +34,7 @@ export function HistoryItem({ history }: HistoryItemProps) {
   };
 
   const handleNavigateDetail = () => {
-    router.push(`/history/${history.id}`);
+    router.push(`/history/${history.ticketId}`);
   };
 
   return (
@@ -43,7 +43,7 @@ export function HistoryItem({ history }: HistoryItemProps) {
       className="py-2.5 px-4 border-b border-gray-400 flex items-center justify-between gap-1 cursor-pointer"
     >
       <div>
-        <p className="text-heading-6 text-gray-900">{history.title}</p>
+        <p className="text-heading-6 text-gray-900">{history.name}</p>
         <p className="text-label-3 text-gray-700">{formattedDate}</p>
       </div>
       <div className="w-15 flex justify-end">

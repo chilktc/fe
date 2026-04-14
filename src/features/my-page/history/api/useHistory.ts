@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/shared/api/base";
 import { ensureApiEnvelope } from "@/shared/api/response";
 import {
-  HistoryListItem,
+  HistoryListData,
   HistoryListResponse,
 } from "@/entities/history/model/types";
 
@@ -11,13 +11,14 @@ export function useHistory() {
     queryKey: ["history"],
     queryFn: async (): Promise<HistoryListResponse> => {
       const response = await api.get<
-        HistoryListResponse | { data?: HistoryListItem[] }
+        HistoryListResponse | { data?: HistoryListData }
       >("/greenroom/tickets/me");
-      return ensureApiEnvelope<HistoryListItem[]>(
+
+      return ensureApiEnvelope<HistoryListData>(
         response as
           | HistoryListResponse
-          | HistoryListItem[]
-          | { data?: HistoryListItem[] },
+          | HistoryListData
+          | { data?: HistoryListData },
       );
     },
   });

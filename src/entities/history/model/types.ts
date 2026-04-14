@@ -7,6 +7,18 @@ export interface HistoryListItem {
   imageUrl: string;
 }
 
+export interface HistoryTicketListItem {
+  ticketId: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface HistoryListData {
+  items: HistoryTicketListItem[];
+  hasNext: boolean;
+  nextCursorCreatedAt: string | null;
+}
+
 export interface TrackingEvent {
   date: string;
   isResolved: boolean;
@@ -29,7 +41,7 @@ export interface HistoryDetail extends HistoryListItem {
 export interface HistoryListResponse {
   code: string;
   message: string;
-  data: HistoryListItem[];
+  data: HistoryListData;
 }
 
 export interface HistoryDetailResponse {
