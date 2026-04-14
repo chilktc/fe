@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import { AuthGuard } from "@/features/auth/ui/auth-guard";
 import { AdminGuard } from "@/features/auth/ui/admin-guard";
 import { AdminDashboardPage } from "@/pages/admin/dashboard/ui/AdminDashboardPage";
@@ -11,6 +11,7 @@ import { HomePage } from "@/pages/home/ui/HomePage";
 import { AccountPage } from "@/pages/my-page/account/ui/AccountPage";
 import { HistoryDetailPage } from "@/pages/my-page/history-detail/ui/HistoryDetailPage";
 import { HistoryPage } from "@/pages/my-page/history/ui/HistoryPage";
+import { NotFoundPage } from "@/pages/not-found/ui/NotFoundPage";
 import { NotificationSettingPage } from "@/pages/notification-settings/ui/NotificationSettingPage";
 import { NotificationsPage } from "@/pages/notifications/ui/NotificationsPage";
 import { PrivacyPolicyPage } from "@/pages/my-page/privacy-policy/ui/PrivacyPolicyPage";
@@ -38,16 +39,13 @@ function AdminProtectedLayout() {
   );
 }
 
-function NotFoundPage() {
-  return <Navigate to="/" replace />;
-}
-
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/login/terms" element={<AuthTermsPage />} />
       <Route path="/oauth/callback/google" element={<OAuthCallbackPage />} />
+      <Route path="/404" element={<NotFoundPage />} />
       {/* <Route path="/test-login" element={<TestLoginPage />} /> */}
       {/* <Route path="/test-signup" element={<TestSignupPage />} /> */}
       {/* <Route path="/test-refresh" element={<TestRefreshPage />} /> */}
