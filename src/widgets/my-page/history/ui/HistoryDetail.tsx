@@ -41,7 +41,7 @@ export function HistoryDetail({ id }: HistoryDetailProps) {
     );
   }
 
-  const formattedDate = new Date(history.createdAt).toLocaleDateString(
+  const formattedDate = new Date(history.ticket.createdAt).toLocaleDateString(
     "ko-KR",
     {
       year: "numeric",
@@ -62,7 +62,7 @@ export function HistoryDetail({ id }: HistoryDetailProps) {
       <div className="flex flex-col gap-4 h-full">
         <PageHeader
           onBack={onBack}
-          title={history.title}
+          title={history.ticket.name}
           eyebrow={formattedDate}
         />
 
@@ -86,11 +86,11 @@ export function HistoryDetail({ id }: HistoryDetailProps) {
         {/* Tab Content - Scrollable area */}
         <div className="flex-1 overflow-y-auto scrollbar-hide">
           {activeTab === "ticket" && <TicketTab ticket={history.ticket} />}
-          {activeTab === "podcast" && <PodcastTab history={history} />}
+          {activeTab === "podcast" && <PodcastTab podcast={history.podcast} />}
           {activeTab === "tracking" && (
             <TrackingTab
               tracking={history.tracking}
-              createdAt={history.createdAt}
+              createdAt={history.ticket.createdAt}
             />
           )}
         </div>

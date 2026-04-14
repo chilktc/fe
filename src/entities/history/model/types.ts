@@ -19,23 +19,40 @@ export interface HistoryListData {
   nextCursorCreatedAt: string | null;
 }
 
-export interface TrackingEvent {
-  date: string;
-  isResolved: boolean;
-  summary: string;
+export interface HistoryTicketDetail {
+  id: string;
+  userId: string;
+  name: string;
+  situation: string;
+  thought: string;
+  action: string;
+  colleagueReaction: string;
+  createdAt: string;
 }
 
-export interface HistoryDetail extends HistoryListItem {
-  ticket: {
-    situation: string;
-    thought: string;
-    action: string;
-    colleagueReaction: string;
-  };
-  podcast: {
-    story: string;
-  };
-  tracking: TrackingEvent[];
+export interface HistoryPodcastDetail {
+  id: string;
+  sessionId: string;
+  imageUrl: string;
+  text: string;
+  createdAt: string;
+}
+
+export interface HistoryTrackingEvent {
+  status: "RESOLVED" | "UNRESOLVED";
+  trackedAt: string;
+  dDay: string;
+  note: string | null;
+  resolvedHelpType: string | null;
+  resolvedStateType: string | null;
+  unresolvedBlockerType: string | null;
+  unresolvedNeedType: string | null;
+}
+
+export interface HistoryDetailData {
+  ticket: HistoryTicketDetail;
+  podcast: HistoryPodcastDetail;
+  tracking: HistoryTrackingEvent[];
 }
 
 export interface HistoryListResponse {
@@ -47,5 +64,5 @@ export interface HistoryListResponse {
 export interface HistoryDetailResponse {
   code: string;
   message: string;
-  data: HistoryDetail;
+  data: HistoryDetailData;
 }
