@@ -1,9 +1,7 @@
 export interface GreenroomDetail {
-  id: string;
-  imageUrl: string;
-  title: string;
   keywords: string[];
   description: string;
+  createdAt: string;
 }
 
 export interface GreenroomResponse {
@@ -13,7 +11,6 @@ export interface GreenroomResponse {
 }
 
 export interface PodcastChoiceDetail {
-  id: string;
   imageUrl: string;
   type: string[];
   title: string;
@@ -27,12 +24,10 @@ export interface PodcastChoiceResponse {
 }
 
 export interface PodcastDetail {
-  id: string;
   imageUrl: string;
-  type: string[];
-  title: string;
-  description: string;
-  story: string;
+  sessionId: string;
+  text: string;
+  createdAt: string;
 }
 
 export interface PodcastResponse {

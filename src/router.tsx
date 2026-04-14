@@ -62,12 +62,9 @@ export function AppRoutes() {
         <Route path="issuance" element={<IssuancePage />} />
         <Route path="history" element={<HistoryPage />} />
         <Route path="history/:id" element={<HistoryDetailPage />} />
-        <Route path="greenroom/:id" element={<GreenroomPage />} />
-        <Route
-          path="greenroom/:id/podcast-choice"
-          element={<PodcastChoicePage />}
-        />
-        <Route path="greenroom/:id/podcast" element={<PodcastPage />} />
+        <Route path="greenroom" element={<GreenroomPage />} />
+        <Route path="greenroom/podcast-choice" element={<PodcastChoicePage />} />
+        <Route path="greenroom/podcast" element={<PodcastPage />} />
         <Route path="tracking/:id" element={<TrackingPage />} />
         <Route
           path="tracking/complete/:id"

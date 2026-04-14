@@ -28,5 +28,7 @@ export interface Ticket {
 export interface CreateTicketResponse {
   code: string;
   message: string;
-  data: Ticket;
+  data: {
+    sessionId: string;
+  };
 }

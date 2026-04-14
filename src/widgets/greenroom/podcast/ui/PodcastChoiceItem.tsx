@@ -34,8 +34,8 @@ export function PodcastChoiceItem({
       <div className={`${isSelected && "bg-primary-200"}`}>
         <div className="py-5 px-4 space-y-[5px]">
           <div className="flex flex-wrap gap-2">
-            {data.type.map((type) => (
-              <Chip key={type} selected={isSelected}>
+            {data.type.map((type, index) => (
+              <Chip key={`${type}-${index}`} selected={isSelected}>
                 {type}
               </Chip>
             ))}

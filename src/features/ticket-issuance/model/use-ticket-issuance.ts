@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useAppRouter } from "@/shared/lib/router";
 import { useSessionStore } from "@/entities/session/model/store";
+import { useGreenroomSessionStore } from "@/entities/greenroom/model/store";
 import { useCreateTicket } from "./use-create-ticket";
 import { ChatMessage } from "@/entities/ticket/model/types";
 import { QUESTIONS, GUIDES } from "@/entities/ticket/model/constants";
@@ -8,6 +9,10 @@ import { QUESTIONS, GUIDES } from "@/entities/ticket/model/constants";
 export function useTicketIssuance() {
   const router = useAppRouter();
   const user = useSessionStore((state) => state.user);
+  const setSessionId = useGreenroomSessionStore((state) => state.setSessionId);
+  const clearGreenroomSession = useGreenroomSessionStore(
+    (state) => state.clearGreenroomSession,
+  );
   const nickname = user?.nickname || "ㅇㅇㅇ";
 
   const { mutateAsync, isPending: isSubmitting } = useCreateTicket();
@@ -73,15 +78,24 @@ export function useTicketIssuance() {
 
     try {
       const response = await mutateAsync(answers);
+      const sessionId = response.data.data?.sessionId;
 
-      // 성공 시 /greenroom/{id}로 이동
-      if (response?.data?.id) {
-        router.push(`/greenroom/${response.data.id}`);
+      if (sessionId) {
+        clearGreenroomSession();
+        setSessionId(sessionId);
+        router.push("/greenroom");
       }
     } catch (error) {
       console.error("Failed to submit ticket", error);
     }
-  }, [answers, isComplete, mutateAsync, router]);
+  }, [
+    answers,
+    clearGreenroomSession,
+    isComplete,
+    mutateAsync,
+    router,
+    setSessionId,
+  ]);
 
   return {
     step,
