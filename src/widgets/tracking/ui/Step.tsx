@@ -10,6 +10,12 @@ interface StepProps {
 }
 
 export function Step({ data, selection, onSelect }: StepProps) {
+  const formattedDate = new Date(data.createdAt).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div className="space-y-8 px-4 pb-3">
       <h2 className="text-heading-3 text-gray-900">
@@ -19,17 +25,17 @@ export function Step({ data, selection, onSelect }: StepProps) {
         <div className="bg-gray-200 rounded-2xl border border-gray-400 p-3 space-y-3">
           <div>
             <div className="flex justify-between items-center">
-              <span className="text-caption-1 text-gray-800">{data.date}</span>
+              <span className="text-caption-1 text-gray-800">
+                {formattedDate}
+              </span>
               <div className="flex gap-[5px]">
-                {data.type.map((t) => (
+                {data.keywords.map((t) => (
                   <Chip key={t} selected>
                     {t}
                   </Chip>
                 ))}
               </div>
             </div>
-
-            <h3 className="text-heading-6 text-gray-900">{data.title}</h3>
           </div>
           <p className="text-body-5 text-gray-800 whitespace-pre-wrap">
             {data.description}

@@ -19,8 +19,6 @@ import { TermsPage as MyPageTermsPage } from "@/pages/my-page/terms/ui/TermsPage
 import { PodcastChoicePage } from "@/pages/greenroom/podcast-choice/ui/PodcastChoicePage";
 import { PodcastPage } from "@/pages/greenroom/podcast/ui/PodcastPage";
 import { IssuancePage } from "@/pages/ticket/issuance/ui/IssuancePage";
-import { TrackingCompletePage } from "@/pages/tracking/complete/ui/TrackingCompletePage";
-import { TrackingFailPage } from "@/pages/tracking/fail/ui/TrackingFailPage";
 import { TrackingPage } from "@/pages/tracking/ui/TrackingPage";
 
 function ProtectedLayout() {
@@ -64,11 +62,6 @@ export function AppRoutes() {
         <Route path="greenroom/podcast-choice" element={<PodcastChoicePage />} />
         <Route path="greenroom/podcast" element={<PodcastPage />} />
         <Route path="tracking/:id" element={<TrackingPage />} />
-        <Route
-          path="tracking/complete/:id"
-          element={<TrackingCompletePage />}
-        />
-        <Route path="tracking/fail/:id" element={<TrackingFailPage />} />
         <Route path="account" element={<AccountPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route

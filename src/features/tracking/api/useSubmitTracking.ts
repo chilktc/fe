@@ -9,7 +9,7 @@ export const useSubmitTracking = () => {
   return useMutation({
     mutationFn: async (data: SubmitTrackingRequest) => {
       return api.post<SubmitTrackingResponse>(
-        `/greenroom/tickets/${data.id}/tracking`,
+        `/greenroom/tickets/${data.ticketId}/tracking`,
         data,
       );
     },

@@ -9,7 +9,18 @@ import type {
 import { useSessionStore } from "@/entities/session/model/store";
 
 interface ApiErrorResponse {
+  code?: string;
   message?: string;
+}
+
+export class ApiError extends Error {
+  code?: string;
+
+  constructor(message: string, code?: string) {
+    super(message);
+    this.name = "ApiError";
+    this.code = code;
+  }
 }
 
 interface RetryConfig extends InternalAxiosRequestConfig {
@@ -134,8 +145,9 @@ const handleAuthError = async (
   }
 
   const message = error.response?.data?.message || error.message || "API Error";
+  const code = error.response?.data?.code;
 
-  return Promise.reject(new Error(message));
+  return Promise.reject(new ApiError(message, code));
 };
 
 const getResponseData = (response: AxiosResponse) => response.data;
