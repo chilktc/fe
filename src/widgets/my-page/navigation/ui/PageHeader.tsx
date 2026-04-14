@@ -18,15 +18,21 @@ export function PageHeader({
     <header className="flex items-center justify-between w-full">
       <button
         onClick={onBack}
-        className="w-10 h-10 flex items-center justify-center border border-gray-700/50 rounded-full cursor-pointer"
+        className="shrink-0 w-10 h-10 flex items-center justify-center border border-gray-700/50 rounded-full cursor-pointer"
       >
         <ChevronLeftIcon />
       </button>
-      <div className="flex flex-col items-center">
-        {eyebrow && <p className="text-caption-1 text-gray-800">{eyebrow}</p>}
-        <h1 className="text-heading-5 text-gray-900">{title}</h1>
+      <div className="min-w-0 flex-1 flex flex-col items-center px-3">
+        {eyebrow && (
+          <p className="max-w-full truncate text-caption-1 text-gray-800">
+            {eyebrow}
+          </p>
+        )}
+        <h1 className="max-w-full truncate text-heading-5 text-gray-900">
+          {title}
+        </h1>
       </div>
-      {rightAction ?? <div className="w-10" />}
+      <div className="shrink-0 w-10 flex justify-end">{rightAction}</div>
     </header>
   );
 }

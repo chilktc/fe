@@ -1,7 +1,7 @@
 import { useAppRouter } from "@/shared/lib/router";
 import { HistoryItem } from "./HistoryItem";
 import { useHistory } from "@/features/my-page/history";
-import { HistoryListItem } from "@/entities/history/model/types";
+import { HistoryTicketListItem } from "@/entities/history/model/types";
 import { PageHeader } from "@/widgets/my-page";
 
 export function HistoryList() {
@@ -23,15 +23,15 @@ export function HistoryList() {
     );
   }
 
-  const historyItems: HistoryListItem[] = data?.data || [];
+  const historyItems: HistoryTicketListItem[] = data?.data?.items || [];
 
   return (
     <div className="w-full flex flex-col flex-1 gap-5">
       <PageHeader onBack={onBack} title="팟캐스트 기록" />
       <div className="flex flex-col">
         {historyItems.length > 0 ? (
-          historyItems.map((item: HistoryListItem) => (
-            <HistoryItem key={item.id} history={item} />
+          historyItems.map((item: HistoryTicketListItem) => (
+            <HistoryItem key={item.ticketId} history={item} />
           ))
         ) : (
           <div className="flex justify-center py-10">
