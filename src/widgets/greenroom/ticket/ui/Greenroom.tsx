@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "@/shared/ui/Image";
+import { useGreenroomSessionStore } from "@/entities/greenroom/model/store";
 import { GreenroomDetail } from "@/entities/greenroom/model/types";
 import { Button } from "@/shared/ui";
 import { useAppRouter } from "@/shared/lib/router";
@@ -11,6 +12,9 @@ interface GreenroomProps {
 
 export function Greenroom({ data }: GreenroomProps) {
   const router = useAppRouter();
+  const sessionId = useGreenroomSessionStore((state) => state.sessionId);
+  const imageNumber = ((sessionId?.charCodeAt(0) || 0) % 4) + 1;
+  const illustrationSrc = `/assets/images/greenroom-illustration${imageNumber}.png`;
 
   const handleNext = () => {
     router.push("/greenroom/podcast-choice");
@@ -30,9 +34,9 @@ export function Greenroom({ data }: GreenroomProps) {
         </div>
 
         {/* 페르소나별 이미지 */}
-        <div className="relative aspect-square w-[223px] h-[223px] rounded-[32px] overflow-hidden shadow-[0_0_30px_10px_rgba(153,103,146,0.3)]">
+        <div className="relative aspect-square w-55 h-55 rounded-4xl overflow-hidden shadow-[0_0_30px_10px_rgba(153,103,146,0.3)]">
           <Image
-            src="/assets/images/greenroom-illustration.png"
+            src={illustrationSrc}
             alt="Greenroom"
             fill
             className="object-cover"
@@ -41,7 +45,7 @@ export function Greenroom({ data }: GreenroomProps) {
         </div>
 
         {/* AI 요약 */}
-        <div className="bg-gray-200 rounded-[10px] py-5 px-4 border border-gray-400 flex flex-col gap-2">
+        <div className="w-full bg-gray-200 rounded-[10px] py-5 px-4 border border-gray-400 flex flex-col gap-2">
           <div>
             <div className="w-[16px] h-[3px] bg-primary-400 rounded-full" />
             <h3 className="text-gray-900 text-heading-5">Bloom AI 💭</h3>
