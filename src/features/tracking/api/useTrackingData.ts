@@ -6,7 +6,9 @@ export function useTrackingData(id: string) {
   return useQuery({
     queryKey: ["tracking", id],
     queryFn: async (): Promise<TrackingResponse> => {
-      return api.get<TrackingResponse>(`/greenroom/tickets/${id}/tracking`);
+      return api.get<TrackingResponse>(
+        `/greenroom/ai/tickets/mind-frequencies/${id}`,
+      );
     },
     enabled: !!id,
   });
