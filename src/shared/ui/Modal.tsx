@@ -51,16 +51,25 @@ export function Modal({
   const handleCancel = onCancel || onClose;
 
   return createPortal(
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center p-4"
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Overlay */}
       <div
         className={`absolute inset-0 bg-gray-100/40 transition-opacity duration-300 ${overlayClassName}`}
-        onClick={() => closeOnOverlayClick && onClose()}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (closeOnOverlayClick) {
+            onClose();
+          }
+        }}
       />
 
       {/* Modal Content */}
       <div
         className={`relative w-full max-w-sm transform overflow-hidden rounded-[10px] bg-gray-200 p-4 transition-all duration-300 scale-100 opacity-100 border border-gray-400 ${containerClassName}`}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col gap-5">
           {/* Main Content Area */}
