@@ -1,8 +1,7 @@
-export function ChevronLeftIcon() {
+export function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg
-      width="13"
-      height="23"
+      className={`w-[13px] h-[23px] pr-[1px] ${className}`}
       viewBox="0 0 13 23"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -20,6 +19,7 @@ export function ChevronLeftIcon() {
 export function ChevronRightIcon({ className }: { className?: string }) {
   return (
     <svg
+      className={className}
       width="18"
       height="18"
       viewBox="0 0 18 18"
@@ -33,7 +33,6 @@ export function ChevronRightIcon({ className }: { className?: string }) {
           strokeWidth="1.2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={className}
         />
       </g>
     </svg>

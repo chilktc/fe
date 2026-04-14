@@ -22,19 +22,24 @@ export function ProfileEdit({ user, onDeleteClick }: ProfileEditProps) {
     reset: resetUpdateError,
   } = useUpdateProfile();
   const trimmedNickname = nickname.trim();
+  const isNicknameEmpty = trimmedNickname.length === 0;
   const isNicknameLengthValid =
     trimmedNickname.length >= 2 && trimmedNickname.length <= 15;
   const nicknameValidationMessage =
-    hasTriedSubmit && trimmedNickname.length > 0 && !isNicknameLengthValid
+    hasTriedSubmit && !isNicknameEmpty && !isNicknameLengthValid
       ? "사용자 이름은 2자 이상 15자 이하만 가능합니다."
       : null;
   const isNicknameChanged = trimmedNickname !== user.nickname;
   const isNicknameDisabled =
-    !isNicknameChanged || !isNicknameLengthValid || isPending;
+    isPending || isNicknameEmpty || !isNicknameChanged;
 
   const handleSave = () => {
     setHasTriedSubmit(true);
-    if (isNicknameDisabled) return;
+
+    if (isNicknameEmpty) return;
+    if (!isNicknameChanged) return;
+    if (!isNicknameLengthValid) return;
+
     mutate(
       { nickname: trimmedNickname },
       {
