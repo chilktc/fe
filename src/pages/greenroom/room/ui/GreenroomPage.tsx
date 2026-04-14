@@ -1,14 +1,16 @@
-import { useParams } from "react-router-dom";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useGreenroom } from "@/features/greenroom";
-import { Button, Page } from "@/shared/ui";
-import { Greenroom, GreenroomLoading } from "@/widgets/greenroom";
-import { ErrorIcon } from "@/shared/icons/error-icon";
+import { Page } from "@/shared/ui";
+import {
+  Greenroom,
+  GreenroomFallback,
+  GreenroomLoading,
+} from "@/widgets/greenroom";
 
 export function GreenroomPage() {
-  const { id = "" } = useParams<{ id: string }>();
   const user = useSessionStore((state) => state.user);
-  const { data, isError, isLoading, refetch, isFetching } = useGreenroom(id);
+  const { data, isError, isLoading, refetch, isFetching, errorMessage } =
+    useGreenroom();
 
   if (!user) {
     return null;
@@ -27,6 +29,7 @@ export function GreenroomPage() {
               void refetch();
             }}
             isRetrying={isFetching}
+            description={errorMessage ?? "잠시만 기다려 주세요"}
           />
         ) : null}
         {!isLoading && hasGreenroomData ? (
@@ -34,31 +37,5 @@ export function GreenroomPage() {
         ) : null}
       </main>
     </Page>
-  );
-}
-
-interface GreenroomFallbackProps {
-  onRetry: () => void;
-  isRetrying: boolean;
-}
-
-function GreenroomFallback({ onRetry, isRetrying }: GreenroomFallbackProps) {
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center px-3 py-5 text-center">
-      <div className="flex-1 flex flex-col justify-center items-center gap-1">
-        <ErrorIcon className="w-8! h-8!" />
-        <h2 className="text-gray-900 text-heading-3">
-          시스템에 잠깐 문제가 생겼어요
-        </h2>
-        <p className="text-gray-800 text-body-6">잠시만 기다려 주세요</p>
-      </div>
-      <Button
-        className="mt-6 w-full h-14 text-button-1"
-        onClick={onRetry}
-        isLoading={isRetrying}
-      >
-        새로고침하기
-      </Button>
-    </div>
   );
 }

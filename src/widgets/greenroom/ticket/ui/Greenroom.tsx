@@ -3,7 +3,7 @@
 import Image from "@/shared/ui/Image";
 import { GreenroomDetail } from "@/entities/greenroom/model/types";
 import { Button } from "@/shared/ui";
-import { useAppRouter, usePathname } from "@/shared/lib/router";
+import { useAppRouter } from "@/shared/lib/router";
 
 interface GreenroomProps {
   data: GreenroomDetail;
@@ -11,14 +11,12 @@ interface GreenroomProps {
 
 export function Greenroom({ data }: GreenroomProps) {
   const router = useAppRouter();
-  const pathname = usePathname();
 
   const handleNext = () => {
-    router.push(`${pathname}/podcast-choice`);
+    router.push("/greenroom/podcast-choice");
   };
 
   return (
-    // TODO 높이가 높을 때 빈 화면 어떻게 처리할지
     <div className="flex-1 flex flex-col gap-8 py-6 px-4">
       <div className="flex-1 flex flex-col gap-10 items-center">
         {/* Header */}
@@ -34,7 +32,7 @@ export function Greenroom({ data }: GreenroomProps) {
         {/* 페르소나별 이미지 */}
         <div className="relative aspect-square w-[223px] h-[223px] rounded-[32px] overflow-hidden shadow-[0_0_30px_10px_rgba(153,103,146,0.3)]">
           <Image
-            src={data.imageUrl}
+            src="/assets/images/greenroom-illustration.png"
             alt="Greenroom"
             fill
             className="object-cover"
@@ -46,11 +44,14 @@ export function Greenroom({ data }: GreenroomProps) {
         <div className="bg-gray-200 rounded-[10px] py-5 px-4 border border-gray-400 flex flex-col gap-2">
           <div>
             <div className="w-[16px] h-[3px] bg-primary-400 rounded-full" />
-            <h3 className="text-gray-900 text-heading-5">{data.title}</h3>
+            <h3 className="text-gray-900 text-heading-5">Bloom AI 💭</h3>
           </div>
           <div className="flex flex-wrap gap-2">
-            {data.keywords.map((tag) => (
-              <span key={tag} className="text-primary-400 text-label-2">
+            {data.keywords.map((tag, index) => (
+              <span
+                key={`${tag}-${index}`}
+                className="text-primary-400 text-label-2"
+              >
                 #{tag}
               </span>
             ))}

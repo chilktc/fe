@@ -1,9 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/shared/api/base";
 import {
   CreateTicketRequest,
   CreateTicketResponse,
 } from "@/entities/ticket/model/types";
+import { api } from "@/shared/api/base";
+
+interface CreateTicketResult {
+  data: CreateTicketResponse;
+}
 
 export const useCreateTicket = () => {
   return useMutation({
@@ -15,7 +19,12 @@ export const useCreateTicket = () => {
         ...(answers[3] !== "건너뛰기" && { colleagueReaction: answers[3] }),
       };
 
-      return api.post<CreateTicketResponse>("/greenroom/tickets", body);
+      return {
+        data: await api.post<CreateTicketResponse, CreateTicketRequest>(
+          "/greenroom/ai/tickets",
+          body,
+        ),
+      } satisfies CreateTicketResult;
     },
   });
 };
