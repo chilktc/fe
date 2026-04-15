@@ -1,9 +1,11 @@
 export const QUESTIONS = [
   "그때 상황이 어땠나요?",
-  "{nickname}님은 어떤 생각을 하셨나요?",
-  "{nickname}님은 어떻게 행동 또는 반응하셨나요?",
+  "{nickname}은 어떤 생각을 하셨나요?",
+  "{nickname}은 어떻게 행동 또는 반응하셨나요?",
   "주변의 반응은 어땠나요?",
 ];
+
+export const ANSWER_MAX_LENGTH = 300;
 
 export const GUIDES = [
   "언제, 어디서, 누구와 어떤 일이 있었는지 적어주세요\n(예시: 친하게 지내던 동료가 제 이야기를 다른 사람들에게 전한 것을 알게 됐습니다)",

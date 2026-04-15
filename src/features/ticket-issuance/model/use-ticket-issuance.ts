@@ -13,7 +13,7 @@ export function useTicketIssuance() {
   const clearGreenroomSession = useGreenroomSessionStore(
     (state) => state.clearGreenroomSession,
   );
-  const nickname = user?.nickname || "ㅇㅇㅇ";
+  const nickname = user?.nickname || "사용자" + "님";
 
   const { mutateAsync, isPending: isSubmitting } = useCreateTicket();
 
