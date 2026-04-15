@@ -5,27 +5,22 @@ import { Button } from "@/shared/ui";
 import { useAppRouter } from "@/shared/lib/router";
 import { PodcastChoiceItem } from "./PodcastChoiceItem";
 import { PodcastChoiceItemSkeleton } from "./PodcastChoiceItemSkeleton";
-import { PODCAST_CHOICES } from "@/entities/greenroom/model/constants";
-import { PodcastChoiceDetail } from "@/entities/greenroom/model/types";
+import { getPodcastChoicesBySessionId } from "@/entities/greenroom/model/constants";
 import { useGreenroomSessionStore } from "@/entities/greenroom/model/store";
 import { useStorySelection } from "@/features/greenroom";
 
-const PODCAST_CHOICE_COUNT = 2;
-
-function pickRandomChoices(choices: PodcastChoiceDetail[]) {
-  return [...choices]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, PODCAST_CHOICE_COUNT);
-}
-
 export function PodcastChoice() {
   const router = useAppRouter();
+  const sessionId = useGreenroomSessionStore((state) => state.sessionId);
   const mindFrequency = useGreenroomSessionStore((state) => state.mindFrequency);
   const setSelectedPodcastChoice = useGreenroomSessionStore(
     (state) => state.setSelectedPodcastChoice,
   );
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
-  const [choices] = useState(() => pickRandomChoices(PODCAST_CHOICES));
+  const choices = useMemo(
+    () => getPodcastChoicesBySessionId(sessionId),
+    [sessionId],
+  );
   const { mutateAsync, isPending } = useStorySelection();
 
   const selectedChoice = useMemo(
