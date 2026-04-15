@@ -27,7 +27,7 @@ export function AccountDeletion({ user, onBack }: AccountDeletionProps) {
   const isDeleteDisabled = isPending || isEmailEmpty;
 
   const handleActualDelete = () => {
-    mutate();
+    mutate({ email: trimmedEmailInput });
   };
 
   const handleDeleteClick = () => {

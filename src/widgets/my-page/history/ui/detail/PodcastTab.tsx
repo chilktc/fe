@@ -16,11 +16,12 @@ export function PodcastTab({ podcast }: PodcastTabProps) {
       weekday: "short",
     },
   );
+  const hasImage = Boolean(podcast.imageUrl?.trim());
 
   return (
     <div className="flex flex-col gap-5 pt-4 pb-8">
-      <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-gray-200 shadow-lg border border-gray-300">
-        {podcast.imageUrl && (
+      {hasImage && (
+        <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-gray-200 shadow-lg border border-gray-300">
           <Image
             src={podcast.imageUrl}
             alt="팟캐스트 이미지"
@@ -28,8 +29,8 @@ export function PodcastTab({ podcast }: PodcastTabProps) {
             className="object-cover"
             sizes="100vw"
           />
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="flex items-center justify-between">
         <div className="space-y-1">

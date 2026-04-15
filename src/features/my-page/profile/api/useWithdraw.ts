@@ -2,13 +2,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSessionStore } from "@/entities/session/model/store";
 import { api } from "@/shared/api/base";
 
+interface WithdrawPayload {
+  email: string;
+}
+
 export function useWithdraw() {
   const queryClient = useQueryClient();
   const clearSession = useSessionStore((state) => state.clearSession);
 
   return useMutation({
-    mutationFn: async () => {
-      return api.delete("/auth/withdraw");
+    mutationFn: async ({ email }: WithdrawPayload) => {
+      return api.delete("/auth/me", {
+        data: { email },
+      });
     },
     onSettled: () => {
       queryClient.clear();
