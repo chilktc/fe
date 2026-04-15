@@ -40,19 +40,14 @@ export function TicketIssuance() {
       </Modal>
 
       {/* 채팅 영역 */}
-      <TicketIssuanceChat history={history} />
+      <TicketIssuanceChat
+        history={history}
+        shouldShowSkip={!isComplete && step === 3 && !isWaiting}
+        onSkip={() => handleSendMessage("건너뛰기")}
+      />
 
       {/* 커스텀 인풋 영역 */}
       <div className="relative flex flex-col gap-2 pt-2 pb-4 shrink-0">
-        {!isComplete && step === 3 && !isWaiting && (
-          <Button
-            onClick={() => handleSendMessage("건너뛰기")}
-            disabled={isWaiting}
-            className="absolute -top-10 right-0 text-label-1 transition-colors py-2 px-3.5 h-auto! rounded-3xl!"
-          >
-            건너뛰기
-          </Button>
-        )}
         {!isComplete ? (
           <TicketIssuanceInput
             onSendMessage={handleSendMessage}

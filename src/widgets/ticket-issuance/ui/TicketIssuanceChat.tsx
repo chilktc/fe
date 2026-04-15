@@ -4,9 +4,15 @@ import { ChatMessage } from "@/entities/ticket/model/types";
 
 interface TicketIssuanceChatProps {
   history: ChatMessage[];
+  shouldShowSkip: boolean;
+  onSkip: () => void;
 }
 
-export function TicketIssuanceChat({ history }: TicketIssuanceChatProps) {
+export function TicketIssuanceChat({
+  history,
+  shouldShowSkip,
+  onSkip,
+}: TicketIssuanceChatProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // 새로운 메시지가 오거나 컨테이너 크기가 변하면(textarea 확장 등) 하단으로 스크롤
@@ -49,6 +55,8 @@ export function TicketIssuanceChat({ history }: TicketIssuanceChatProps) {
             key={msg.id}
             message={msg}
             isLatestSystem={isLatestSystem}
+            shouldShowSkip={shouldShowSkip && isLatestSystem}
+            onSkip={onSkip}
           />
         );
       })}
