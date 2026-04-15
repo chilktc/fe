@@ -1,8 +1,25 @@
 import { Suspense, useEffect, useRef } from "react";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useMe } from "@/features/auth";
+import { AUTH_ERROR_MESSAGES } from "@/features/auth/model/constants";
 import { useAppRouter, useQueryParams } from "@/shared/lib/router";
 import { PageLoading } from "@/shared/ui";
+
+interface OAuthLoginResponse {
+  code?: string;
+  message?: string;
+  data?: {
+    accessToken?: string;
+  };
+}
+
+function getOAuthErrorCode(code?: string) {
+  if (code && code in AUTH_ERROR_MESSAGES) {
+    return code;
+  }
+
+  return "server_error";
+}
 
 function sanitizeRedirectUrl(value: string | null) {
   if (!value) {
@@ -43,12 +60,12 @@ function GoogleCallbackContent() {
     };
 
     if (error) {
-      failAuth("oauth_failed");
+      failAuth("server_error");
       return;
     }
 
     if (!code) {
-      failAuth("no_code");
+      failAuth("server_error");
       return;
     }
 
@@ -63,16 +80,19 @@ function GoogleCallbackContent() {
           body: JSON.stringify({ code }),
         });
 
+        const result = (await response.json().catch(() => null)) as
+          | OAuthLoginResponse
+          | null;
+
         if (!response.ok) {
-          failAuth("login_failed");
+          failAuth(getOAuthErrorCode(result?.code));
           return;
         }
 
-        const result = await response.json();
         const accessToken = result.data?.accessToken;
 
         if (!accessToken) {
-          failAuth("login_failed");
+          failAuth("server_error");
           return;
         }
 
@@ -81,7 +101,7 @@ function GoogleCallbackContent() {
         const meResult = await refetchMe();
 
         if (!meResult.data) {
-          failAuth("profile_failed");
+          failAuth("server_error");
           return;
         }
 
