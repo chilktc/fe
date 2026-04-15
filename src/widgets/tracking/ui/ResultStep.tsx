@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { TrackingDetail } from "@/entities/tracking/model/types";
 import { WarningIcon } from "@/shared/icons";
@@ -23,7 +21,6 @@ export function ResultStep({
   isShareFlow,
   onAction,
 }: ResultStepProps) {
-  const [isDetailView, setIsDetailView] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formattedDate = new Date(data.createdAt).toLocaleDateString("ko-KR", {
@@ -40,7 +37,7 @@ export function ResultStep({
 
         <div className="w-full mt-10">
           <div className="bg-gray-200 rounded-[10px] overflow-hidden border border-gray-400 flex flex-col">
-            <div className="relative h-[180px] w-full">
+            <div className="relative h-45 w-full">
               <Image
                 src={data.imageUrl}
                 alt={data.description}
@@ -63,31 +60,16 @@ export function ResultStep({
                 </div>
               </div>
 
-              <p
-                className={
-                  !isDetailView
-                    ? "text-gray-800 text-body-5 text-left whitespace-pre-wrap line-clamp-5"
-                    : "text-gray-800 text-body-5 text-left whitespace-pre-wrap"
-                }
-              >
+              <p className="text-gray-800 text-body-5 text-left whitespace-pre-wrap">
                 {data.description}
               </p>
-
-              {isShareFlow && (
-                <button
-                  onClick={() => setIsDetailView((prev) => !prev)}
-                  className="self-end text-gray-700 text-caption-2 hover:text-gray-400 transition-colors"
-                >
-                  {isDetailView ? "간략히 보기" : "자세히 보기"}
-                </button>
-              )}
             </div>
           </div>
         </div>
       </div>
 
       <Button
-        className="w-full h-14 bg-primary-400 text-gray-950 text-button-1 rounded-[12px] mt-auto"
+        className="w-full h-14 bg-primary-400 text-gray-950 text-button-1 rounded-xl mt-auto"
         onClick={() => {
           if (isShareFlow) {
             setIsModalOpen(true);
