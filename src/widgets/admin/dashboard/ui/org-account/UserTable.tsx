@@ -62,7 +62,9 @@ export function UserTable({ users, onDelete, onEdit }: UserTableProps) {
           </div>
 
           {/* Role */}
-          <span className="text-caption-1 text-gray-900">{user.role}</span>
+          <span className="text-caption-1 text-gray-900">
+            {user.role === "USER" ? "Member" : "Admin"}
+          </span>
 
           {/* Status */}
           <div className="flex items-center justify-center">

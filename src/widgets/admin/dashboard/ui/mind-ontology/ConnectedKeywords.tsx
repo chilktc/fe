@@ -65,7 +65,7 @@ export function ConnectedKeywords({
                     </Fragment>
                   ))}
                 </div>
-                <Chip className="text-caption-1! bg-transparent!">
+                <Chip className="text-caption-1! bg-transparent! text-gray-800!">
                   {item.count}회
                 </Chip>
               </div>
