@@ -10,6 +10,7 @@ interface ModalProps {
   children: ReactNode;
   cancelLabel?: string;
   submitLabel?: string;
+  showCancelButton?: boolean;
   onCancel?: () => void;
   onSubmit: () => void;
   isSubmitLoading?: boolean;
@@ -27,6 +28,7 @@ export function Modal({
   children,
   cancelLabel = "취소",
   submitLabel = "확인",
+  showCancelButton = true,
   onCancel,
   onSubmit,
   isSubmitLoading = false,
@@ -77,14 +79,16 @@ export function Modal({
 
           {/* Fixed Footer with Two Buttons */}
           <div className={`flex w-full gap-1 ${footerClassName}`}>
-            <Button onClick={handleCancel} className="flex-1 bg-gray-400!">
-              {cancelLabel}
-            </Button>
+            {showCancelButton && (
+              <Button onClick={handleCancel} className="flex-1 bg-gray-400!">
+                {cancelLabel}
+              </Button>
+            )}
             <Button
               onClick={onSubmit}
               isLoading={isSubmitLoading}
               disabled={isSubmitDisabled}
-              className="flex-1"
+              className={showCancelButton ? "flex-1" : "w-full"}
             >
               {submitLabel}
             </Button>
