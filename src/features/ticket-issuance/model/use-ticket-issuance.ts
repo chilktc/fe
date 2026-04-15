@@ -1,10 +1,16 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useAppRouter } from "@/shared/lib/router";
 import { useSessionStore } from "@/entities/session/model/store";
 import { useGreenroomSessionStore } from "@/entities/greenroom/model/store";
 import { useCreateTicket } from "./use-create-ticket";
 import { ChatMessage } from "@/entities/ticket/model/types";
 import { QUESTIONS, GUIDES } from "@/entities/ticket/model/constants";
+import {
+  buildTicketIssuanceHistory,
+  clearTicketIssuanceDraft,
+  readTicketIssuanceDraft,
+  saveTicketIssuanceDraft,
+} from "./draft-storage";
 
 export function useTicketIssuance() {
   const router = useAppRouter();
@@ -28,10 +34,42 @@ export function useTicketIssuance() {
     },
   ]);
   const [isWaiting, setIsWaiting] = useState(false);
+  const [shouldShowRestoreModal, setShouldShowRestoreModal] = useState(false);
+  const hasCheckedDraftRef = useRef(false);
 
   const currentPlaceholder = "당신의 생각을 적어주세요";
 
   const isComplete = step >= QUESTIONS.length;
+
+  const clearDraft = useCallback(() => {
+    clearTicketIssuanceDraft();
+    setShouldShowRestoreModal(false);
+  }, []);
+
+  const restoreDraft = useCallback(() => {
+    const draft = readTicketIssuanceDraft();
+    if (!draft) return;
+
+    setStep(draft.answers.length);
+    setAnswers(draft.answers);
+    setHistory(buildTicketIssuanceHistory(draft.answers, nickname));
+    setShouldShowRestoreModal(false);
+  }, [nickname]);
+
+  useEffect(() => {
+    if (hasCheckedDraftRef.current) return;
+
+    hasCheckedDraftRef.current = true;
+    const draft = readTicketIssuanceDraft();
+
+    if (draft) {
+      setShouldShowRestoreModal(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    saveTicketIssuanceDraft(answers);
+  }, [answers]);
 
   const handleSendMessage = useCallback(
     (content: string) => {
@@ -106,5 +144,8 @@ export function useTicketIssuance() {
     currentPlaceholder,
     isSubmitting,
     isWaiting,
+    shouldShowRestoreModal,
+    restoreDraft,
+    clearDraft,
   };
 }

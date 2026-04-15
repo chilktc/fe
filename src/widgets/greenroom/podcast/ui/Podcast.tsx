@@ -8,6 +8,7 @@ import {
 } from "@/entities/greenroom/model/types";
 import { Button, Chip } from "@/shared/ui";
 import { useAppRouter } from "@/shared/lib/router";
+import { clearTicketIssuanceDraft } from "@/features/ticket-issuance/model/draft-storage";
 
 interface PodcastProps {
   data: PodcastDetail;
@@ -32,6 +33,7 @@ export function Podcast({ data, selectedChoice }: PodcastProps) {
   }, [currentIndex, fragments.length]);
 
   const handleComplete = () => {
+    clearTicketIssuanceDraft();
     router.push(`/`);
   };
 
