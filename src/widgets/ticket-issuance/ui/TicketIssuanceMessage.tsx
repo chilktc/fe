@@ -1,13 +1,18 @@
+import { Button } from "@/shared/ui";
 import { ChatMessage } from "@/entities/ticket/model/types";
 
 interface TicketIssuanceMessageProps {
   message: ChatMessage;
   isLatestSystem?: boolean;
+  shouldShowSkip?: boolean;
+  onSkip?: () => void;
 }
 
 export function TicketIssuanceMessage({
   message,
   isLatestSystem,
+  shouldShowSkip = false,
+  onSkip,
 }: TicketIssuanceMessageProps) {
   const isUser = message.type === "user";
 
@@ -42,6 +47,16 @@ export function TicketIssuanceMessage({
           </p>
         </div>
       )}
+      {shouldShowSkip ? (
+        <div className="flex justify-end mt-3">
+          <Button
+            onClick={onSkip}
+            className="text-label-1! transition-colors py-2! px-3.5! h-auto! rounded-3xl! bg-gray-200! border border-primary-400 text-primary-400!"
+          >
+            건너뛰기
+          </Button>
+        </div>
+      ) : null}
     </>
   );
 }
