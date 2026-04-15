@@ -77,7 +77,7 @@ export default function DonutChart({ categories }: DonutChartProps) {
                   {Math.round((hoveredItem.count / total) * 100)}%
                 </div>
                 <div className="text-caption-2 text-gray-400 mt-0.5">
-                  {hoveredItem.count}건
+                  {hoveredItem.count}회
                 </div>
               </>
             )}
@@ -112,7 +112,7 @@ export default function DonutChart({ categories }: DonutChartProps) {
               <span
                 className={`text-label-1 ${active ? "text-primary-400" : "text-gray-800"}`}
               >
-                {cat.value}건
+                {cat.value}회
               </span>
             </div>
           );
