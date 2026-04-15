@@ -66,8 +66,7 @@ export function TicketIssuanceInput({
             errorMessage ? "text-accent-red" : "text-gray-600"
           }`}
         >
-          {errorMessage ||
-            "비어 있는 답변은 제출할 수 없어요. 최대 300자까지 입력할 수 있어요."}
+          {errorMessage || "빈 메시지는 보낼 수 없습니다. (최대 300자)"}
         </p>
         <span
           className={`shrink-0 text-label-3 ${
