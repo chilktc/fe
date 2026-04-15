@@ -14,13 +14,7 @@ interface BaseModalProps {
   onSubmit: () => void;
   isSubmitLoading?: boolean;
   isSubmitDisabled?: boolean;
-  overlayClassName?: string;
   containerClassName?: string;
-  headerClassName?: string;
-  titleClassName?: string;
-  closeButtonClassName?: string;
-  contentClassName?: string;
-  submitClassName?: string;
 }
 
 export function BaseModal({
@@ -32,13 +26,7 @@ export function BaseModal({
   onSubmit,
   isSubmitLoading = false,
   isSubmitDisabled = false,
-  overlayClassName = "",
   containerClassName = "",
-  headerClassName = "",
-  titleClassName = "",
-  closeButtonClassName = "",
-  contentClassName = "",
-  submitClassName = "",
 }: BaseModalProps) {
   useEffect(() => {
     if (!isOpen) return;
@@ -56,7 +44,7 @@ export function BaseModal({
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center overflow-y-auto p-5 scrollbar-hide">
       <div
-        className={`fixed inset-0 bg-gray-100/40 backdrop-blur-sm transition-opacity duration-300 ${overlayClassName}`}
+        className="fixed inset-0 bg-gray-100/40 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       />
 
@@ -64,26 +52,21 @@ export function BaseModal({
         className={`relative my-auto w-full max-w-[440px] overflow-hidden rounded-[20px] border border-gray-400/50 bg-gray-100 p-7.5 shadow-2xl ${containerClassName}`}
       >
         <div className="flex flex-col gap-7.5">
-          <div className={`flex items-center justify-between ${headerClassName}`}>
-            <h2 className={`text-heading-2 text-gray-900 ${titleClassName}`}>
-              {title}
-            </h2>
-            <button
-              onClick={onClose}
-              className={`cursor-pointer ${closeButtonClassName}`}
-            >
+          <div className="flex items-center justify-between">
+            <h2 className="text-heading-2 text-gray-900">{title}</h2>
+            <button onClick={onClose} className="cursor-pointer">
               <CloseIcon />
             </button>
           </div>
 
-          <div className={`w-full ${contentClassName}`}>{children}</div>
+          <div className="w-full">{children}</div>
 
           <div className="w-full">
             <Button
               onClick={onSubmit}
               isLoading={isSubmitLoading}
               disabled={isSubmitDisabled}
-              className={`w-full ${submitClassName}`}
+              className="w-full"
             >
               {submitLabel}
             </Button>

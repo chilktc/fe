@@ -5,6 +5,7 @@ export * from "./CheckSquare";
 export * from "./Chip";
 export * from "./Divide";
 export * from "./Modal";
+export * from "./LogoModal";
 export * from "./BaseModal";
 export * from "./Switch";
 export * from "./Page";

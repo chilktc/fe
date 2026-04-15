@@ -11,5 +11,6 @@ export function useTrackingData(id: string) {
       );
     },
     enabled: !!id,
+    retry: false,
   });
 }
