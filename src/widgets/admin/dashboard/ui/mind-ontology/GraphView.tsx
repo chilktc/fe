@@ -3,6 +3,7 @@
 import { GraphData } from "@/entities/graph/model/types";
 import { GRAPH_GROUP_META } from "@/entities/graph/model/constants";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import type { ForceGraphMethods } from "react-force-graph-2d";
 
 const ForceGraph2D = lazy(() => import("react-force-graph-2d"));
 
@@ -25,11 +26,21 @@ interface GraphViewProps {
 }
 
 export const GraphView = ({ graphData }: GraphViewProps) => {
-  const graphRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const forceGraphRef = useRef<ForceGraphMethods | undefined>(undefined);
+  const hasFittedInitiallyRef = useRef(false);
   const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
 
+  const fitGraphToViewport = () => {
+    if (!graphData.nodes.length) return;
+
+    window.requestAnimationFrame(() => {
+      forceGraphRef.current?.zoomToFit(500, 80);
+    });
+  };
+
   useEffect(() => {
-    const element = graphRef.current;
+    const element = containerRef.current;
     if (!element) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
@@ -50,8 +61,20 @@ export const GraphView = ({ graphData }: GraphViewProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!graphData.nodes.length || !dimensions.width || !dimensions.height)
+      return;
+    if (hasFittedInitiallyRef.current) return;
+
+    hasFittedInitiallyRef.current = true;
+    fitGraphToViewport();
+  }, [graphData.nodes.length, dimensions.width, dimensions.height]);
+
   return (
-    <div className="w-full h-[500px] overflow-hidden" ref={graphRef}>
+    <div
+      className="relative h-[min(72vh,680px)] min-h-[500px] w-full overflow-hidden"
+      ref={containerRef}
+    >
       <Suspense
         fallback={
           <div className="flex items-center justify-center p-4">
@@ -59,7 +82,11 @@ export const GraphView = ({ graphData }: GraphViewProps) => {
           </div>
         }
       >
+        <div className="pointer-events-none absolute right-4 bottom-4 z-10 rounded-full bg-gray-600 px-3 py-1.5 text-[11px] text-gray-100">
+          휠로 확대/축소, 드래그로 이동
+        </div>
         <ForceGraph2D
+          ref={forceGraphRef}
           graphData={graphData}
           width={dimensions.width}
           height={dimensions.height}
@@ -99,8 +126,10 @@ export const GraphView = ({ graphData }: GraphViewProps) => {
           linkWidth={1}
           d3VelocityDecay={0.3}
           cooldownTicks={100}
-          enableZoomInteraction={false}
-          enablePanInteraction={false}
+          minZoom={0.25}
+          maxZoom={6}
+          enableZoomInteraction
+          enablePanInteraction
         />
       </Suspense>
     </div>
