@@ -89,7 +89,7 @@ function GoogleCallbackContent() {
           return;
         }
 
-        const accessToken = result.data?.accessToken;
+        const accessToken = result?.data?.accessToken;
 
         if (!accessToken) {
           failAuth("server_error");
