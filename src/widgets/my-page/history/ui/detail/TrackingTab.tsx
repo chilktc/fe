@@ -84,6 +84,14 @@ export function TrackingTab({ tracking, createdAt }: TrackingTabProps) {
     {} as Record<number, HistoryTrackingEvent[]>,
   );
 
+  if (tracking.length === 0) {
+    return (
+      <div className="flex items-center justify-center pt-4 pb-8">
+        <p className="text-body-6 text-gray-700">트래킹 정보가 없습니다.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-8 pt-4 pb-8">
       {Object.entries(groupedTracking)
