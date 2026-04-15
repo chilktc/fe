@@ -10,9 +10,9 @@ export function PlusIcon() {
       <path
         d="M18 12H12M12 12H6M12 12V6M12 12V18"
         stroke="#E9EAEE"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

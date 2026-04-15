@@ -1,4 +1,7 @@
 import { Button } from "@/shared/ui";
+import { LogoLetter } from "@/shared/assets/logo";
+import { ArrowLeftIcon } from "@/shared/icons";
+import { useAppRouter } from "@/shared/lib/router";
 import { ErrorIcon } from "@/shared/icons/error-icon";
 
 interface GreenroomFallbackProps {
@@ -12,8 +15,24 @@ export function GreenroomFallback({
   isRetrying,
   description,
 }: GreenroomFallbackProps) {
+  const router = useAppRouter();
+
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-3 py-5 text-center">
+    <div className="flex-1 flex flex-col px-3 py-5 text-center">
+      <header className="relative h-12 flex items-center justify-center shrink-0">
+        <button
+          type="button"
+          className="absolute left-0 w-12 h-12 flex items-center justify-center cursor-pointer"
+          onClick={router.back}
+          aria-label="뒤로가기"
+        >
+          <ArrowLeftIcon className="[&_path]:fill-gray-900" />
+        </button>
+        <div aria-hidden="true">
+          <LogoLetter className="w-auto! h-4!" />
+        </div>
+      </header>
+
       <div className="flex-1 flex flex-col justify-center items-center gap-1">
         <ErrorIcon className="w-8! h-8!" />
         <h2 className="text-gray-900 text-heading-3">

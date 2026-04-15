@@ -11,3 +11,4 @@ export * from "./plus-icon";
 export * from "./notification-icon";
 export * from "./dot-menu-icon";
 export * from "./LottieAsset";
+export * from "./arrow-icon";
