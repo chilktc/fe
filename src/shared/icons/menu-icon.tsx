@@ -12,8 +12,8 @@ export function MenuIcon({ className = "" }: { className?: string }) {
         x2="35"
         y2="20.5"
         stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
       <line
         x1="13"
@@ -21,8 +21,8 @@ export function MenuIcon({ className = "" }: { className?: string }) {
         x2="29"
         y2="29.5"
         stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
     </svg>
   );

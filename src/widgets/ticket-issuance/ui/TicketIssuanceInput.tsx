@@ -59,23 +59,6 @@ export function TicketIssuanceInput({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between gap-3 px-1">
-        <p
-          aria-live="polite"
-          className={`text-label-3 ${
-            errorMessage ? "text-accent-red" : "text-gray-600"
-          }`}
-        >
-          {errorMessage || "빈 메시지는 보낼 수 없습니다. (최대 300자)"}
-        </p>
-        <span
-          className={`shrink-0 text-label-3 ${
-            isNearLimit ? "text-primary-400" : "text-gray-600"
-          }`}
-        >
-          {inputValue.length}/{ANSWER_MAX_LENGTH}
-        </span>
-      </div>
       <div
         className={`relative w-full flex items-center rounded-[18px] border bg-gray-100 border-gray-400 focus-within:border-primary-600 transition-all pr-14 ${disabled ? "opacity-50 grayscale-20" : ""}`}
       >
@@ -103,6 +86,23 @@ export function TicketIssuanceInput({
             className="absolute right-4 bottom-4 shrink-0 transition-opacity"
           />
         )}
+      </div>
+      <div className="flex items-center justify-between gap-3 px-1">
+        <p
+          aria-live="polite"
+          className={`text-label-3 ${
+            errorMessage ? "text-accent-red" : "text-gray-600"
+          }`}
+        >
+          {errorMessage || "빈 메시지는 보낼 수 없습니다. (최대 300자)"}
+        </p>
+        <span
+          className={`shrink-0 text-label-3 ${
+            isNearLimit ? "text-primary-400" : "text-gray-600"
+          }`}
+        >
+          {inputValue.length}/{ANSWER_MAX_LENGTH}
+        </span>
       </div>
     </div>
   );
