@@ -44,3 +44,10 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fe-dist
+          path: dist/
+          retention-days: 1
