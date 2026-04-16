@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { useAppRouter, useQueryParams } from "@/shared/lib/router";
 import { Button, Divide, CheckSquare } from "@/shared/ui";
@@ -8,8 +6,13 @@ import { TermsHeader } from "./TermsHeader";
 import { AgreementItem } from "./AgreementItem";
 import { TermsComplete } from "./TermsComplete";
 import { useAgreeTerms } from "@/features/auth/model/use-agree-terms";
+import type { AgreementContentKey } from "./agreement-content";
 
-export function TermsCard() {
+interface TermsCardProps {
+  onOpenAgreement: (agreementKey: AgreementContentKey) => void;
+}
+
+export function TermsCard({ onOpenAgreement }: TermsCardProps) {
   const router = useAppRouter();
   const searchParams = useQueryParams();
   const { user, setUser } = useSessionStore();
@@ -104,16 +107,19 @@ export function TermsCard() {
             label="[필수] 서비스 이용약관"
             checked={agreements.terms}
             onToggle={() => handleToggle("terms")}
+            onView={() => onOpenAgreement("terms")}
           />
           <AgreementItem
             label="[필수] 개인정보 처리방침"
             checked={agreements.privacy}
             onToggle={() => handleToggle("privacy")}
+            onView={() => onOpenAgreement("privacy")}
           />
           <AgreementItem
             label="[선택] 마케팅 정보 수신 동의"
             checked={agreements.marketing}
             onToggle={() => handleToggle("marketing")}
+            onView={() => onOpenAgreement("marketing")}
           />
         </div>
       </div>
