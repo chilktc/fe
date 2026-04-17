@@ -2,10 +2,10 @@
 
 사용자와 생성형 AI 심리상담 시스템을 연결하는 **프론트엔드 애플리케이션 레이어**
 
-Mind-Log Frontend는 생성형 AI 기반 심리상담 서비스 **Mind-Log**의  
+Mind-Log Frontend는 생성형 AI 기반 심리상담 서비스 **Mind-Log**의
 사용자 경험(UI/UX)을 담당하는 프론트엔드 레포지토리입니다.
 
-백엔드(`be`), AI 엔진(`ai`), 클라우드 인프라(`infra`)와 분리된 독립 레이어로서  
+백엔드(`be`), AI 엔진(`ai`), 클라우드 인프라(`infra`)와 분리된 독립 레이어로서
 **확장 가능한 구조, 명확한 책임 분리, 안정적인 상태 흐름**을 목표로 설계되었습니다.
 
 ---
@@ -23,8 +23,9 @@ Mind-Log Frontend는 생성형 AI 기반 심리상담 서비스 **Mind-Log**의
 ## 기술 스택
 
 ### Core
-- Next.js (App Router)
 - React
+- Vite
+- React Router
 - TypeScript
 
 ### State & Data
@@ -45,23 +46,24 @@ Mind-Log Frontend는 생성형 AI 기반 심리상담 서비스 **Mind-Log**의
 
 ```
 src/
-├── app/                # Next.js App Router
+├── main.tsx            # Vite 엔트리 포인트
+├── router.tsx          # React Router 설정
+├── pages/              # 라우트 단위 페이지
 ├── widgets/            # 복합 UI 블록
 ├── features/           # 사용자 행동 단위
 ├── entities/           # 도메인 엔티티
-├── shared/             # 공통 모듈
-│   ├── ui/
-│   ├── api/
-│   ├── lib/
-│   ├── config/
-│   └── types/
-└── styles/
+└── shared/             # 공통 모듈
+    ├── ui/
+    ├── api/
+    ├── lib/
+    ├── assets/
+    └── icons/
 ```
 
 ### FSD 레이어 설명
 
-- **app**  
-  라우팅, 레이아웃, 전역 설정
+- **pages**
+  라우트 단위 화면 조합
 
 - **widgets**  
   여러 feature/entity를 조합한 UI 블록  
@@ -96,9 +98,9 @@ src/
 
 ## 환경 변수
 
-NEXT_PUBLIC_API_BASE_URL=
+VITE_API_BASE_URL=
 
-NEXT_PUBLIC_ENV=
+VITE_ENV=
 
 환경별(local / dev / prod)로 분리하여 관리합니다.
 
@@ -112,3 +114,9 @@ npm install
 
 # 개발 서버 실행
 npm run dev
+
+# 프로덕션 빌드
+npm run build
+
+# 빌드 결과 미리보기
+npm run preview

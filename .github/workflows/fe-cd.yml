@@ -1,0 +1,58 @@
+name: fe-cd
+
+on:
+  # fe-ci 워크플로우가 완료되었을 때 실행
+  workflow_run:
+    workflows: ["fe-ci"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # CI 워크플로우가 '성공(success)'했을 때만 배포 실행
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      # CI에서 업로드한 빌드 결과물(dist/) 다운로드
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fe-dist
+          path: dist/
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # AWS 자격증명 설정
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # dist/ 를 S3 버킷에 동기화 (변경된 파일만 업로드)
+      - name: Sync dist to S3
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}/ \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable"
+
+      # index.html 은 캐시 무효화 (항상 최신 파일 제공)
+      - name: Set cache-control for index.html
+        run: |
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/index.html \
+            s3://${{ secrets.S3_BUCKET_NAME }}/index.html \
+            --metadata-directive REPLACE \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --content-type "text/html"
+
+      # CloudFront 캐시 무효화 (선택 사항 — CloudFront 미사용 시 삭제)
+      - name: Invalidate CloudFront cache
+        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
