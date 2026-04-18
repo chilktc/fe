@@ -52,13 +52,13 @@ export function Podcast({ data, selectedChoice }: PodcastProps) {
   return (
     <div className="flex-1 flex flex-col py-6 px-4 min-h-full gap-[18px]">
       {/* Header Image */}
-      <div className="shrink-0 relative w-full aspect-square flex flex-col justify-center items-center gap-5 px-4 py-6 rounded-[10px]">
+      <div className="shrink-0 relative w-full min-h-50 flex flex-col justify-center items-center gap-5 px-4 py-6 rounded-[10px]">
         <div className="absolute top-0 left-0 w-full h-full rounded-[10px] overflow-hidden">
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[80px] scale-110"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[50px] scale-110"
             style={{ backgroundImage: `url(${data.imageUrl})` }}
           />
-          <div className="absolute inset-0 bg-[#55585D]/50 backdrop-blur-[50px]" />
+          <div className="absolute inset-0 bg-[#55585D]/50" />
         </div>
         <div className="relative z-10 aspect-square w-full max-w-34 rounded-full overflow-hidden">
           <Image
