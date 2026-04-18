@@ -12,7 +12,7 @@ export function useWithdraw() {
 
   return useMutation({
     mutationFn: async ({ email }: WithdrawPayload) => {
-      return api.delete("/auth/me", {
+      return api.delete("/users/me", {
         data: { email },
       });
     },
