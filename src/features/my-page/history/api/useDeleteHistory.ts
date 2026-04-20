@@ -6,7 +6,7 @@ export function useDeleteHistory() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      return await api.delete(`/history/${id}`);
+      return await api.delete(`/greenroom/tickets/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["history"] });
