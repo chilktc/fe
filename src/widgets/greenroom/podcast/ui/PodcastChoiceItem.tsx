@@ -18,11 +18,11 @@ export function PodcastChoiceItem({
   return (
     <div
       onClick={onSelect}
-      className={`bg-gray-200 rounded-[10px] grid grid-rows-2 overflow-hidden cursor-pointer transition-all box-border ${
+      className={`bg-gray-200 rounded-[10px] flex flex-col overflow-hidden cursor-pointer transition-all box-border ${
         isSelected ? "ring-primary-400 ring-2" : "ring-gray-400 ring-1"
       } ${isDimmed ? "opacity-50" : "opacity-100"}`}
     >
-      <div className="relative w-full">
+      <div className="relative w-full h-45">
         <Image
           src={data.imageUrl}
           alt="Podcast Image"
@@ -31,8 +31,8 @@ export function PodcastChoiceItem({
           priority
         />
       </div>
-      <div className={`${isSelected && "bg-primary-200"}`}>
-        <div className="py-5 px-4 space-y-[5px]">
+      <div className={`${isSelected && "bg-primary-200"} min-h-33`}>
+        <div className="py-5 px-4 space-y-1.25">
           <div className="flex flex-wrap gap-2">
             {data.type.map((type, index) => (
               <Chip key={`${type}-${index}`} selected={isSelected}>
