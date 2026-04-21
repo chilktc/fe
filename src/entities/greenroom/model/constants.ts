@@ -55,7 +55,10 @@ export const PODCAST_CHOICES: PodcastChoiceDetail[] = [
 const PODCAST_CHOICE_COUNT = 2;
 
 function getAsciiCodeFromSessionId(sessionId: string) {
-  return sessionId.charCodeAt(0);
+  return Array.from(sessionId).reduce(
+    (acc, char, index) => acc + char.charCodeAt(0) * (index + 1),
+    0,
+  );
 }
 
 function getDistinctChoiceIndexes(asciiCode: number, totalCount: number) {
