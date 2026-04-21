@@ -27,12 +27,6 @@ export const PODCAST_CHOICES: PodcastChoiceDetail[] = [
     description: "명상하듯 차분하고 깊이 있는 통찰을 나누는 스타일",
   },
   {
-    imageUrl: "/assets/images/podcast-image-5.png",
-    type: ["재치", "솔직함", "유머"],
-    title: "유쾌한 팩트폭격기",
-    description: "재치 있는 농담과 함께 현실적인 조언을 건네는 스타일",
-  },
-  {
     imageUrl: "/assets/images/podcast-image-6.png",
     type: ["기승전결", "몰입", "비유"],
     title: "몰입형 이야기꾼",
