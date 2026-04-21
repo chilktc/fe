@@ -1,5 +1,3 @@
-"use client";
-
 import { useMemo, useState } from "react";
 import { Button } from "@/shared/ui";
 import { useAppRouter } from "@/shared/lib/router";
@@ -12,7 +10,9 @@ import { useStorySelection } from "@/features/greenroom";
 export function PodcastChoice() {
   const router = useAppRouter();
   const sessionId = useGreenroomSessionStore((state) => state.sessionId);
-  const mindFrequency = useGreenroomSessionStore((state) => state.mindFrequency);
+  const mindFrequency = useGreenroomSessionStore(
+    (state) => state.mindFrequency,
+  );
   const setSelectedPodcastChoice = useGreenroomSessionStore(
     (state) => state.setSelectedPodcastChoice,
   );
@@ -42,43 +42,45 @@ export function PodcastChoice() {
   };
 
   return (
-    <div className="flex-1 flex flex-col gap-5 items-center py-6 px-4">
-      <div className="w-full">
-        <h1 className="text-gray-900 text-heading-3">오늘의 팟캐스트</h1>
-        <p className="text-gray-800 text-body-6">
-          지금 당신의 마음이 가장 머물고 싶은 이야기를 골라보세요!
-        </p>
-      </div>
-      <div className="w-full space-y-[10px] flex-1">
-        {mindFrequency ? (
-          choices.map((choice, index) => (
-            <PodcastChoiceItem
-              key={`${choice.title}-${index}`}
-              data={choice}
-              isSelected={selectedTitle === choice.title}
-              isDimmed={
-                selectedTitle !== null && selectedTitle !== choice.title
-              }
-              onSelect={() => setSelectedTitle(choice.title)}
-            />
-          ))
-        ) : (
-          Array.from({ length: 2 }).map((_, i) => (
-            <PodcastChoiceItemSkeleton key={i} />
-          ))
-        )}
+    <div className="flex-1 flex flex-col items-center">
+      <div className="w-full px-4 py-6 flex-1">
+        <div className="w-full">
+          <h1 className="text-gray-900 text-heading-3">오늘의 팟캐스트</h1>
+          <p className="text-gray-800 text-body-6">
+            지금 당신의 마음이 가장 머물고 싶은 이야기를 골라보세요!
+          </p>
+        </div>
+        <div className="w-full space-y-2.5 flex-1 pt-5">
+          {mindFrequency
+            ? choices.map((choice, index) => (
+                <PodcastChoiceItem
+                  key={`${choice.title}-${index}`}
+                  data={choice}
+                  isSelected={selectedTitle === choice.title}
+                  isDimmed={
+                    selectedTitle !== null && selectedTitle !== choice.title
+                  }
+                  onSelect={() => setSelectedTitle(choice.title)}
+                />
+              ))
+            : Array.from({ length: 2 }).map((_, i) => (
+                <PodcastChoiceItemSkeleton key={i} />
+              ))}
+        </div>
       </div>
 
-      <Button
-        className="w-full h-14 text-button-1"
-        onClick={() => {
-          void handleNext();
-        }}
-        disabled={selectedTitle === null || !mindFrequency}
-        isLoading={isPending}
-      >
-        팟캐스트 입장하기
-      </Button>
+      <div className="w-full sticky bottom-0 pb-6 pt-2 bg-gray-100 px-4">
+        <Button
+          className="w-full h-14 text-button-1"
+          onClick={() => {
+            void handleNext();
+          }}
+          disabled={selectedTitle === null || !mindFrequency}
+          isLoading={isPending}
+        >
+          팟캐스트 입장하기
+        </Button>
+      </div>
     </div>
   );
 }
